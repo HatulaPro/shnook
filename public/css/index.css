@@ -6,6 +6,39 @@ html {
 	font-family: 'Roboto';
 }
 
+.btn{
+	border: none;
+	background-color: #9b9bbd;
+	border-radius: 9999px;
+	padding: 0.68em;
+	min-width: 7rem;
+	font-size: 1.5rem;
+	margin: 4px;
+	color: black;
+}
+
+.btn:hover{
+	cursor:pointer;
+	background-color: #a293c3;
+}
+
+.inp{
+	border: none;
+	margin: 4px;
+	border-radius: 9999px;
+	padding: 0.4em 1.2rem;
+	width: max-content;
+	font-size: 1.5rem;
+	color: black;
+}
+
+.main {
+	margin: auto;
+	text-align: center;
+	display: flex;
+	justify-content: center;
+}
+
 .main-title {
 	margin: 5rem;
 	font-size: 4rem;
