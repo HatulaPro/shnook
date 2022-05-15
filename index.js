@@ -15,16 +15,17 @@ const admin = require('firebase-admin');
 admin.initializeApp();
 
 app.use('/public', express.static('public'));
+app.set('view engine', 'ejs');
 app.get('/', (req, res) => {
-	res.sendFile(__dirname + '/views/index.html');
+	res.render('index');
 });
 
 app.get('/create', (req, res) => {
-	res.sendFile(__dirname + '/views/create.html');
+	res.render('create');
 });
 
 app.get('/join', (req, res) => {
-	res.sendFile(__dirname + '/views/join.html');
+	res.render('join');
 });
 
 io.on('connection', (socket) => {
