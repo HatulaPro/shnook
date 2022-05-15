@@ -40,9 +40,17 @@ html {
 
 .main-title {
 	margin: 5rem;
+	margin-bottom: 1rem;
 	font-size: 4rem;
 	text-align: center;
 	color: white;
+}
+
+.secondary-title {
+	margin: 2rem;
+	font-size: 2.2rem;
+	text-align: center;
+	color: #bdbdbd;
 }
 
 @keyframes titleAnimation {
@@ -73,10 +81,12 @@ html {
 	margin-left: 4rem;
 	width: 20vw;
 	height: 600px;
+	position: relative;
 }
 
+
 .main-chat-form{
-	position: relative;
+	position: absolute;
 	top: 100%;
 	transform: translateY(-100%);
 	display: flex;
@@ -103,6 +113,11 @@ html {
 
 #chat-button:hover {
 	cursor: pointer;
+}
+
+.chat-content {
+	text-align: start;
+	padding: 1rem;
 }
 
 .main-cards {
@@ -135,4 +150,27 @@ html {
 	bottom: 1.6rem;
 	transform: scaleX(0.96);
 	cursor: pointer;
+}
+
+.join-or-create-form {
+	height: 200px;
+	flex: 1;
+	border: 1px solid #a1a1a1;
+	padding: 2rem;
+	display: flex;
+	align-content: center;
+	flex-direction: column;
+	margin: 1rem;
+	border-radius: 2rem;
+}
+
+.join-or-create{
+	display: flex;
+	width: 40vw;
+	justify-content: center;
+	margin: auto;
+}
+
+.error {
+	color: red;
 }

@@ -12,6 +12,7 @@
 	</head>
 	<body>
 		<h1 class="main-title">Don't get <span class="main-title-shnooked">shnooked</span>!</h1>
+		<h2 class="secondary-title"></h2>
 
 		<div class="main">
 			<div class="main-cards">
@@ -21,10 +22,24 @@
 				<div class="card">D</div>
 			</div>
 			<div class="main-chat">
+				<h3>Game Chat: <%= id %></h3>
+				<div class="chat-content"></div>
 				<div class="main-chat-form">
 					<button type="button" id="chat-button">&lt;</button>
 					<input type="text" id="chat-input" placeholder="Shnook your opponents!" />
 				</div>
+			</div>
+		</div>
+
+		<div class="join-or-create">
+			<div class="join-form join-or-create-form">
+				<input type="text" class="inp" placeholder="Room ID" />
+				<br />
+				<button class="btn">Join</button>
+				<span class="error join-fail"></span>
+			</div>
+			<div class="create-form join-or-create-form">
+				<button class="btn">Create</button>
 			</div>
 		</div>
 	</body>
