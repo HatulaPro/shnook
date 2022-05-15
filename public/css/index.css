@@ -1,0 +1,106 @@
+body,
+html {
+	margin: 0;
+	padding: 0;
+	background-color: #292929;
+	font-family: 'Roboto';
+}
+
+.main-title {
+	margin: 5rem;
+	font-size: 4rem;
+	text-align: center;
+	color: white;
+}
+
+@keyframes titleAnimation {
+	from {
+		color: white;
+	}
+
+	to {
+		color: #a1a1ff;
+	}
+}
+
+.main-title-shnooked {
+	color: gray;
+	animation-name: titleAnimation;
+	animation-duration: 0.5s;
+	animation-direction: alternate-reverse;
+	animation-timing-function: ease-out;
+	animation-iteration-count: infinite;
+}
+
+.main {
+	display: flex;
+}
+
+.main-chat {
+	background-color: white;
+	margin-left: 4rem;
+	width: 20vw;
+	height: 600px;
+}
+
+.main-chat-form{
+	position: relative;
+	top: 100%;
+	transform: translateY(-100%);
+	display: flex;
+	width: 100%;
+}
+
+#chat-input {
+	border: none;
+	outline: none;
+	background-color: #cdcdcd;
+	color: black;
+	flex: 1;
+	font-size: 1.4em;
+	padding: 0.2rem;
+}
+
+#chat-button {
+	flex: 0 0 30px;
+	background-color: #a1a1ff;
+	border: none;
+	font-size: 1.2rem;
+	padding: 0.2rem;
+}
+
+#chat-button:hover {
+	cursor: pointer;
+}
+
+.main-cards {
+	display: flex;
+	width: 75vw;
+	justify-content: center;
+}
+
+.main-cards .card {
+	flex-grow: 1;
+	height: 400px;
+	background-color: #a1a1a1;
+	color: #191919;
+	margin: 3rem;
+	bottom: 0rem;
+	position: relative;
+	padding: 1rem;
+	text-align: center;
+	display: flex;
+	justify-content: center;
+	align-content: center;
+	flex-direction: column;
+	font-size: 8rem;
+	border-radius: 1rem;
+	transform: none;
+	transition: 0.2s all;
+}
+
+.main-cards .card:hover {
+	bottom: 1.6rem;
+	transform: scaleX(0.96);
+	cursor: pointer;
+}
