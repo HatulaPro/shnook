@@ -12,11 +12,11 @@ let state = null;
 let player = null;
 let isOwner = false;
 let roomData = null;
+let timer = null;
 
 const mainDiv = document.querySelector('.main');
 const roomIdTitle = document.querySelector('#room-id-title');
 const roomPlayers = document.querySelector('#room-players');
-// const secondaryTitle = document.querySelector('.secondary-title');
 const joinOrCreateDiv = document.querySelector('.join-or-create');
 
 const createButton = document.querySelector('.create-form button');
@@ -29,6 +29,7 @@ const chatButton = document.querySelector('#chat-button');
 const chatContent = document.querySelector('.chat-content');
 
 const ownerStartButton = document.querySelector('#room-owner-start');
+const timerSpan = document.querySelector('#room-timer');
 
 function showMessage(p, c) {
 	const viewMessage = document.createElement('p');
@@ -77,8 +78,17 @@ joinRoomInput.addEventListener('keypress', function (e) {
 ownerStartButton.addEventListener('click', () => {
 	if (isAdmin) {
 		socket.emit('start');
+		ownerStartButton.animate([{ transform: 'translateY(200%)' }, { transform: 'translateY(-200%) rotate(720deg) scale(0.5)' }], {
+			duration: 200,
+			iterations: 1,
+		});
+		ownerStartButton.style.transform = 'translateY(-10000%)';
 	}
 });
+
+function getTimestamp() {
+	return Math.floor(new Date().getTime() / 1000);
+}
 
 function update() {
 	roomIdTitle.innerText = `#${roomData.id}`;
@@ -88,6 +98,7 @@ function update() {
 	if (isAdmin) {
 		ownerStartButton.style.display = 'inline';
 	}
+	console.log(roomData.startedAt);
 }
 
 // Change state once joined
@@ -107,6 +118,20 @@ socket.on('update', (stream) => {
 	update();
 });
 
+socket.on('start', (stream) => {
+	console.log('start: ', stream);
+	roomData = stream.room;
+
+	timer = setInterval(() => {
+		timerSpan.innerText = roomData.startedAt - getTimestamp() + roomData.timePerRound;
+		if (timerSpan.innerText === '0') {
+			clearInterval(timer);
+		}
+	}, 500);
+
+	update();
+});
+
 socket.on('join_failed', (stream) => {
 	joinFailSpan.innerText = 'Can not join room: ' + stream.error;
 });
@@ -121,9 +146,11 @@ function setState(s) {
 		mainDiv.style.display = 'none';
 		joinOrCreateDiv.style.display = 'flex';
 		ownerStartButton.style.display = 'none';
+		timerSpan.style.display = 'none';
 	} else if (s === STATES.PLAY) {
 		mainDiv.style.display = 'flex';
 		joinOrCreateDiv.style.display = 'none';
+		timerSpan.style.display = 'flex';
 	} else {
 		throw Error('Invalid state');
 	}

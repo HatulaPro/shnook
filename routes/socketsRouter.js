@@ -18,7 +18,7 @@ module.exports = (io) => {
 		socket.on('create', (stream) => {
 			const id = nanoid(6);
 			player = { username: genUsername() };
-			room = new Room(id, Room.MAX_PLAYERS, false, socket.id, player);
+			room = new Room(id, Room.MAX_PLAYERS, Room.TIME_PER_ROUND, false, socket.id, player);
 
 			socket.join(id);
 			socket.emit('joined', { id, player, room: room.getStatus() });
@@ -40,7 +40,7 @@ module.exports = (io) => {
 				room.players.set(socket.id, player);
 
 				socket.join(stream);
-				socket.emit('joined', { stream, player, room: room.getStatus() });
+				socket.emit('joined', { id: stream, player, room: room.getStatus() });
 				socket.broadcast.emit('update', { room: room.getStatus() });
 			} else {
 				socket.emit('join_failed', { error: 'room does not exist' });
@@ -51,7 +51,7 @@ module.exports = (io) => {
 			if (!loggedIn()) return;
 			room.start();
 
-			io.to(room.id).emit('update', { room: room.getStatus() });
+			io.to(room.id).emit('start', { room: room.getStatus() });
 		});
 
 		socket.on('message', (stream) => {

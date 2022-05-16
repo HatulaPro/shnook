@@ -64,6 +64,21 @@ html {
 	margin: 1rem;
 }
 
+#room-timer {
+	font-size: 2rem;
+	background-color: #1515ff;
+	display: none;
+	align-items: center;
+	justify-content: center;
+	width: 3rem;
+	height: 3rem;
+	color: white;
+	border: 0.4rem solid #a515ff;
+	padding: 0.6rem;
+	margin: 2rem;
+	border-radius: 99999999px;
+}
+
 @keyframes titleAnimation {
 	from {
 		color: white;
