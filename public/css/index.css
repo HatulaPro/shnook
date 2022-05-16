@@ -58,6 +58,12 @@ html {
 	justify-content: space-evenly;
 }
 
+#room-owner-start {
+	display: inline;
+	vertical-align: middle;
+	margin: 1rem;
+}
+
 @keyframes titleAnimation {
 	from {
 		color: white;

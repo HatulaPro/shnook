@@ -47,6 +47,13 @@ module.exports = (io) => {
 			}
 		});
 
+		socket.on('start', () => {
+			if (!loggedIn()) return;
+			room.start();
+
+			io.to(room.id).emit('update', { room: room.getStatus() });
+		});
+
 		socket.on('message', (stream) => {
 			if (!loggedIn()) return;
 			socket.broadcast.to(room.id).emit('message', { user: player.username, message: stream });

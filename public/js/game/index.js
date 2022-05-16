@@ -2,7 +2,6 @@
 const gameId = document.location.toString().split('/').pop();
 
 const socket = io();
-// socket.emit('join', gameId);
 
 const STATES = {
 	JOIN_OR_CREATE: 0,
@@ -11,6 +10,7 @@ const STATES = {
 
 let state = null;
 let player = null;
+let isOwner = false;
 let roomData = null;
 
 const mainDiv = document.querySelector('.main');
@@ -27,6 +27,8 @@ const joinFailSpan = document.querySelector('.join-fail');
 const chatInput = document.querySelector('#chat-input');
 const chatButton = document.querySelector('#chat-button');
 const chatContent = document.querySelector('.chat-content');
+
+const ownerStartButton = document.querySelector('#room-owner-start');
 
 function showMessage(p, c) {
 	const viewMessage = document.createElement('p');
@@ -72,22 +74,37 @@ joinRoomInput.addEventListener('keypress', function (e) {
 	}
 });
 
+ownerStartButton.addEventListener('click', () => {
+	if (isAdmin) {
+		socket.emit('start');
+	}
+});
+
+function update() {
+	roomIdTitle.innerText = `#${roomData.id}`;
+	roomPlayers.innerText = `${roomData.players.length}/${roomData.maxPlayers}`;
+
+	isAdmin = roomData.players[0].username === player.username;
+	if (isAdmin) {
+		ownerStartButton.style.display = 'inline';
+	}
+}
+
 // Change state once joined
 socket.on('joined', (stream) => {
 	console.log(stream);
 	player = stream.player;
 	roomData = stream.room;
-	roomIdTitle.innerText = `#${roomData.id}`;
-	roomPlayers.innerText = `${roomData.players.length}/${roomData.maxPlayers}`;
+
 	setState(STATES.PLAY);
+	update();
 });
 
 // Change state once joined
 socket.on('update', (stream) => {
-	console.log(stream);
+	console.log('update: ', stream);
 	roomData = stream.room;
-	roomIdTitle.innerText = `#${roomData.id}`;
-	roomPlayers.innerText = `${roomData.players.length}/${roomData.maxPlayers}`;
+	update();
 });
 
 socket.on('join_failed', (stream) => {
@@ -103,6 +120,7 @@ function setState(s) {
 	if (s === STATES.JOIN_OR_CREATE) {
 		mainDiv.style.display = 'none';
 		joinOrCreateDiv.style.display = 'flex';
+		ownerStartButton.style.display = 'none';
 	} else if (s === STATES.PLAY) {
 		mainDiv.style.display = 'flex';
 		joinOrCreateDiv.style.display = 'none';
