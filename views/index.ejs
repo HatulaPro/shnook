@@ -12,7 +12,10 @@
 	</head>
 	<body>
 		<h1 class="main-title">Don't get <span class="main-title-shnooked">shnooked</span>!</h1>
-		<h2 class="secondary-title"></h2>
+		<div class="room-info">
+			<span class="secondary-title" id="room-players"></span>
+			<span class="secondary-title" id="room-id-title"></span>
+		</div>
 
 		<div class="main">
 			<div class="main-cards">
@@ -22,7 +25,7 @@
 				<div class="card">D</div>
 			</div>
 			<div class="main-chat">
-				<h3>Game Chat: <%= id %></h3>
+				<h3>Game Chat</h3>
 				<div class="chat-content"></div>
 				<div class="main-chat-form">
 					<button type="button" id="chat-button">&lt;</button>

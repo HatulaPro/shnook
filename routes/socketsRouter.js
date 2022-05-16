@@ -18,23 +18,30 @@ module.exports = (io) => {
 		socket.on('create', (stream) => {
 			const id = nanoid(6);
 			player = { username: genUsername() };
-			room = new Room(id, Room.MAX_PLAYERS, false, { [socket.id]: player });
+			room = new Room(id, Room.MAX_PLAYERS, false, socket.id, player);
 
 			socket.join(id);
-			socket.emit('joined', { id, player });
+			socket.emit('joined', { id, player, room: room.getStatus() });
 
 			Room.rooms.set(id, room);
 		});
 
 		socket.on('join', async (stream) => {
+			if (typeof stream !== 'string') return;
+			if (stream.length > 0 && stream[0] === '#') {
+				stream = stream.trim().substring(1);
+			}
 			if (Room.rooms.has(stream)) {
 				player = { username: genUsername() };
 				room = Room.rooms.get(stream);
+				if (room.hasStarted) return socket.emit('join_failed', { error: 'game has already started' });
+				if (room.players.size >= room.maxPlayers) return socket.emit('join_failed', { error: 'room is full' });
+
+				room.players.set(socket.id, player);
 
 				socket.join(stream);
-				socket.emit('joined', { stream, player });
-
-				room.players[socket.id] = player;
+				socket.emit('joined', { stream, player, room: room.getStatus() });
+				socket.broadcast.emit('update', { room: room.getStatus() });
 			} else {
 				socket.emit('join_failed', { error: 'room does not exist' });
 			}
@@ -48,9 +55,10 @@ module.exports = (io) => {
 		socket.on('disconnecting', () => {
 			socket.rooms.forEach((room) => {
 				if (Room.rooms.has(room)) {
-					delete Room.rooms.get(room).players[socket.id];
-					if (Object.keys(Room.rooms.get(room).players).length === 0) {
-						delete Room.rooms.get(room);
+					Room.rooms.get(room).players.delete(socket.id);
+					socket.broadcast.emit('update', { room: Room.rooms.get(room).getStatus() });
+					if (Room.rooms.get(room).players.size === 0) {
+						Room.rooms.delete(room);
 					}
 				}
 			});

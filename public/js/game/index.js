@@ -11,10 +11,12 @@ const STATES = {
 
 let state = null;
 let player = null;
-let roomId = null;
+let roomData = null;
 
 const mainDiv = document.querySelector('.main');
-const secondaryTitle = document.querySelector('.secondary-title');
+const roomIdTitle = document.querySelector('#room-id-title');
+const roomPlayers = document.querySelector('#room-players');
+// const secondaryTitle = document.querySelector('.secondary-title');
 const joinOrCreateDiv = document.querySelector('.join-or-create');
 
 const createButton = document.querySelector('.create-form button');
@@ -72,11 +74,20 @@ joinRoomInput.addEventListener('keypress', function (e) {
 
 // Change state once joined
 socket.on('joined', (stream) => {
-	player = stream.player;
-	roomId = stream.id;
-	secondaryTitle.innerText = `#${roomId}`;
 	console.log(stream);
+	player = stream.player;
+	roomData = stream.room;
+	roomIdTitle.innerText = `#${roomData.id}`;
+	roomPlayers.innerText = `${roomData.players.length}/${roomData.maxPlayers}`;
 	setState(STATES.PLAY);
+});
+
+// Change state once joined
+socket.on('update', (stream) => {
+	console.log(stream);
+	roomData = stream.room;
+	roomIdTitle.innerText = `#${roomData.id}`;
+	roomPlayers.innerText = `${roomData.players.length}/${roomData.maxPlayers}`;
 });
 
 socket.on('join_failed', (stream) => {

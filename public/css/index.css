@@ -53,6 +53,11 @@ html {
 	color: #bdbdbd;
 }
 
+.room-info {
+	display: flex;
+	justify-content: space-evenly;
+}
+
 @keyframes titleAnimation {
 	from {
 		color: white;
