@@ -182,6 +182,7 @@ socket.on('start', (stream) => {
 	console.log('start: ', stream);
 	roomData = stream.room;
 
+	chatContent.innerHTML = '';
 	if (timer !== null) clearInterval(timer);
 	timer = setInterval(() => {
 		timerSpan.innerText = roomData.startedAt - getTimestamp() + roomData.timePerRound;
