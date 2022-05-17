@@ -55,14 +55,19 @@ module.exports = (io) => {
 
 			gameTimer = setInterval(() => {
 				room.roundsPlayed += 1;
+				if (!io.sockets.adapter.rooms.has(room.id)) {
+					clearInterval(gameTimer);
+					return;
+				}
+
 				if (room.roundsPlayed >= room.maxRounds) {
 					clearInterval(gameTimer);
-				} else {
-					room.startRound();
-					const lier = room.getLierSocketId();
-					io.to(room.id).except(lier).emit('start', { room: room.getStatus() });
-					io.to(lier).emit('start', { room: room.getStatus(), treasure: room.treasure });
+					return;
 				}
+				room.startRound();
+				const lier = room.getLierSocketId();
+				io.to(room.id).except(lier).emit('start', { room: room.getStatus() });
+				io.to(lier).emit('start', { room: room.getStatus(), treasure: room.treasure });
 			}, room.timePerRound * 1000);
 
 			room.start();
