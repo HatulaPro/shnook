@@ -96,6 +96,40 @@ html {
 	transform: translateX(-50%) translateY(-150%);
 }
 
+@keyframes slapSecret {
+	from {
+		transform: scale(4) translateZ(5rem) translateX(-50%);
+	}
+
+	to {
+		transform: rotate(15deg) translateX(-50%);
+	}
+}
+
+.secret-card::before {
+	content: 'TOP SECRET';
+	color: red;
+	width: fit-content;
+	transform: rotate(15deg) translateX(-50%);
+	font-size: 2rem;
+	background-color: #85313155;
+	background-blend-mode: multiply;
+	background-image: url('/public/images/noise.jpg');
+	background-repeat: no-repeat;
+	background-size: cover;
+	background-position: center;
+	position: absolute;
+	bottom: 10%;
+	left: 50%;
+	padding: 0.4rem;
+	border: 2px solid red;
+
+	animation-name: slapSecret;
+	animation-duration: 0.2s;
+	animation-timing-function: ease-in;
+	animation-iteration-count: 1;
+}
+
 @keyframes titleAnimation {
 	from {
 		color: white;

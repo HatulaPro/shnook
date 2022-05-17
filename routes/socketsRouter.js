@@ -59,13 +59,16 @@ module.exports = (io) => {
 					clearInterval(gameTimer);
 				} else {
 					room.startRound();
-					io.to(room.id).emit('start', { room: room.getStatus() });
+					const lier = room.getLierSocketId();
+					io.to(room.id).except(lier).emit('start', { room: room.getStatus() });
+					io.to(lier).emit('start', { room: room.getStatus(), treasure: room.treasure });
 				}
 			}, room.timePerRound * 1000);
 
 			room.start();
-
-			io.to(room.id).emit('start', { room: room.getStatus() });
+			const lier = room.getLierSocketId();
+			io.to(room.id).except(lier).emit('start', { room: room.getStatus() });
+			io.to(lier).emit('start', { room: room.getStatus(), treasure: room.treasure });
 		});
 
 		socket.on('message', (stream) => {

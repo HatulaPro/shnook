@@ -10,7 +10,7 @@ module.exports = class Room {
 	static rooms = new Map();
 	static MAX_PLAYERS = 10;
 	static MAX_ROUNDS = 3;
-	static TIME_PER_ROUND = 30;
+	static TIME_PER_ROUND = 4;
 
 	// players: a map of socket to info
 	constructor(id, maxPlayers, timePerRound, maxRounds, hasStarted, socketId, player) {
@@ -40,6 +40,17 @@ module.exports = class Room {
 		return this.playersList()[0].username === username;
 	}
 
+	getLierSocketId() {
+		const username = this.playersList()[this.lier].username;
+		let result = null;
+		this.players.forEach((value, key) => {
+			if (value.username === username) {
+				result = key;
+			}
+		});
+		return result;
+	}
+
 	startRound(isFirst = false) {
 		if (isFirst) {
 			this.lier = 0;
@@ -47,7 +58,7 @@ module.exports = class Room {
 			this.lier = Math.floor(Math.random() * this.players.size);
 		}
 		this.startedAt = getTimestamp();
-		this.treasure = getRandom(1, 2, 3, 4);
+		this.treasure = Math.floor(Math.random() * 4);
 	}
 
 	start() {

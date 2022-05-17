@@ -135,13 +135,18 @@ function update() {
 	roomIdTitle.innerText = `#${roomData.id}`;
 	roomPlayers.innerText = `${roomData.players.length}/${roomData.maxPlayers}`;
 
+	document.querySelectorAll('.card').forEach((element) => {
+		element.classList.remove('secret-card');
+	});
 	if (roomData.hasStarted) {
 		console.log(roomData);
 		isGuessing = roomData.players[roomData.lier].username !== player.username;
 		if (isGuessing) {
 			gameModeSpan.innerText = 'Guess The Card!';
+			gameModeSpan.style.backgroundColor = 'rgb(107, 222, 105)';
 		} else {
 			gameModeSpan.innerText = 'SHNOOK them all!';
+			gameModeSpan.style.backgroundColor = 'rgb(107, 105, 222)';
 		}
 		showGameModeSpan();
 	}
@@ -184,6 +189,10 @@ socket.on('start', (stream) => {
 	}, 500);
 
 	update();
+
+	if (stream.treasure) {
+		document.querySelector(`.card:nth-of-type(${stream.treasure})`).classList.add('secret-card');
+	}
 });
 
 socket.on('join_failed', (stream) => {
@@ -193,6 +202,8 @@ socket.on('join_failed', (stream) => {
 socket.on('message', (stream) => {
 	showMessage(stream.user, stream.message);
 });
+
+socket.on('treasure', ({ treasure }) => {});
 
 // Function to call when state changes
 function setState(s) {
