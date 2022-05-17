@@ -44,6 +44,7 @@ function showMessage(p, c) {
 	messageUser.innerText = `[${p}]: `;
 	messageContent.innerText = c;
 	chatContent.appendChild(viewMessage);
+	chatContent.scrollTop = chatContent.scrollHeight;
 }
 const onMessageSubmit = () => {
 	const value = chatInput.value.trim();
