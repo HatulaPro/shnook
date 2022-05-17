@@ -132,7 +132,6 @@ function update() {
 		element.classList.remove('secret-card');
 	});
 	if (roomData.hasStarted) {
-		console.log(roomData);
 		isGuessing = roomData.players[roomData.lier].username !== player.username;
 		if (isGuessing) {
 			gameModeSpan.innerText = 'Guess The Card!';
@@ -148,12 +147,10 @@ function update() {
 	if (isAdmin) {
 		ownerStartButton.style.display = 'inline';
 	}
-	console.log(roomData.startedAt);
 }
 
 // Change state once joined
 socket.on('joined', (stream) => {
-	console.log(stream);
 	player = stream.player;
 	roomData = stream.room;
 
@@ -163,13 +160,11 @@ socket.on('joined', (stream) => {
 
 // Change state once joined
 socket.on('update', (stream) => {
-	console.log('update: ', stream);
 	roomData = stream.room;
 	update();
 });
 
 socket.on('start', (stream) => {
-	console.log('start: ', stream);
 	roomData = stream.room;
 
 	chatContent.innerHTML = '';
@@ -184,8 +179,8 @@ socket.on('start', (stream) => {
 
 	update();
 
-	if (stream.treasure) {
-		document.querySelector(`.card:nth-of-type(${stream.treasure})`).classList.add('secret-card');
+	if (stream.treasure !== undefined) {
+		document.querySelector(`.card:nth-of-type(${stream.treasure + 1})`).classList.add('secret-card');
 	}
 });
 
@@ -196,9 +191,6 @@ socket.on('join_failed', (stream) => {
 socket.on('message', (stream) => {
 	showMessage(stream.user, stream.message);
 });
-
-socket.on('treasure', ({ treasure }) => {});
-
 // Function to call when state changes
 function setState(s) {
 	if (s === STATES.JOIN_OR_CREATE) {
