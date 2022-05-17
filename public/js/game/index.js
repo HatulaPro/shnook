@@ -80,10 +80,23 @@ joinRoomInput.addEventListener('keypress', function (e) {
 ownerStartButton.addEventListener('click', () => {
 	if (isAdmin) {
 		socket.emit('start');
-		ownerStartButton.animate([{ transform: 'translateY(200%)' }, { transform: 'translateY(-200%) rotate(720deg) scale(0.5)' }], {
-			duration: 200,
-			iterations: 1,
-		});
+		ownerStartButton.animate(
+			[
+				{
+					transform: 'translateY(-20%)',
+				},
+				{
+					transform: 'translateY(200%)',
+				},
+				{
+					transform: 'translateY(-100vh)',
+				},
+			],
+			{
+				duration: 400,
+				iterations: 1,
+			}
+		);
 		ownerStartButton.style.transform = 'translateY(-10000%)';
 	}
 });
