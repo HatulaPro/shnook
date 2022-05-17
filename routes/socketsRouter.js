@@ -10,6 +10,7 @@ module.exports = (io) => {
 	io.on('connection', (socket) => {
 		let player = null;
 		let room = null;
+		let gameTimer = null;
 
 		const loggedIn = () => {
 			return player !== null;
@@ -18,7 +19,7 @@ module.exports = (io) => {
 		socket.on('create', (stream) => {
 			const id = nanoid(6);
 			player = { username: genUsername() };
-			room = new Room(id, Room.MAX_PLAYERS, Room.TIME_PER_ROUND, false, socket.id, player);
+			room = new Room(id, Room.MAX_PLAYERS, Room.TIME_PER_ROUND, Room.MAX_ROUNDS, false, socket.id, player);
 
 			socket.join(id);
 			socket.emit('joined', { id, player, room: room.getStatus() });
@@ -49,6 +50,19 @@ module.exports = (io) => {
 
 		socket.on('start', () => {
 			if (!loggedIn()) return;
+			if (!room.isAdmin(player)) return;
+			if (room.hasStarted) return;
+
+			gameTimer = setInterval(() => {
+				room.roundsPlayed += 1;
+				if (room.roundsPlayed >= room.maxRounds) {
+					clearInterval(gameTimer);
+				} else {
+					room.startRound();
+					io.to(room.id).emit('start', { room: room.getStatus() });
+				}
+			}, room.timePerRound * 1000);
+
 			room.start();
 
 			io.to(room.id).emit('start', { room: room.getStatus() });

@@ -139,7 +139,7 @@ function update() {
 		console.log(roomData);
 		isGuessing = roomData.players[roomData.lier].username !== player.username;
 		if (isGuessing) {
-			gameModeSpan.innerText = 'Guess The Right Card!';
+			gameModeSpan.innerText = 'Guess The Card!';
 		} else {
 			gameModeSpan.innerText = 'SHNOOK them all!';
 		}
@@ -174,10 +174,12 @@ socket.on('start', (stream) => {
 	console.log('start: ', stream);
 	roomData = stream.room;
 
+	if (timer !== null) clearInterval(timer);
 	timer = setInterval(() => {
 		timerSpan.innerText = roomData.startedAt - getTimestamp() + roomData.timePerRound;
 		if (timerSpan.innerText === '0') {
 			clearInterval(timer);
+			timer = null;
 		}
 	}, 500);
 

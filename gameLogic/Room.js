@@ -9,12 +9,14 @@ function getTimestamp() {
 module.exports = class Room {
 	static rooms = new Map();
 	static MAX_PLAYERS = 10;
+	static MAX_ROUNDS = 3;
 	static TIME_PER_ROUND = 30;
 
 	// players: a map of socket to info
-	constructor(id, maxPlayers, timePerRound, hasStarted, socketId, player) {
+	constructor(id, maxPlayers, timePerRound, maxRounds, hasStarted, socketId, player) {
 		this.maxPlayers = maxPlayers;
 		this.timePerRound = timePerRound;
+		this.maxRounds = maxRounds;
 		this.startedAt = null;
 		this.players = new Map();
 		this.players.set(socketId, player);
@@ -23,6 +25,7 @@ module.exports = class Room {
 		this.id = id;
 		this.lier = null;
 		this.treasure = null;
+		this.roundsPlayed = 0;
 	}
 
 	playersSockets() {
@@ -33,11 +36,23 @@ module.exports = class Room {
 		return Array.from(this.players.values());
 	}
 
+	isAdmin({ username }) {
+		return this.playersList()[0].username === username;
+	}
+
+	startRound(isFirst = false) {
+		if (isFirst) {
+			this.lier = 0;
+		} else {
+			this.lier = Math.floor(Math.random() * this.players.size);
+		}
+		this.startedAt = getTimestamp();
+		this.treasure = getRandom(1, 2, 3, 4);
+	}
+
 	start() {
 		this.hasStarted = true;
-		this.lier = 0;
-		this.treasure = getRandom(1, 2, 3, 4);
-		this.startedAt = getTimestamp();
+		this.startRound(true);
 	}
 
 	getStatus() {
@@ -49,6 +64,7 @@ module.exports = class Room {
 			startedAt: this.startedAt,
 			id: this.id,
 			lier: this.lier,
+			roundsPlayed: this.roundsPlayed,
 		};
 	}
 };
