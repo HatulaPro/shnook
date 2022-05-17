@@ -21,7 +21,7 @@ module.exports = class Room {
 
 		this.hasStarted = hasStarted;
 		this.id = id;
-		this.guesser = null;
+		this.lier = null;
 		this.treasure = null;
 	}
 
@@ -35,7 +35,7 @@ module.exports = class Room {
 
 	start() {
 		this.hasStarted = true;
-		this.guesser = 0;
+		this.lier = 0;
 		this.treasure = getRandom(1, 2, 3, 4);
 		this.startedAt = getTimestamp();
 	}
@@ -48,7 +48,7 @@ module.exports = class Room {
 			hasStarted: this.hasStarted,
 			startedAt: this.startedAt,
 			id: this.id,
-			guesser: this.guesser,
+			lier: this.lier,
 		};
 	}
 };

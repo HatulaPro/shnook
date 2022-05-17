@@ -10,7 +10,8 @@ const STATES = {
 
 let state = null;
 let player = null;
-let isOwner = false;
+let isAdmin = false;
+let isGuessing = false;
 let roomData = null;
 let timer = null;
 
@@ -30,6 +31,7 @@ const chatContent = document.querySelector('.chat-content');
 
 const ownerStartButton = document.querySelector('#room-owner-start');
 const timerSpan = document.querySelector('#room-timer');
+const gameModeSpan = document.querySelector('#game-mode-span');
 
 function showMessage(p, c) {
 	const viewMessage = document.createElement('p');
@@ -90,9 +92,46 @@ function getTimestamp() {
 	return Math.floor(new Date().getTime() / 1000);
 }
 
+function showGameModeSpan() {
+	gameModeSpan.animate(
+		[
+			{
+				transform: 'translateX(-50%) translateY(-150%)',
+			},
+			{
+				transform: 'translateX(-50%) translateY(40vh) scale(0.95)',
+			},
+			{
+				transform: 'translateX(-50%) translateY(40vh) scale(1.05)',
+			},
+			{
+				transform: 'translateX(-50%) translateY(40vh) scale(0.95)',
+			},
+			{
+				transform: 'translateX(-50%) translateY(40vh) scale(0.95)',
+			},
+			{
+				transform: 'translateX(-50%) translateY(280vh)',
+			},
+		],
+		{ duration: 1400, iterations: 1 }
+	);
+}
+
 function update() {
 	roomIdTitle.innerText = `#${roomData.id}`;
 	roomPlayers.innerText = `${roomData.players.length}/${roomData.maxPlayers}`;
+
+	if (roomData.hasStarted) {
+		console.log(roomData);
+		isGuessing = roomData.players[roomData.lier].username !== player.username;
+		if (isGuessing) {
+			gameModeSpan.innerText = 'Guess The Right Card!';
+		} else {
+			gameModeSpan.innerText = 'SHNOOK them all!';
+		}
+		showGameModeSpan();
+	}
 
 	isAdmin = roomData.players[0].username === player.username;
 	if (isAdmin) {
@@ -148,7 +187,8 @@ function setState(s) {
 		ownerStartButton.style.display = 'none';
 		timerSpan.style.display = 'none';
 	} else if (s === STATES.PLAY) {
-		mainDiv.style.display = 'flex';
+		gameModeSpan.style.display = 'block';
+		mainDiv.style.display = 'block';
 		joinOrCreateDiv.style.display = 'none';
 		timerSpan.style.display = 'flex';
 	} else {

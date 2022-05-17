@@ -6,7 +6,11 @@ html {
 	font-family: 'Roboto';
 }
 
-.btn{
+.flex {
+	display: flex;
+}
+
+.btn {
 	border: none;
 	background-color: #9b9bbd;
 	border-radius: 9999px;
@@ -17,12 +21,12 @@ html {
 	color: black;
 }
 
-.btn:hover{
-	cursor:pointer;
+.btn:hover {
+	cursor: pointer;
 	background-color: #a293c3;
 }
 
-.inp{
+.inp {
 	border: none;
 	margin: 4px;
 	border-radius: 9999px;
@@ -33,9 +37,6 @@ html {
 
 .main {
 	margin: auto;
-	text-align: center;
-	display: flex;
-	justify-content: center;
 }
 
 .main-title {
@@ -79,6 +80,22 @@ html {
 	border-radius: 99999999px;
 }
 
+#game-mode-span {
+	position: fixed;
+	display: none;
+	width: 40vw;
+	font-size: 6rem;
+	top: 0;
+	left: 50%;
+	background-color: rgb(107, 222, 105);
+	color: white;
+	border-radius: 1rem;
+	box-shadow: 1rem 1rem black;
+	text-align: center;
+	padding: 3rem;
+	transform: translateX(-50%) translateY(-150%);
+}
+
 @keyframes titleAnimation {
 	from {
 		color: white;
@@ -110,8 +127,7 @@ html {
 	position: relative;
 }
 
-
-.main-chat-form{
+.main-chat-form {
 	position: absolute;
 	top: 100%;
 	transform: translateY(-100%);
@@ -190,7 +206,7 @@ html {
 	border-radius: 2rem;
 }
 
-.join-or-create{
+.join-or-create {
 	display: flex;
 	width: 40vw;
 	justify-content: center;
