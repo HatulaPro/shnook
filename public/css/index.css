@@ -119,8 +119,8 @@ html {
 	background-size: cover;
 	background-position: center;
 	position: absolute;
-	bottom: 10%;
-	left: 50%;
+	top: 25%;
+	left: 70%;
 	padding: 0.4rem;
 	border: 2px solid red;
 
@@ -200,16 +200,16 @@ html {
 .main-cards {
 	display: flex;
 	width: 75vw;
+	flex-wrap: wrap;
+	gap: 1rem;
 	justify-content: center;
 }
 
 .main-cards .card {
-	flex-grow: 1;
-	height: 400px;
+	flex-basis: calc(75vw / 2.5);
+	height: 200px;
 	background-color: #a1a1a1;
 	color: #191919;
-	margin: 3rem;
-	bottom: 0rem;
 	position: relative;
 	padding: 1rem;
 	text-align: center;
@@ -224,8 +224,8 @@ html {
 }
 
 .main-cards .card:hover {
-	bottom: 1.6rem;
-	transform: scaleX(0.96);
+	bottom: 1rem;
+	transform: scaleY(1.06);
 	cursor: pointer;
 }
 
