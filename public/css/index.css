@@ -163,8 +163,7 @@ html {
 
 .main-chat-form {
 	position: absolute;
-	top: 100%;
-	transform: translateY(-100%);
+	bottom: 0;
 	display: flex;
 	width: 100%;
 }
@@ -193,6 +192,8 @@ html {
 
 .chat-content {
 	text-align: start;
+	overflow-y: scroll;
+	max-height: 560px;
 	padding: 1rem;
 }
 
