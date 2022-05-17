@@ -46,12 +46,14 @@ function showMessage(p, c) {
 	chatContent.appendChild(viewMessage);
 }
 const onMessageSubmit = () => {
-	const value = chatInput.value;
-	chatInput.value = '';
+	const value = chatInput.value.trim();
+	if (value.trim().length > 0) {
+		chatInput.value = '';
 
-	showMessage(player.username, value);
+		showMessage(player.username, value);
 
-	socket.emit('message', value);
+		socket.emit('message', value);
+	}
 };
 // Listening to sending messages
 chatButton.addEventListener('click', onMessageSubmit);

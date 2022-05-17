@@ -73,6 +73,9 @@ module.exports = (io) => {
 
 		socket.on('message', (stream) => {
 			if (!loggedIn()) return;
+			if (typeof stream !== 'string') return;
+			stream = stream.trim();
+			if (stream.length === 0) return;
 			socket.broadcast.to(room.id).emit('message', { user: player.username, message: stream });
 		});
 
