@@ -81,19 +81,13 @@ html {
 }
 
 #game-mode-span {
-	position: fixed;
+	position: relative;
 	display: none;
-	width: 40vw;
-	font-size: 6rem;
-	top: 0;
-	left: 50%;
+	font-size: 2rem;
 	background-color: rgb(107, 222, 105);
 	color: white;
-	border-radius: 1rem;
-	box-shadow: 1rem 1rem black;
 	text-align: center;
-	padding: 3rem;
-	transform: translateX(-50%) translateY(-150%);
+	padding: 0.2rem;
 }
 
 @keyframes slapSecret {

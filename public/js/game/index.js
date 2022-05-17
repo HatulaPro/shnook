@@ -109,28 +109,18 @@ function getTimestamp() {
 }
 
 function showGameModeSpan() {
+	gameModeSpan.style.display = 'block';
 	gameModeSpan.animate(
 		[
 			{
-				transform: 'translateX(-50%) translateY(-150%)',
+				transform: 'scale(1)',
 			},
 			{
-				transform: 'translateX(-50%) translateY(40vh) scale(0.95)',
-			},
-			{
-				transform: 'translateX(-50%) translateY(40vh) scale(1.05)',
-			},
-			{
-				transform: 'translateX(-50%) translateY(40vh) scale(0.95)',
-			},
-			{
-				transform: 'translateX(-50%) translateY(40vh) scale(0.95)',
-			},
-			{
-				transform: 'translateX(-50%) translateY(280vh)',
+				transform: 'scale(1.6)',
+				borderRadius: '999999px',
 			},
 		],
-		{ duration: 1400, iterations: 1 }
+		{ duration: 350, iterations: 1, direction: 'alternate-reverse' }
 	);
 }
 
@@ -217,7 +207,7 @@ function setState(s) {
 		ownerStartButton.style.display = 'none';
 		timerSpan.style.display = 'none';
 	} else if (s === STATES.PLAY) {
-		gameModeSpan.style.display = 'block';
+		// gameModeSpan.style.display = 'block';
 		mainDiv.style.display = 'block';
 		joinOrCreateDiv.style.display = 'none';
 		timerSpan.style.display = 'flex';
