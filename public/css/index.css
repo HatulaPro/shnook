@@ -219,14 +219,22 @@ html {
 	flex-direction: column;
 	font-size: 8rem;
 	border-radius: 1rem;
-	transform: none;
-	transition: 0.2s all;
 }
 
 .main-cards .card:hover {
-	bottom: 1rem;
-	transform: scaleY(1.06);
 	cursor: pointer;
+}
+
+.main-cards .card:hover::after {
+	content: '';
+	width: 100%;
+	height: 100%;
+	background: linear-gradient(to right, red 4px, transparent 4px) 0 0, linear-gradient(to right, red 4px, transparent 4px) 0 100%, linear-gradient(to left, red 4px, transparent 4px) 100% 0, linear-gradient(to left, red 4px, transparent 4px) 100% 100%, linear-gradient(to bottom, red 4px, transparent 4px) 0 0, linear-gradient(to bottom, red 4px, transparent 4px) 100% 0, linear-gradient(to top, red 4px, transparent 4px) 0 100%, linear-gradient(to top, red 4px, transparent 4px) 100% 100%;
+
+	background-repeat: no-repeat;
+	background-size: 20px 20px;
+	position: absolute;
+	margin-left: -1rem;
 }
 
 .join-or-create-form {
