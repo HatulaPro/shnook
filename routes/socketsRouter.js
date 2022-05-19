@@ -76,6 +76,18 @@ module.exports = (io) => {
 			io.to(lier).emit('start', { room: room.getStatus(), treasure: room.treasure });
 		});
 
+		socket.on('guess', (cardIndex) => {
+			if (!loggedIn()) return;
+			if (!room.hasStarted) return;
+			if (!Number.isInteger(cardIndex)) return;
+			if (socket.id === room.getLierSocketId()) return;
+			if (cardIndex < 0 || cardIndex > 3) return;
+
+			player.guess = cardIndex;
+			room.players.set(socket.id, player);
+			io.to(room.id).emit('update', { room: room.getStatus() });
+		});
+
 		socket.on('message', (stream) => {
 			if (!loggedIn()) return;
 			if (typeof stream !== 'string') return;

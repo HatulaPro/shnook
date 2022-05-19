@@ -59,10 +59,16 @@ module.exports = class Room {
 		}
 		this.startedAt = getTimestamp();
 		this.treasure = Math.floor(Math.random() * 4);
+		this.players.forEach((player, key) => {
+			player.guess = -1;
+		});
 	}
 
 	start() {
 		this.hasStarted = true;
+		this.players.forEach((player, key) => {
+			player.score = 0;
+		});
 		this.startRound(true);
 	}
 

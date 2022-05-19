@@ -35,6 +35,17 @@ const ownerStartButton = document.querySelector('#room-owner-start');
 const timerSpan = document.querySelector('#room-timer');
 const gameModeSpan = document.querySelector('#game-mode-span');
 
+const cards = document.querySelectorAll('.card');
+cards.forEach((card, i) => {
+	card.addEventListener('click', () => {
+		if (roomData && player && roomData.hasStarted && isGuessing) {
+			console.log('guessing: ' + i);
+			socket.emit('guess', i);
+			cards.forEach((c) => c.classList.remove('card-locked'));
+			card.classList.add('card-locked');
+		}
+	});
+});
 function showMessage(p, c) {
 	const viewMessage = document.createElement('p');
 	const messageUser = document.createElement('span');
@@ -110,22 +121,6 @@ function getTimestamp() {
 	return Math.floor(new Date().getTime() / 1000);
 }
 
-function showGameModeSpan() {
-	gameModeSpan.style.display = 'block';
-	gameModeSpan.animate(
-		[
-			{
-				transform: 'scale(1)',
-			},
-			{
-				transform: 'scale(1.6)',
-				borderRadius: '999999px',
-			},
-		],
-		{ duration: 350, iterations: 1, direction: 'alternate-reverse' }
-	);
-}
-
 function createPlayerElement(p, isLier) {
 	const playerElement = document.createElement('div');
 	const pointsElement = document.createElement('span');
@@ -162,6 +157,7 @@ function update() {
 	});
 
 	if (roomData.hasStarted) {
+		gameModeSpan.style.display = 'block';
 		isGuessing = roomData.players[roomData.lier].username !== player.username;
 		if (isGuessing) {
 			gameModeSpan.innerText = 'Guess The Card!';
@@ -171,7 +167,14 @@ function update() {
 			gameModeSpan.style.backgroundColor = 'rgb(107, 105, 222)';
 		}
 
-		showGameModeSpan();
+		cards.forEach((card) => {
+			card.children[1].innerText = '';
+		});
+		roomData.players.forEach((player) => {
+			if (player.guess !== -1) {
+				cards[player.guess].children[1].innerText += player.username + ' ';
+			}
+		});
 	}
 
 	isAdmin = roomData.players[0].username === player.username;
@@ -192,6 +195,7 @@ socket.on('joined', (stream) => {
 // Change state once joined
 socket.on('update', (stream) => {
 	roomData = stream.room;
+	console.log(roomData);
 	update();
 });
 
