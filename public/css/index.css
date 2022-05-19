@@ -145,12 +145,33 @@ html {
 
 .main {
 	display: flex;
+	margin: 0 3rem;
+}
+
+.main-players {
+	background-color: white;
+	height: 600px;
+	flex: 1;
+}
+
+.player-li {
+	padding: 4px 8px;
+	font-size: 1.5rem;
+	text-align: center;
+	color: #313131;
+}
+
+.player-li span {
+	display: block;
+	color: gray;
+	font-size: 1rem;
+	padding: 0.1rem;
 }
 
 .main-chat {
 	background-color: white;
-	margin-left: 4rem;
-	width: 20vw;
+	margin-left: 1rem;
+	flex: 1;
 	height: 600px;
 	position: relative;
 }
@@ -158,8 +179,9 @@ html {
 .main-chat-form {
 	position: absolute;
 	bottom: 0;
-	display: flex;
 	width: 100%;
+	display: inline-flex;
+	justify-content: center;
 }
 
 #chat-input {
@@ -167,13 +189,14 @@ html {
 	outline: none;
 	background-color: #cdcdcd;
 	color: black;
-	flex: 1;
+	width: 80%;
 	font-size: 1.4em;
 	padding: 0.2rem;
+	flex-grow: 1;
 }
 
 #chat-button {
-	flex: 0 0 30px;
+	width: 30px;
 	background-color: #a1a1ff;
 	border: none;
 	font-size: 1.2rem;
@@ -193,14 +216,15 @@ html {
 
 .main-cards {
 	display: flex;
-	width: 75vw;
+	/* width: 60vw; */
+	flex: 3;
 	flex-wrap: wrap;
 	gap: 1rem;
 	justify-content: center;
 }
 
 .main-cards .card {
-	flex-basis: calc(75vw / 2.5);
+	flex-basis: 40%; /*calc(60vw / 2.5);*/
 	height: 200px;
 	background-color: #a1a1a1;
 	color: #191919;

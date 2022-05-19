@@ -29,6 +29,8 @@ const chatInput = document.querySelector('#chat-input');
 const chatButton = document.querySelector('#chat-button');
 const chatContent = document.querySelector('.chat-content');
 
+const playersDiv = document.querySelector('.main-players');
+
 const ownerStartButton = document.querySelector('#room-owner-start');
 const timerSpan = document.querySelector('#room-timer');
 const gameModeSpan = document.querySelector('#game-mode-span');
@@ -124,6 +126,28 @@ function showGameModeSpan() {
 	);
 }
 
+function createPlayerElement(p, isLier) {
+	const playerElement = document.createElement('div');
+	const pointsElement = document.createElement('span');
+
+	playerElement.classList.add('player-li');
+
+	playerElement.innerText = p.username;
+
+	if (p.username === player.username) {
+		playerElement.innerHTML += '<i> (you)</i>';
+	}
+
+	if (isLier) {
+		playerElement.style.color = 'purple';
+	}
+
+	playerElement.appendChild(pointsElement);
+	pointsElement.innerText = `score: ${p.score || '#'}`;
+
+	return playerElement;
+}
+
 function update() {
 	roomIdTitle.innerText = `#${roomData.id}`;
 	roomPlayers.innerText = `${roomData.players.length}/${roomData.maxPlayers}`;
@@ -131,6 +155,12 @@ function update() {
 	document.querySelectorAll('.card').forEach((element) => {
 		element.classList.remove('secret-card');
 	});
+
+	playersDiv.innerHTML = '';
+	roomData.players.forEach((p, index) => {
+		playersDiv.appendChild(createPlayerElement(p, roomData.lier === index));
+	});
+
 	if (roomData.hasStarted) {
 		isGuessing = roomData.players[roomData.lier].username !== player.username;
 		if (isGuessing) {
@@ -140,6 +170,7 @@ function update() {
 			gameModeSpan.innerText = 'SHNOOK them all!';
 			gameModeSpan.style.backgroundColor = 'rgb(107, 105, 222)';
 		}
+
 		showGameModeSpan();
 	}
 
