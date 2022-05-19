@@ -147,10 +147,6 @@ function update() {
 	roomIdTitle.innerText = `#${roomData.id}`;
 	roomPlayers.innerText = `${roomData.players.length}/${roomData.maxPlayers}`;
 
-	document.querySelectorAll('.card').forEach((element) => {
-		element.classList.remove('secret-card');
-	});
-
 	playersDiv.innerHTML = '';
 	roomData.players.forEach((p, index) => {
 		playersDiv.appendChild(createPlayerElement(p, roomData.lier === index));
@@ -214,6 +210,9 @@ socket.on('start', (stream) => {
 
 	update();
 
+	document.querySelectorAll('.card').forEach((element) => {
+		element.classList.remove('secret-card');
+	});
 	if (stream.treasure !== undefined) {
 		document.querySelector(`.card:nth-of-type(${stream.treasure + 1})`).classList.add('secret-card');
 	}

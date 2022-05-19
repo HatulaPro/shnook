@@ -51,17 +51,33 @@ module.exports = class Room {
 		return result;
 	}
 
+	adjustScore() {
+		const lier = this.playersList()[this.lier];
+		this.players.forEach((player, key) => {
+			if (player.guess === this.treasure) {
+				correctGuesses++;
+				player.score += 1000;
+				lier.score -= 200;
+			} else {
+				lier.score += 100;
+				player.score -= 50;
+			}
+		});
+		this.playersList()[this.lier].score -= 200 * correctGuesses;
+	}
+
 	startRound(isFirst = false) {
 		if (isFirst) {
 			this.lier = 0;
 		} else {
 			this.lier = Math.floor(Math.random() * this.players.size);
+			this.adjustScore();
 		}
-		this.startedAt = getTimestamp();
-		this.treasure = Math.floor(Math.random() * 4);
 		this.players.forEach((player, key) => {
 			player.guess = -1;
 		});
+		this.startedAt = getTimestamp();
+		this.treasure = Math.floor(Math.random() * 4);
 	}
 
 	start() {

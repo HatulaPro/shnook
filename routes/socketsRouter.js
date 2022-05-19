@@ -62,6 +62,8 @@ module.exports = (io) => {
 
 				if (room.roundsPlayed >= room.maxRounds) {
 					clearInterval(gameTimer);
+					room.adjustScore();
+					io.to(room.id).emit('update', { room: room.getStatus() });
 					return;
 				}
 				room.startRound();
