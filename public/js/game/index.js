@@ -36,6 +36,7 @@ const timerSpan = document.querySelector('#room-timer');
 const gameModeSpan = document.querySelector('#game-mode-span');
 
 const cards = document.querySelectorAll('.card');
+const mainCards = document.querySelector('.main-cards');
 cards.forEach((card, i) => {
 	card.addEventListener('click', () => {
 		if (roomData && player && roomData.hasStarted && isGuessing) {
@@ -165,6 +166,12 @@ function update() {
 		}
 		playerElement.style.top = `${playerElement.clientHeight * index}px`;
 	});
+
+	if (roomData.roundsPlayed === roomData.maxRounds) {
+		mainCards.style.display = 'none';
+		let playerElement = document.querySelector(`[data-username='${orderedPlayers[0].username}']`);
+		playerElement.innerText = '👑 ' + playerElement.innerText;
+	}
 
 	if (roomData.hasStarted) {
 		gameModeSpan.style.display = 'block';

@@ -154,7 +154,9 @@ html {
 	height: 600px;
 	position: relative;
 	flex: 1;
-	padding: 6px;
+	padding-left: 6px;
+	padding-right: 6px;
+	transition: 0.3s all;
 }
 
 .player-li {
@@ -185,6 +187,7 @@ html {
 	flex: 1;
 	height: 600px;
 	position: relative;
+	transition: 0.3s all;
 }
 
 .main-chat-form {
@@ -231,6 +234,7 @@ html {
 	flex-wrap: wrap;
 	gap: 1rem;
 	justify-content: center;
+	align-items: center;
 }
 
 .main-cards .card {
