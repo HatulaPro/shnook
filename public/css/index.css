@@ -59,6 +59,14 @@ html {
 	justify-content: space-evenly;
 }
 
+#room-players {
+	background-image: url(/public/images/group.png);
+	background-position: 0px 10%;
+	background-repeat: no-repeat;
+	padding-left: 40px;
+	background-size: 28%;
+}
+
 #room-owner-start {
 	display: inline;
 	vertical-align: middle;
