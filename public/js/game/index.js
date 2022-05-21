@@ -58,6 +58,17 @@ function showMessage(p, c) {
 	viewMessage.appendChild(messageContent);
 
 	messageUser.innerText = `[${p}]: `;
+
+	if (p === player.username) {
+		messageUser.innerText = `[${p} (you)]: `;
+		if (roomData.hasStarted && p === roomData.players[roomData.lier].username) {
+			messageUser.innerText = `[${p} (you, lier)]: `;
+			messageUser.style.color = 'purple';
+		}
+	} else if (roomData.hasStarted && p === roomData.players[roomData.lier].username) {
+		messageUser.innerText = `[${p} (lier)]: `;
+		messageUser.style.color = 'purple';
+	}
 	messageContent.innerText = c;
 	chatContent.appendChild(viewMessage);
 	chatContent.scrollTop = chatContent.scrollHeight;
@@ -173,6 +184,7 @@ function update() {
 		mainCards.style.display = 'none';
 		let playerElement = document.querySelector(`[data-username='${orderedPlayers[0].username}']`);
 		playerElement.innerText = '👑 ' + playerElement.innerText;
+		chatContent.innerHTML = '';
 	}
 
 	if (roomData.hasStarted) {
@@ -263,7 +275,6 @@ function setState(s) {
 		ownerStartButton.style.display = 'none';
 		timerSpan.style.display = 'none';
 	} else if (s === STATES.PLAY) {
-		// gameModeSpan.style.display = 'block';
 		mainDiv.style.display = 'block';
 		joinOrCreateDiv.style.display = 'none';
 		timerSpan.style.display = 'flex';
