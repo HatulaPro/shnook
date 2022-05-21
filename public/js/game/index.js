@@ -18,6 +18,7 @@ let timer = null;
 const mainDiv = document.querySelector('.main');
 const roomIdTitle = document.querySelector('#room-id-title');
 const roomPlayers = document.querySelector('#room-players');
+const roomRounds = document.querySelector('#room-rounds');
 const joinOrCreateDiv = document.querySelector('.join-or-create');
 
 const createButton = document.querySelector('.create-form button');
@@ -146,6 +147,7 @@ function createPlayerElement(p) {
 function update() {
 	roomIdTitle.innerText = `#${roomData.id}`;
 	roomPlayers.innerText = `${roomData.players.length}/${roomData.maxPlayers}`;
+	roomRounds.innerText = `${roomData.roundsPlayed}/${roomData.maxRounds}`;
 
 	// playersDiv.innerHTML = '';
 	const orderedPlayers = roomData.players.slice().sort((a, b) => b.score - a.score);

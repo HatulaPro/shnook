@@ -61,6 +61,14 @@ html {
 
 #room-players {
 	background-image: url(/public/images/group.png);
+}
+
+#room-rounds {
+	background-image: url(/public/images/round.png);
+}
+
+#room-players,
+#room-rounds {
 	background-position: 0px 10%;
 	background-repeat: no-repeat;
 	padding-left: 40px;
