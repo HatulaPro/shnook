@@ -102,6 +102,7 @@ html {
 
 .secret-card::before {
 	content: 'TOP SECRET';
+	z-index: 999999;
 	color: red;
 	width: fit-content;
 	transform: rotate(15deg) translateX(-50%);
