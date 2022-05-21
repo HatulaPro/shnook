@@ -41,6 +41,7 @@ cards.forEach((card, i) => {
 		if (roomData && player && roomData.hasStarted && isGuessing) {
 			console.log('guessing: ' + i);
 			socket.emit('guess', i);
+			player.guess = i;
 			cards.forEach((c) => c.classList.remove('card-locked'));
 			card.classList.add('card-locked');
 		}
@@ -121,20 +122,18 @@ function getTimestamp() {
 	return Math.floor(new Date().getTime() / 1000);
 }
 
-function createPlayerElement(p, isLier) {
+function createPlayerElement(p) {
 	const playerElement = document.createElement('div');
 	const pointsElement = document.createElement('span');
+
+	playerElement.setAttribute('data-username', p.username);
 
 	playerElement.classList.add('player-li');
 
 	playerElement.innerText = p.username;
 
 	if (p.username === player.username) {
-		playerElement.innerHTML += '<i> (you)</i>';
-	}
-
-	if (isLier) {
-		playerElement.style.color = 'purple';
+		playerElement.style.backgroundColor = '#acacac';
 	}
 
 	playerElement.appendChild(pointsElement);
@@ -147,9 +146,24 @@ function update() {
 	roomIdTitle.innerText = `#${roomData.id}`;
 	roomPlayers.innerText = `${roomData.players.length}/${roomData.maxPlayers}`;
 
-	playersDiv.innerHTML = '';
-	roomData.players.forEach((p, index) => {
-		playersDiv.appendChild(createPlayerElement(p, roomData.lier === index));
+	// playersDiv.innerHTML = '';
+	const orderedPlayers = roomData.players.slice().sort((a, b) => b.score - a.score);
+	orderedPlayers.forEach((p, index) => {
+		let playerElement = document.querySelector(`[data-username='${p.username}']`);
+		if (playerElement === null) {
+			playerElement = createPlayerElement(p);
+			playersDiv.appendChild(playerElement);
+		} else {
+			if (roomData.lier !== null) {
+				if (roomData.players[roomData.lier].username === p.username) {
+					playerElement.style.color = 'purple';
+				} else {
+					playerElement.style.color = '#313131';
+				}
+			}
+			playerElement.children[playerElement.children.length - 1].innerText = `score: ${p.score || '#'}`;
+		}
+		playerElement.style.top = `${playerElement.clientHeight * index}px`;
 	});
 
 	if (roomData.hasStarted) {
@@ -163,8 +177,13 @@ function update() {
 			gameModeSpan.style.backgroundColor = 'rgb(107, 105, 222)';
 		}
 
-		cards.forEach((card) => {
+		cards.forEach((card, index) => {
 			card.children[1].innerText = '';
+			if (player.guess === index) {
+				card.classList.add('card-locked');
+			} else {
+				card.classList.remove('card-locked');
+			}
 		});
 		roomData.players.forEach((player) => {
 			if (player.guess !== -1) {
@@ -212,6 +231,8 @@ socket.on('start', (stream) => {
 
 	document.querySelectorAll('.card').forEach((element) => {
 		element.classList.remove('secret-card');
+		element.classList.remove('card-locked');
+		player.guess = -1;
 	});
 	if (stream.treasure !== undefined) {
 		document.querySelector(`.card:nth-of-type(${stream.treasure + 1})`).classList.add('secret-card');

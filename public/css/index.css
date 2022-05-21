@@ -151,14 +151,24 @@ html {
 .main-players {
 	background-color: white;
 	height: 600px;
+	position: relative;
 	flex: 1;
+	padding: 6px;
 }
 
 .player-li {
-	padding: 4px 8px;
+	padding: 4px 0px;
 	font-size: 1.5rem;
 	text-align: center;
 	color: #313131;
+	position: absolute;
+	width: 100%;
+	top: 0;
+	left: 0;
+	right: 0;
+	margin: auto;
+	height: min-content;
+	transition: top 0.8s;
 }
 
 .player-li span {
