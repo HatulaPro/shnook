@@ -1,7 +1,3 @@
-function getRandom(list) {
-	return list[Math.floor(Math.random() * list.length)];
-}
-
 function getTimestamp() {
 	return Math.floor(new Date().getTime() / 1000);
 }
@@ -10,7 +6,7 @@ module.exports = class Room {
 	static rooms = new Map();
 	static MAX_PLAYERS = 10;
 	static MAX_ROUNDS = 3;
-	static TIME_PER_ROUND = 15;
+	static TIME_PER_ROUND = 30;
 
 	// players: a map of socket to info
 	constructor(id, maxPlayers, timePerRound, maxRounds, hasStarted, socketId, player) {
