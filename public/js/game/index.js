@@ -267,6 +267,7 @@ function setState(s) {
 		mainDiv.style.display = 'block';
 		joinOrCreateDiv.style.display = 'none';
 		timerSpan.style.display = 'flex';
+		timerSpan.innerText = roomData.timePerRound;
 	} else {
 		throw Error('Invalid state');
 	}
