@@ -1,6 +1,4 @@
 /// <reference path="../socket.io.min.js" />
-const gameId = document.location.toString().split('/').pop();
-
 const socket = io();
 
 const STATES = {
@@ -8,7 +6,6 @@ const STATES = {
 	PLAY: 1,
 };
 
-let state = null;
 let player = null;
 let isAdmin = false;
 let isGuessing = false;
@@ -215,7 +212,11 @@ function update() {
 
 	isAdmin = roomData.players[0].username === player.username;
 	if (isAdmin) {
-		ownerStartButton.style.display = 'inline';
+		if (roomData.players.length >= 2) {
+			ownerStartButton.style.display = 'inline';
+		} else {
+			ownerStartButton.style.display = 'none';
+		}
 	}
 }
 

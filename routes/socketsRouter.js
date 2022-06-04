@@ -52,6 +52,7 @@ module.exports = (io) => {
 			if (!loggedIn()) return;
 			if (!room.isAdmin(player)) return;
 			if (room.hasStarted) return;
+            if (room.players.size < 2) return;
 
 			gameTimer = setInterval(() => {
 				room.roundsPlayed += 1;
