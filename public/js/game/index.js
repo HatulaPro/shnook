@@ -54,6 +54,8 @@ const ownerStartButton = document.querySelector('#room-owner-start');
 const timerSpan = document.querySelector('#room-timer');
 const gameModeSpan = document.querySelector('#game-mode-span');
 
+const challengeDiv = document.querySelector('.challenge-div');
+
 const cards = document.querySelectorAll('.card');
 const mainCards = document.querySelector('.main-cards');
 cards.forEach((card, i) => {
@@ -337,9 +339,17 @@ socket.on('start', (stream) => {
 		element.classList.remove('card-locked');
 		player.guess = -1;
 	});
+
+	challengeDiv.style.display = 'none';
+	challengeDiv.classList.remove('challenge-div-complete');
 	if (stream.treasure !== undefined) {
 		document.querySelector(`.card:nth-of-type(${stream.treasure + 1})`).classList.add('secret-card');
-		console.log('challenge', stream.challenge);
+		if (stream.challenge) {
+			challengeDiv.style.display = 'flex';
+			challengeDiv.children[0].innerText = `+${stream.challenge.bonus}`;
+			challengeDiv.children[1].innerText = `Use ${Object.values(CARD_EFFECTS)[stream.challenge.effect].name} on the secret card for at least ${stream.challenge.time / 1000} seconds`;
+			challengeDiv.children[2].innerText = '';
+		}
 	}
 
 	showCardEffect(CARD_EFFECTS.NOTHING.number, -1);
@@ -358,7 +368,28 @@ socket.on('effect', ({ effectType, cardIndex }) => {
 });
 
 socket.on('success', (challenge) => {
-	console.log(JSON.stringify(challenge));
+	challengeDiv.children[2].innerText = '✔';
+	challengeDiv.classList.add('challenge-div-complete');
+	challengeDiv.animate(
+		[
+			{
+				transform: 'translateX(0%)',
+			},
+			{
+				transform: 'translateX(-10%)',
+			},
+			{
+				transform: 'translateX(0%)',
+			},
+			{
+				transform: 'translateX(-100%)',
+			},
+		],
+		{
+			duration: 400,
+			iterations: 1,
+		}
+	);
 });
 
 // Function to call when state changes
@@ -368,6 +399,7 @@ function setState(s) {
 		joinOrCreateDiv.style.display = 'flex';
 		ownerStartButton.style.display = 'none';
 		timerSpan.style.display = 'none';
+		challengeDiv.style.display = 'none';
 	} else if (s === STATES.PLAY) {
 		mainDiv.style.display = 'block';
 		joinOrCreateDiv.style.display = 'none';

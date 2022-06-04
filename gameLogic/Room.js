@@ -91,7 +91,7 @@ module.exports = class Room {
 	generateChallenge() {
 		if (Math.random() > Room.CHANCE_OF_CHALLENGE) return null;
 		// TODO: More challenges
-		return { effect: 1, time: 5000, bonus: 200 };
+		return { effect: 1, time: 5000, bonus: 300 };
 	}
 
 	start() {
