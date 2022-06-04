@@ -6,6 +6,17 @@ const STATES = {
 	PLAY: 1,
 };
 
+const CARD_EFFECTS = {
+	NOTHING: {
+		number: 0,
+		className: '',
+	},
+	KING: {
+		number: 1,
+		className: 'card-effect-king',
+	},
+};
+
 let player = null;
 let isAdmin = false;
 let isGuessing = false;
@@ -37,12 +48,17 @@ const cards = document.querySelectorAll('.card');
 const mainCards = document.querySelector('.main-cards');
 cards.forEach((card, i) => {
 	card.addEventListener('click', () => {
-		if (roomData && player && roomData.hasStarted && isGuessing) {
-			console.log('guessing: ' + i);
-			socket.emit('guess', i);
-			player.guess = i;
-			cards.forEach((c) => c.classList.remove('card-locked'));
-			card.classList.add('card-locked');
+		if (roomData && player && roomData.hasStarted) {
+			if (isGuessing) {
+				socket.emit('guess', i);
+				player.guess = i;
+				cards.forEach((c) => c.classList.remove('card-locked'));
+				card.classList.add('card-locked');
+			} else {
+				console.log({ effectType: CARD_EFFECTS.KING.number, cardIndex: i });
+				socket.emit('effect', { effectType: CARD_EFFECTS.KING.number, cardIndex: i });
+				card.children[0].classList.add(CARD_EFFECTS.KING.className);
+			}
 		}
 	});
 });
@@ -80,6 +96,20 @@ const onMessageSubmit = () => {
 		socket.emit('message', value);
 	}
 };
+
+function showCardEffect(effectType, cardIndex) {
+	cards.forEach((card) => {
+		Object.values(CARD_EFFECTS).forEach((effect) => {
+			if (effect.number !== CARD_EFFECTS.NOTHING.number) {
+				card.children[0].classList.remove(effect.className);
+			}
+		});
+	});
+	if (effectType === 0) return;
+	const effect = Object.values(CARD_EFFECTS).find((eff) => eff.number === effectType);
+	cards[cardIndex].children[0].classList.add(effect.className);
+}
+
 // Listening to sending messages
 chatButton.addEventListener('click', onMessageSubmit);
 chatInput.addEventListener('keypress', function (e) {
@@ -273,6 +303,8 @@ socket.on('start', (stream) => {
 	if (stream.treasure !== undefined) {
 		document.querySelector(`.card:nth-of-type(${stream.treasure + 1})`).classList.add('secret-card');
 	}
+
+	showCardEffect(CARD_EFFECTS.NOTHING.number, -1);
 });
 
 socket.on('join_failed', (stream) => {
@@ -282,6 +314,11 @@ socket.on('join_failed', (stream) => {
 socket.on('message', (stream) => {
 	showMessage(stream.user, stream.message);
 });
+
+socket.on('effect', ({ effectType, cardIndex }) => {
+	showCardEffect(effectType, cardIndex);
+});
+
 // Function to call when state changes
 function setState(s) {
 	if (s === STATES.JOIN_OR_CREATE) {

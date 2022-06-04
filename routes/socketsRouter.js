@@ -91,6 +91,23 @@ module.exports = (io) => {
 			io.to(room.id).emit('update', { room: room.getStatus() });
 		});
 
+		/*
+		Effect Types: 
+		0: Nothing
+		1: Crown
+		*/
+		socket.on('effect', ({ effectType, cardIndex }) => {
+			if (!loggedIn()) return;
+			if (!room.hasStarted) return;
+			if (!Number.isInteger(effectType)) return;
+			if (!Number.isInteger(cardIndex)) return;
+			if (cardIndex < 0 || cardIndex > 3) return;
+			if (socket.id !== room.getLierSocketId()) return;
+			if (cardIndex < 0 || cardIndex > 1) return;
+
+			io.to(room.id).emit('effect', { effectType, cardIndex });
+		});
+
 		socket.on('message', (stream) => {
 			if (!loggedIn()) return;
 			if (typeof stream !== 'string') return;
