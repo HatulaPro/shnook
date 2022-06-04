@@ -321,6 +321,31 @@ html {
 	transform: translateX(-50%);
 }
 
+@keyframes cardEffectKingAnimation {
+	0% {
+		transform: scale(1) rotate(-22deg);
+	}
+	50% {
+		transform: scale(1.03) rotate(-21deg);
+	}
+	100% {
+		transform: scale(1.06) rotate(-22deg);
+	}
+}
+
+.card-effect-king::after {
+	content: '';
+	background-image: url(/public/images/crown.png);
+	background-repeat: no-repeat;
+	background-size: 4rem;
+	position: absolute;
+	width: 4rem;
+	height: 4rem;
+	left: -2rem;
+	top: -2rem;
+	animation: cardEffectKingAnimation 0.4s alternate-reverse 0s infinite;
+}
+
 .card-guessers {
 	font-size: 1rem;
 	position: absolute;
