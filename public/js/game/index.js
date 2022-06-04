@@ -17,6 +17,11 @@ const CARD_EFFECTS = {
 		className: 'card-effect-king',
 		image: '/public/images/crown.png',
 	},
+	CONFETTI: {
+		number: 2,
+		className: 'card-effect-confetti',
+		image: '/public/images/confetti.png',
+	},
 };
 
 let player = null;

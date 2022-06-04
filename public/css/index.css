@@ -346,6 +346,18 @@ html {
 	animation: cardEffectKingAnimation 0.4s alternate-reverse 0s infinite;
 }
 
+.card-effect-confetti::after {
+	content: '';
+	background-image: url(/public/images/confetti.gif);
+	background-repeat: no-repeat;
+	background-size: contain;
+	background-position: center;
+	transform: translateX(-66%) translateY(-30%);
+	position: absolute;
+	width: 300%;
+	height: 300%;
+}
+
 .card-buttons {
 	position: absolute;
 	display: none;
@@ -362,7 +374,6 @@ html {
 	width: 2rem;
 	height: 2rem;
 	background-color: transparent;
-	background-image: url(/public/images/crown.png);
 	background-position: center;
 	background-size: contain;
 	outline: none;

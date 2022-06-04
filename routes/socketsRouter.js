@@ -95,6 +95,7 @@ module.exports = (io) => {
 		Effect Types: 
 		0: Nothing
 		1: Crown
+		2: Confetti
 		*/
 		socket.on('effect', ({ effectType, cardIndex }) => {
 			if (!loggedIn()) return;
@@ -103,7 +104,7 @@ module.exports = (io) => {
 			if (!Number.isInteger(cardIndex)) return;
 			if (cardIndex < 0 || cardIndex > 3) return;
 			if (socket.id !== room.getLierSocketId()) return;
-			if (effectType < 0 || effectType > 1) return;
+			if (effectType < 0 || effectType > 2) return;
 
 			io.to(room.id).emit('effect', { effectType, cardIndex });
 		});
