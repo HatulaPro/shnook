@@ -81,6 +81,49 @@ html {
 	margin: 1rem;
 }
 
+@keyframes rotateTimer {
+	0% {
+		transform: rotate(0deg);
+		border-left: 0.4rem solid black;
+	}
+	50% {
+		border-left: 0.4rem solid transparent;
+	}
+	100% {
+		transform: rotate(360deg);
+		border-left: 0.4rem solid black;
+	}
+}
+
+.timer-before-round {
+	position: fixed;
+	top: 30%;
+	transform: scale(5);
+	z-index: 999999999;
+}
+
+.timer-before-round::after {
+	content: '';
+	position: absolute;
+	width: 3rem;
+	height: 3rem;
+	padding: 0.6rem;
+	border-radius: 99999999px;
+	border: 0.4rem solid transparent;
+	inset: 0;
+	font-size: 2rem;
+	margin: -0.4rem;
+	border-left: 0.4rem solid black;
+	animation-name: rotateTimer;
+	animation-duration: 0.7s;
+	animation-iteration-count: infinite;
+}
+
+.timer-go {
+	background-color: #1fdb12 !important;
+	border: 0.4rem solid #109c06 !important;
+}
+
 #room-timer {
 	font-size: 2rem;
 	background-color: #1515ff;
@@ -92,7 +135,6 @@ html {
 	color: white;
 	border: 0.4rem solid #a515ff;
 	padding: 0.6rem;
-	margin: 2rem;
 	border-radius: 99999999px;
 }
 

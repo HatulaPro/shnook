@@ -7,6 +7,7 @@ module.exports = class Room {
 	static MAX_PLAYERS = 10;
 	static MAX_ROUNDS = 3;
 	static TIME_PER_ROUND = 10;
+	static TIME_BETWEEN_ROUNDS = 3;
 
 	// players: a map of socket to info
 	constructor(id, maxPlayers, timePerRound, maxRounds, hasStarted, socketId, player) {
@@ -87,6 +88,7 @@ module.exports = class Room {
 			maxPlayers: this.maxPlayers,
 			maxRounds: this.maxRounds,
 			timePerRound: this.timePerRound,
+			timeBetweenRounds: Room.TIME_BETWEEN_ROUNDS,
 			players: this.playersList(),
 			hasStarted: this.hasStarted,
 			startedAt: this.startedAt,

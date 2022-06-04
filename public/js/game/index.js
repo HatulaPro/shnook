@@ -242,7 +242,21 @@ socket.on('start', (stream) => {
 	chatContent.innerHTML = '';
 	if (timer !== null) clearInterval(timer);
 	timer = setInterval(() => {
-		timerSpan.innerText = roomData.startedAt - getTimestamp() + roomData.timePerRound;
+		timerSpan.classList.remove('timer-go');
+		const seconds = roomData.startedAt - getTimestamp() + roomData.timePerRound + roomData.timeBetweenRounds;
+		if (seconds >= roomData.timePerRound) {
+			timerSpan.classList.add('timer-before-round');
+			const timeShown = seconds - roomData.timePerRound;
+			if (timeShown === 0) {
+				timerSpan.classList.add('timer-go');
+				timerSpan.innerText = 'GO!';
+			} else {
+				timerSpan.innerText = timeShown;
+			}
+		} else {
+			timerSpan.classList.remove('timer-before-round');
+			timerSpan.innerText = seconds;
+		}
 		if (timerSpan.innerText === '0') {
 			clearInterval(timer);
 			timer = null;

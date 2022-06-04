@@ -52,7 +52,7 @@ module.exports = (io) => {
 			if (!loggedIn()) return;
 			if (!room.isAdmin(player)) return;
 			if (room.hasStarted) return;
-            if (room.players.size < 2) return;
+			if (room.players.size < 2) return;
 
 			gameTimer = setInterval(() => {
 				room.roundsPlayed += 1;
@@ -71,7 +71,7 @@ module.exports = (io) => {
 				const lier = room.getLierSocketId();
 				io.to(room.id).except(lier).emit('start', { room: room.getStatus() });
 				io.to(lier).emit('start', { room: room.getStatus(), treasure: room.treasure });
-			}, room.timePerRound * 1000);
+			}, (room.timePerRound + Room.TIME_BETWEEN_ROUNDS) * 1000);
 
 			room.start();
 			const lier = room.getLierSocketId();
