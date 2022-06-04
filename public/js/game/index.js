@@ -62,6 +62,7 @@ cards.forEach((card, i) => {
 
 	new Array(...card.children[2].children).forEach((cardButton, buttonIndex) => {
 		cardButton.style.backgroundImage = `url(${Object.values(CARD_EFFECTS)[buttonIndex].image})`;
+		cardButton.style.display = 'none';
 		cardButton.addEventListener('click', () => {
 			if (roomData && player && roomData.hasStarted && !isGuessing) {
 				socket.emit('effect', { effectType: buttonIndex, cardIndex: i });
@@ -244,11 +245,11 @@ function update() {
 			}
 
 			if (isGuessing) {
-				new Array(...card.children[2].children).forEach((cardButton, buttonIndex) => {
+				new Array(...card.children[2].children).forEach((cardButton) => {
 					cardButton.style.display = 'none';
 				});
 			} else {
-				new Array(...card.children[2].children).forEach((cardButton, buttonIndex) => {
+				new Array(...card.children[2].children).forEach((cardButton) => {
 					cardButton.style.display = 'block';
 				});
 			}
