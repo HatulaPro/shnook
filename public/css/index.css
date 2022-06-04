@@ -346,6 +346,37 @@ html {
 	animation: cardEffectKingAnimation 0.4s alternate-reverse 0s infinite;
 }
 
+.card-buttons {
+	position: absolute;
+	display: none;
+	flex-direction: column;
+	right: 0.2rem;
+	top: 0.6rem;
+}
+
+.card:hover .card-buttons {
+	display: flex;
+}
+
+.card-buttons button {
+	width: 2rem;
+	height: 2rem;
+	background-color: transparent;
+	background-image: url(/public/images/crown.png);
+	background-position: center;
+	background-size: contain;
+	outline: none;
+	margin-top: 0.1rem;
+	border: none;
+	filter: grayscale(0.7);
+	z-index: 999999;
+}
+
+.card-buttons:hover button:hover {
+	cursor: pointer;
+	filter: grayscale(0);
+}
+
 .card-guessers {
 	font-size: 1rem;
 	position: absolute;

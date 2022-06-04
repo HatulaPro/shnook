@@ -10,10 +10,12 @@ const CARD_EFFECTS = {
 	NOTHING: {
 		number: 0,
 		className: '',
+		image: '/public/images/close.png',
 	},
 	KING: {
 		number: 1,
 		className: 'card-effect-king',
+		image: '/public/images/crown.png',
 	},
 };
 
@@ -54,12 +56,20 @@ cards.forEach((card, i) => {
 				player.guess = i;
 				cards.forEach((c) => c.classList.remove('card-locked'));
 				card.classList.add('card-locked');
-			} else {
-				console.log({ effectType: CARD_EFFECTS.KING.number, cardIndex: i });
-				socket.emit('effect', { effectType: CARD_EFFECTS.KING.number, cardIndex: i });
-				card.children[0].classList.add(CARD_EFFECTS.KING.className);
 			}
 		}
+	});
+
+	new Array(...card.children[2].children).forEach((cardButton, buttonIndex) => {
+		cardButton.style.backgroundImage = `url(${Object.values(CARD_EFFECTS)[buttonIndex].image})`;
+		cardButton.addEventListener('click', () => {
+			if (roomData && player && roomData.hasStarted && !isGuessing) {
+				socket.emit('effect', { effectType: buttonIndex, cardIndex: i });
+				// if (buttonIndex !== CARD_EFFECTS.NOTHING.number) {
+				// card.children[0].classList.add(Object.values(CARD_EFFECTS)[buttonIndex].className);
+				// }
+			}
+		});
 	});
 });
 function showMessage(p, c) {
@@ -231,6 +241,16 @@ function update() {
 				card.classList.add('card-locked');
 			} else {
 				card.classList.remove('card-locked');
+			}
+
+			if (isGuessing) {
+				new Array(...card.children[2].children).forEach((cardButton, buttonIndex) => {
+					cardButton.style.display = 'none';
+				});
+			} else {
+				new Array(...card.children[2].children).forEach((cardButton, buttonIndex) => {
+					cardButton.style.display = 'block';
+				});
 			}
 		});
 		roomData.players.forEach((player) => {
