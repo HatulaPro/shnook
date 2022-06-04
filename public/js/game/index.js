@@ -11,16 +11,19 @@ const CARD_EFFECTS = {
 		number: 0,
 		className: '',
 		image: '/public/images/close.png',
+		name: null,
 	},
 	KING: {
 		number: 1,
 		className: 'card-effect-king',
 		image: '/public/images/crown.png',
+		name: 'Crown',
 	},
 	CONFETTI: {
 		number: 2,
 		className: 'card-effect-confetti',
 		image: '/public/images/confetti.png',
+		name: 'Confetti',
 	},
 };
 
@@ -78,7 +81,7 @@ cards.forEach((card, i) => {
 		});
 	});
 });
-function showMessage(p, c) {
+function showMessage(p, c, system = false) {
 	const viewMessage = document.createElement('p');
 	const messageUser = document.createElement('span');
 	const messageContent = document.createElement('span');
@@ -97,6 +100,11 @@ function showMessage(p, c) {
 	} else if (roomData.hasStarted && p === roomData.players[roomData.lier].username) {
 		messageUser.innerText = `[${p} (lier)]: `;
 		messageUser.style.color = 'purple';
+	}
+
+	if (system) {
+		messageUser.style.color = '#f58700';
+		messageUser.style.textDecoration = 'underline';
 	}
 	messageContent.innerText = c;
 	chatContent.appendChild(viewMessage);
@@ -122,7 +130,10 @@ function showCardEffect(effectType, cardIndex) {
 		});
 	});
 	if (effectType === 0) return;
+
 	const effect = Object.values(CARD_EFFECTS).find((eff) => eff.number === effectType);
+	showMessage('SYSTEM', `${roomData.players[roomData.lier].username} is showing ${effect.name} on card ${String.fromCharCode('A'.charCodeAt(0) + cardIndex)}!`, (system = true));
+
 	cards[cardIndex].children[0].classList.add(effect.className);
 }
 
