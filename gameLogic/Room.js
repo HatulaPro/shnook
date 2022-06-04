@@ -8,6 +8,7 @@ module.exports = class Room {
 	static MAX_ROUNDS = 3;
 	static TIME_PER_ROUND = 10;
 	static TIME_BETWEEN_ROUNDS = 3;
+	static CHANCE_OF_CHALLENGE = 1.0;
 
 	// players: a map of socket to info
 	constructor(id, maxPlayers, timePerRound, maxRounds, hasStarted, socketId, player) {
@@ -23,6 +24,8 @@ module.exports = class Room {
 		this.lier = null;
 		this.treasure = null;
 		this.roundsPlayed = 0;
+		this.lastEffect = null;
+		this.challenge = null;
 	}
 
 	playersSockets() {
@@ -35,6 +38,14 @@ module.exports = class Room {
 
 	isAdmin({ username }) {
 		return this.playersList()[0].username === username;
+	}
+
+	applyEffect(effectType, cardIndex) {
+		if (effectType === 0) {
+			this.lastEffect = null;
+			return;
+		}
+		this.lastEffect = { effectType, cardIndex, added: getTimestamp() };
 	}
 
 	getLierSocketId() {
@@ -50,7 +61,7 @@ module.exports = class Room {
 
 	adjustScore() {
 		const lier = this.playersList()[this.lier];
-		this.players.forEach((player, key) => {
+		this.players.forEach((player) => {
 			if (player.guess === this.treasure) {
 				player.score += 1000;
 				lier.score -= 200;
@@ -68,16 +79,24 @@ module.exports = class Room {
 			this.lier = Math.floor(Math.random() * this.players.size);
 			this.adjustScore();
 		}
-		this.players.forEach((player, key) => {
+		this.players.forEach((player) => {
 			player.guess = -1;
 		});
 		this.startedAt = getTimestamp();
 		this.treasure = Math.floor(Math.random() * 4);
+		this.challenge = this.generateChallenge();
+		this.lastEffect = null;
+	}
+
+	generateChallenge() {
+		if (Math.random() > Room.CHANCE_OF_CHALLENGE) return null;
+		// TODO: More challenges
+		return { effect: 1, time: 5000, bonus: 200 };
 	}
 
 	start() {
 		this.hasStarted = true;
-		this.players.forEach((player, key) => {
+		this.players.forEach((player) => {
 			player.score = 0;
 		});
 		this.startRound(true);

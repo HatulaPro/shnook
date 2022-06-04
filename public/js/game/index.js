@@ -339,6 +339,7 @@ socket.on('start', (stream) => {
 	});
 	if (stream.treasure !== undefined) {
 		document.querySelector(`.card:nth-of-type(${stream.treasure + 1})`).classList.add('secret-card');
+		console.log('challenge', stream.challenge);
 	}
 
 	showCardEffect(CARD_EFFECTS.NOTHING.number, -1);
@@ -354,6 +355,10 @@ socket.on('message', (stream) => {
 
 socket.on('effect', ({ effectType, cardIndex }) => {
 	showCardEffect(effectType, cardIndex);
+});
+
+socket.on('success', (challenge) => {
+	console.log(JSON.stringify(challenge));
 });
 
 // Function to call when state changes

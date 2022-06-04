@@ -11,6 +11,7 @@ module.exports = (io) => {
 		let player = null;
 		let room = null;
 		let gameTimer = null;
+		let challengeTimer = null;
 
 		const loggedIn = () => {
 			return player !== null;
@@ -70,13 +71,18 @@ module.exports = (io) => {
 				room.startRound();
 				const lier = room.getLierSocketId();
 				io.to(room.id).except(lier).emit('start', { room: room.getStatus() });
-				io.to(lier).emit('start', { room: room.getStatus(), treasure: room.treasure });
+				io.to(lier).emit('start', { room: room.getStatus(), treasure: room.treasure, challenge: room.challenge });
+
+				if (challengeTimer) {
+					clearTimeout(challengeTimer);
+					challengeTimer = null;
+				}
 			}, (room.timePerRound + Room.TIME_BETWEEN_ROUNDS) * 1000);
 
 			room.start();
 			const lier = room.getLierSocketId();
 			io.to(room.id).except(lier).emit('start', { room: room.getStatus() });
-			io.to(lier).emit('start', { room: room.getStatus(), treasure: room.treasure });
+			io.to(lier).emit('start', { room: room.getStatus(), treasure: room.treasure, challenge: room.challenge });
 		});
 
 		socket.on('guess', (cardIndex) => {
@@ -105,6 +111,23 @@ module.exports = (io) => {
 			if (cardIndex < 0 || cardIndex > 3) return;
 			if (socket.id !== room.getLierSocketId()) return;
 			if (effectType < 0 || effectType > 2) return;
+
+			room.applyEffect(effectType, cardIndex);
+
+			if (challengeTimer) {
+				clearTimeout(challengeTimer);
+				challengeTimer = null;
+			}
+			if (room.challenge) {
+				if (room.lastEffect.effectType === room.challenge.effect && room.treasure === room.lastEffect.cardIndex) {
+					challengeTimer = setTimeout(() => {
+						if (new Date().getTime() - room.lastEffect.added * 1000 >= room.challenge.time) {
+							io.to(room.getLierSocketId()).emit('success', { challenge: room.challenge });
+							room.playersList()[room.lier].score += room.challenge.bonus;
+						}
+					}, room.challenge.time);
+				}
+			}
 
 			io.to(room.id).emit('effect', { effectType, cardIndex });
 		});
