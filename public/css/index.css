@@ -204,7 +204,7 @@ html {
 
 .main {
 	display: flex;
-	margin: 0 3rem;
+	margin: 0;
 }
 
 .main-players {
@@ -519,4 +519,47 @@ html {
 	justify-content: center;
 	display: flex;
 	margin: 0.5rem;
+}
+.flex-break {
+	flex-basis: 0;
+	width: 0;
+}
+
+@media only screen and (max-width: 800px) {
+	.main-title {
+		margin: 1rem;
+		font-size: 2.4rem;
+	}
+	.secondary-title {
+		margin: 0.8rem;
+		font-size: 1.7rem;
+	}
+	.main {
+		margin-top: 1.6rem;
+	}
+	.main .flex {
+		flex-wrap: wrap;
+		justify-content: center;
+	}
+	.flex-break {
+		flex-basis: 100%;
+	}
+	.player-li {
+		font-size: 1rem;
+	}
+	.main-chat {
+		margin: 2rem;
+		max-width: 50vw;
+		max-height: 50vw;
+	}
+	.challenge-div {
+		max-width: none;
+	}
+	.challenge-div-points {
+		font-size: 1rem;
+		width: 2rem;
+		height: 2rem;
+		padding: 0.2rem;
+		margin: 0.1rem;
+	}
 }
