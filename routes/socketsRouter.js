@@ -118,7 +118,7 @@ module.exports = (io) => {
 				clearTimeout(challengeTimer);
 				challengeTimer = null;
 			}
-			if (room.challenge) {
+			if (room.challenge && room.lastEffect) {
 				if (room.lastEffect.effectType === room.challenge.effect && room.treasure === room.lastEffect.cardIndex) {
 					challengeTimer = setTimeout(() => {
 						if (new Date().getTime() - room.lastEffect.added * 1000 >= room.challenge.time) {
