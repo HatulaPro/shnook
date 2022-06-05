@@ -416,7 +416,6 @@ html {
 
 .join-or-create-form {
 	height: 200px;
-	flex: 1;
 	border: 1px solid #a1a1a1;
 	padding: 2rem;
 	display: flex;
@@ -424,11 +423,32 @@ html {
 	flex-direction: column;
 	margin: 1rem;
 	border-radius: 2rem;
+	flex-basis: 100vw;
 }
 
+.join-or-create-swap:hover {
+	background-color: transparent;
+}
+.join-or-create-swap {
+	position: relative;
+	width: 10rem;
+	height: 4rem;
+	margin: auto;
+	left: calc(50% - 14rem / 2);
+	background-image: url(/public/images/arrow.png);
+	background-repeat: no-repeat;
+	background-position: center;
+	background-color: transparent;
+	transition: 0.2s all;
+}
+
+.join-or-create-scroller {
+	width: 100vw;
+	overflow-x: hidden;
+}
 .join-or-create {
 	display: flex;
-	width: 40vw;
+	width: 200vw;
 	justify-content: center;
 	margin: auto;
 }

@@ -1,10 +1,11 @@
 /// <reference path="../socket.io.min.js" />
 const socket = io();
-
 const STATES = {
-	JOIN_OR_CREATE: 0,
-	PLAY: 1,
+	JOIN: 0,
+	CREATE: 1,
+	PLAY: 2,
 };
+let state = STATES.JOIN;
 
 const CARD_EFFECTS = {
 	NOTHING: {
@@ -37,7 +38,10 @@ const mainDiv = document.querySelector('.main');
 const roomIdTitle = document.querySelector('#room-id-title');
 const roomPlayers = document.querySelector('#room-players');
 const roomRounds = document.querySelector('#room-rounds');
-const joinOrCreateDiv = document.querySelector('.join-or-create');
+const joinOrCreateDiv = document.querySelector('.join-or-create-options');
+const joinForm = document.querySelector('.join-form');
+const createForm = document.querySelector('.create-form');
+const joinOrCreateSwapStateButton = document.querySelector('.join-or-create-swap');
 
 const createButton = document.querySelector('.create-form button');
 const joinButton = document.querySelector('.join-form button');
@@ -392,14 +396,26 @@ socket.on('success', (challenge) => {
 	);
 });
 
+joinOrCreateSwapStateButton.addEventListener('click', () => {
+	setState(state === STATES.JOIN ? STATES.CREATE : STATES.JOIN);
+});
+
 // Function to call when state changes
 function setState(s) {
-	if (s === STATES.JOIN_OR_CREATE) {
+	if (s === STATES.JOIN || s === STATES.CREATE) {
 		mainDiv.style.display = 'none';
-		joinOrCreateDiv.style.display = 'flex';
+		joinOrCreateDiv.style.display = 'block';
 		ownerStartButton.style.display = 'none';
 		timerSpan.style.display = 'none';
 		challengeDiv.style.display = 'none';
+
+		if (s === STATES.JOIN) {
+			joinForm.scrollIntoView({ behavior: 'smooth', block: 'center' });
+			joinOrCreateSwapStateButton.style.transform = 'rotateY(0deg)';
+		} else {
+			createForm.scrollIntoView({ behavior: 'smooth', block: 'center' });
+			joinOrCreateSwapStateButton.style.transform = 'rotateY(180deg)';
+		}
 	} else if (s === STATES.PLAY) {
 		mainDiv.style.display = 'block';
 		joinOrCreateDiv.style.display = 'none';
@@ -408,6 +424,7 @@ function setState(s) {
 	} else {
 		throw Error('Invalid state');
 	}
+	state = s;
 }
 
-setState(STATES.JOIN_OR_CREATE);
+setState(state);
