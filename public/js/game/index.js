@@ -4,6 +4,7 @@ const STATES = {
 	JOIN: 0,
 	CREATE: 1,
 	PLAY: 2,
+	OVER: 3,
 };
 let state = STATES.JOIN;
 
@@ -80,9 +81,6 @@ cards.forEach((card, i) => {
 		cardButton.addEventListener('click', () => {
 			if (roomData && player && roomData.hasStarted && !isGuessing) {
 				socket.emit('effect', { effectType: buttonIndex, cardIndex: i });
-				// if (buttonIndex !== CARD_EFFECTS.NOTHING.number) {
-				// card.children[0].classList.add(Object.values(CARD_EFFECTS)[buttonIndex].className);
-				// }
 			}
 		});
 	});
@@ -240,11 +238,9 @@ function update() {
 		playerElement.style.top = `${playerElement.clientHeight * index}px`;
 	});
 
+	// Game Over
 	if (roomData.roundsPlayed === roomData.maxRounds) {
-		mainCards.style.display = 'none';
-		let playerElement = document.querySelector(`[data-username='${orderedPlayers[0].username}']`);
-		playerElement.innerText = '👑 ' + playerElement.innerText;
-		chatContent.innerHTML = '';
+		setState(STATES.OVER);
 	}
 
 	if (roomData.hasStarted) {
@@ -418,9 +414,18 @@ function setState(s) {
 		}
 	} else if (s === STATES.PLAY) {
 		mainDiv.style.display = 'block';
+		mainCards.style.display = 'flex';
+		gameModeSpan.style.display = 'none';
 		joinOrCreateDiv.style.display = 'none';
 		timerSpan.style.display = 'flex';
 		timerSpan.innerText = roomData.timePerRound;
+	} else if (s === STATES.OVER) {
+		mainCards.style.display = 'none';
+		gameModeSpan.style.display = 'none';
+		challengeDiv.style.display = 'none';
+		let playerElement = document.querySelector(`[data-username='${orderedPlayers[0].username}']`);
+		playerElement.innerText = '👑 ' + playerElement.innerText;
+		chatContent.innerHTML = '';
 	} else {
 		throw Error('Invalid state');
 	}
