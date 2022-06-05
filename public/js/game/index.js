@@ -6,6 +6,14 @@ const STATES = {
 	PLAY: 2,
 	OVER: 3,
 };
+
+const IS_RIGHT_PATH = {
+	JOIN: (path) => path === '/join',
+	CREATE: (path) => path === '/create',
+	PLAY: (path) => Boolean(path.match(/^\/game\/[A-Za-z0-9\-_]{6}$/)),
+	OVER: (path) => Boolean(path.match(/^\/game\/[A-Za-z0-9\-_]{6}$/)),
+};
+
 let state = STATES.JOIN;
 
 const CARD_EFFECTS = {
@@ -311,7 +319,10 @@ socket.on('start', (stream) => {
 	roomData = stream.room;
 
 	chatContent.innerHTML = '';
-	if (timer !== null) clearInterval(timer);
+	if (timer !== null) {
+		clearInterval(timer);
+		timer = null;
+	}
 	timer = setInterval(() => {
 		timerSpan.classList.remove('timer-go');
 		const seconds = roomData.startedAt - getTimestamp() + roomData.timePerRound + roomData.timeBetweenRounds;
@@ -407,12 +418,23 @@ function setState(s) {
 		timerSpan.style.display = 'none';
 		challengeDiv.style.display = 'none';
 
+		roomIdTitle.innerText = '';
+		roomPlayers.innerText = '';
+		roomRounds.innerText = '';
+
+		if (timer !== null) {
+			clearInterval(timer);
+			timer = null;
+		}
+
 		if (s === STATES.JOIN) {
 			joinForm.scrollIntoView({ behavior: 'smooth', block: 'center' });
 			joinOrCreateSwapStateButton.style.transform = 'rotateY(0deg)';
+			history.pushState({}, '', '/join');
 		} else {
 			createForm.scrollIntoView({ behavior: 'smooth', block: 'center' });
 			joinOrCreateSwapStateButton.style.transform = 'rotateY(180deg)';
+			history.pushState({}, '', '/create');
 		}
 	} else if (s === STATES.PLAY) {
 		mainDiv.style.display = 'block';
@@ -421,6 +443,7 @@ function setState(s) {
 		joinOrCreateDiv.style.display = 'none';
 		timerSpan.style.display = 'flex';
 		timerSpan.innerText = roomData.timePerRound;
+		history.pushState({}, '', `/game/${roomData.id}`);
 	} else if (s === STATES.OVER) {
 		mainCards.style.display = 'none';
 		gameModeSpan.style.display = 'none';
@@ -428,10 +451,32 @@ function setState(s) {
 		let playerElement = document.querySelector(`[data-username='${winner.username}']`);
 		playerElement.innerText = '👑 ' + playerElement.innerText;
 		chatContent.innerHTML = '';
+		history.pushState({}, '', `/game/${roomData.id}`);
 	} else {
 		throw Error('Invalid state');
 	}
 	state = s;
 }
 
-setState(state);
+function matchStateToLocation() {
+	const path = document.location.pathname;
+	if (IS_RIGHT_PATH.JOIN(path)) {
+		setState(STATES.JOIN);
+	} else if (IS_RIGHT_PATH.CREATE(path)) {
+		setState(STATES.CREATE);
+	} else {
+		setState(STATES.JOIN);
+		joinRoomInput.value = `#${path.substring(6)}`;
+	}
+}
+
+window.onpopstate = (data) => {
+	if (state === STATES.OVER || state === STATES.PLAY) {
+		socket.disconnect();
+		document.location = '/';
+		return;
+	}
+	matchStateToLocation();
+};
+
+matchStateToLocation();

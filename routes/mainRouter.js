@@ -1,13 +1,19 @@
 const express = require('express');
-const { nanoid } = require('nanoid');
+
+const indexRenderer = (req, res) => {
+	res.render('index');
+};
 
 const router = express.Router();
-router.get('/game/:gameId', (req, res) => {
-	res.render('index', { id: req.params['gameId'] });
-});
 
 router.get('/', (req, res) => {
-	res.render('index', { id: null });
+	res.redirect('/join');
 });
+
+router.get('/game/:gameId', indexRenderer);
+
+router.get('/join', indexRenderer);
+
+router.get('/create', indexRenderer);
 
 module.exports = router;
