@@ -34,6 +34,7 @@ let isAdmin = false;
 let isGuessing = false;
 let roomData = null;
 let timer = null;
+let winner = null;
 
 const mainDiv = document.querySelector('.main');
 const roomIdTitle = document.querySelector('#room-id-title');
@@ -240,6 +241,7 @@ function update() {
 
 	// Game Over
 	if (roomData.roundsPlayed === roomData.maxRounds) {
+		winner = orderedPlayers[0];
 		setState(STATES.OVER);
 	}
 
@@ -423,7 +425,7 @@ function setState(s) {
 		mainCards.style.display = 'none';
 		gameModeSpan.style.display = 'none';
 		challengeDiv.style.display = 'none';
-		let playerElement = document.querySelector(`[data-username='${orderedPlayers[0].username}']`);
+		let playerElement = document.querySelector(`[data-username='${winner.username}']`);
 		playerElement.innerText = '👑 ' + playerElement.innerText;
 		chatContent.innerHTML = '';
 	} else {
