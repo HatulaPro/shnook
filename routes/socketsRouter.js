@@ -23,7 +23,7 @@ module.exports = (io) => {
 			room = new Room(id, Room.MAX_PLAYERS, Room.TIME_PER_ROUND, Room.MAX_ROUNDS, false, socket.id, player);
 
 			socket.join(id);
-			socket.emit('joined', { id, player, room: room.getStatus() });
+			io.to(socket.id).emit('joined', { id, player, room: room.getStatus() });
 
 			Room.rooms.set(id, room);
 		});
@@ -36,16 +36,16 @@ module.exports = (io) => {
 			if (Room.rooms.has(stream)) {
 				player = { username: genUsername() };
 				room = Room.rooms.get(stream);
-				if (room.hasStarted) return socket.emit('join_failed', { error: 'game has already started' });
-				if (room.players.size >= room.maxPlayers) return socket.emit('join_failed', { error: 'room is full' });
+				if (room.hasStarted) return io.to(socket.id).emit('join_failed', { error: 'game has already started' });
+				if (room.players.size >= room.maxPlayers) return io.to(socket.id).emit('join_failed', { error: 'room is full' });
 
 				room.players.set(socket.id, player);
 
 				socket.join(stream);
-				socket.emit('joined', { id: stream, player, room: room.getStatus() });
-				socket.broadcast.emit('update', { room: room.getStatus() });
+				io.to(socket.id).emit('joined', { id: stream, player, room: room.getStatus() });
+				socket.to(room.id).emit('update', { room: room.getStatus() });
 			} else {
-				socket.emit('join_failed', { error: 'room does not exist' });
+				io.to(socket.id).emit('join_failed', { error: 'room does not exist' });
 			}
 		});
 
@@ -144,11 +144,12 @@ module.exports = (io) => {
 			socket.rooms.forEach((room) => {
 				if (Room.rooms.has(room)) {
 					Room.rooms.get(room).players.delete(socket.id);
-					socket.broadcast.emit('update', { room: Room.rooms.get(room).getStatus() });
+					socket.broadcast.to(room.id).emit('update', { room: Room.rooms.get(room).getStatus() });
 					if (Room.rooms.get(room).players.size === 0) {
 						Room.rooms.delete(room);
 					}
 				}
+				socket.leave(room);
 			});
 		});
 	});

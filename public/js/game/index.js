@@ -472,8 +472,7 @@ function matchStateToLocation() {
 
 window.onpopstate = (data) => {
 	if (state === STATES.OVER || state === STATES.PLAY) {
-		socket.disconnect();
-		document.location = '/';
+		document.location.reload();
 		return;
 	}
 	matchStateToLocation();
