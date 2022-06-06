@@ -160,18 +160,28 @@ chatInput.addEventListener('keypress', function (e) {
 });
 
 // Listening to create room
-createButton.addEventListener('click', () => {
+const onCreate = () => {
 	socket.emit('create', { username: usernameInput.value });
-});
+};
+createButton.addEventListener('click', onCreate);
 
 // Listening to join room
 const onJoin = () => {
 	socket.emit('join', { roomId: joinRoomInput.value, username: usernameInput.value });
 };
 joinButton.addEventListener('click', onJoin);
-joinRoomInput.addEventListener('keypress', function (e) {
+joinRoomInput.addEventListener('keypress', (e) => {
 	if (e.key === 'Enter') {
 		onJoin();
+	}
+});
+usernameInput.addEventListener('keypress', (e) => {
+	if (e.key === 'Enter') {
+		if (state === STATES.JOIN) {
+			onJoin();
+		} else if (state === STATES.CREATE) {
+			onCreate();
+		}
 	}
 });
 
