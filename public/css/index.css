@@ -433,14 +433,11 @@ html {
 
 .join-or-create-form {
 	height: 200px;
-	border: 1px solid #a1a1a1;
-	padding: 2rem;
 	display: flex;
 	align-content: center;
 	flex-direction: column;
-	margin: 1rem;
 	border-radius: 2rem;
-	flex-basis: 100vw;
+	flex-basis: 98vw;
 }
 
 .join-or-create-swap:hover {
@@ -448,11 +445,10 @@ html {
 	filter: hue-rotate(-40deg) brightness(1.7);
 }
 .join-or-create-swap {
-	position: relative;
 	width: 10rem;
+	display: block;
 	height: 4rem;
-	margin: auto;
-	left: calc(50% - 14rem / 2);
+	margin: 0.2rem auto;
 	background-image: url(/public/images/arrow.png);
 	background-repeat: no-repeat;
 	background-position: center;
@@ -461,9 +457,26 @@ html {
 }
 
 .join-or-create-scroller {
-	width: 100vw;
+	width: 98vw;
 	overflow-x: hidden;
 }
+
+.join-or-create-options {
+	border: 1px solid #a1a1a1;
+	margin: 0 1vw;
+	border-radius: 1rem;
+}
+
+.join-or-create-options * {
+	margin-left: auto;
+	margin-right: auto;
+}
+
+#username-input {
+	display: block;
+	margin-top: 1rem;
+}
+
 .join-or-create {
 	display: flex;
 	width: 200vw;

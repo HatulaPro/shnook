@@ -55,7 +55,7 @@ const joinOrCreateSwapStateButton = document.querySelector('.join-or-create-swap
 
 const createButton = document.querySelector('.create-form button');
 const joinButton = document.querySelector('.join-form button');
-const joinRoomInput = document.querySelector('.join-form input');
+const joinRoomInput = document.querySelector('#room-id-input');
 const joinFailSpan = document.querySelector('.join-fail');
 
 const chatInput = document.querySelector('#chat-input');
