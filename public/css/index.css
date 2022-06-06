@@ -432,7 +432,6 @@ html {
 }
 
 .join-or-create-form {
-	height: 200px;
 	display: flex;
 	align-content: center;
 	flex-direction: column;
@@ -470,6 +469,12 @@ html {
 .join-or-create-options * {
 	margin-left: auto;
 	margin-right: auto;
+}
+
+.join-or-create-fail {
+	width: fit-content;
+	display: block;
+	margin-top: 0;
 }
 
 #username-input {

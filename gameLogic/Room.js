@@ -28,6 +28,13 @@ module.exports = class Room {
 		this.challenge = null;
 	}
 
+	hasUsername(username) {
+		for (const player of this.playersList()) {
+			if (player.username === username) return true;
+		}
+		return false;
+	}
+
 	playersSockets() {
 		return Array.from(this.players.keys());
 	}

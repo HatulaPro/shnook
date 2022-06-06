@@ -56,7 +56,8 @@ const joinOrCreateSwapStateButton = document.querySelector('.join-or-create-swap
 const createButton = document.querySelector('.create-form button');
 const joinButton = document.querySelector('.join-form button');
 const joinRoomInput = document.querySelector('#room-id-input');
-const joinFailSpan = document.querySelector('.join-fail');
+const usernameInput = document.querySelector('#username-input');
+const joinFailSpan = document.querySelector('.join-or-create-fail');
 
 const chatInput = document.querySelector('#chat-input');
 const chatButton = document.querySelector('#chat-button');
@@ -160,12 +161,12 @@ chatInput.addEventListener('keypress', function (e) {
 
 // Listening to create room
 createButton.addEventListener('click', () => {
-	socket.emit('create');
+	socket.emit('create', { username: usernameInput.value });
 });
 
 // Listening to join room
 const onJoin = () => {
-	socket.emit('join', joinRoomInput.value);
+	socket.emit('join', { roomId: joinRoomInput.value, username: usernameInput.value });
 };
 joinButton.addEventListener('click', onJoin);
 joinRoomInput.addEventListener('keypress', function (e) {

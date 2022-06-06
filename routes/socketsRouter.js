@@ -1,9 +1,14 @@
-const express = require('express');
 const { nanoid } = require('nanoid');
 const Room = require('../gameLogic/Room');
 
-function genUsername() {
-	return `guest_${Math.floor(Math.random() * 100000)}`;
+function validateUsername(username) {
+	if (username.length < 2 || username.length > 14) {
+		return 'Username must be 2-14 characters long';
+	}
+	if (!username.match(/^[a-zA-Z0-9 ]*$/)) {
+		return 'Username can only contain letters, numbers and spaces';
+	}
+	return true;
 }
 
 module.exports = (io) => {
@@ -17,9 +22,17 @@ module.exports = (io) => {
 			return player !== null;
 		};
 
-		socket.on('create', (stream) => {
+		// TODO: destructuring breaks when the stream is undefined
+		socket.on('create', ({ username }) => {
+			if (typeof username !== 'string') return;
+			username = username.trim();
+			const errorMsg = validateUsername(username);
+			if (errorMsg !== true) {
+				io.to(socket.id).emit('join_failed', { error: errorMsg });
+				return;
+			}
 			const id = nanoid(6);
-			player = { username: genUsername() };
+			player = { username };
 			room = new Room(id, Room.MAX_PLAYERS, Room.TIME_PER_ROUND, Room.MAX_ROUNDS, false, socket.id, player);
 
 			socket.join(id);
@@ -28,21 +41,34 @@ module.exports = (io) => {
 			Room.rooms.set(id, room);
 		});
 
-		socket.on('join', async (stream) => {
-			if (typeof stream !== 'string') return;
-			if (stream.length > 0 && stream[0] === '#') {
-				stream = stream.trim().substring(1);
+		socket.on('join', async ({ roomId, username }) => {
+			if (typeof roomId !== 'string') return;
+			if (typeof username !== 'string') return;
+			if (roomId.length > 0 && roomId[0] === '#') {
+				roomId = roomId.trim().substring(1);
 			}
-			if (Room.rooms.has(stream)) {
-				player = { username: genUsername() };
-				room = Room.rooms.get(stream);
+			username = username.trim();
+			const errorMsg = validateUsername(username);
+			if (errorMsg !== true) {
+				io.to(socket.id).emit('join_failed', { error: errorMsg });
+				return;
+			}
+			if (Room.rooms.has(roomId)) {
+				room = Room.rooms.get(roomId);
+				if (room.hasUsername(username)) {
+					io.to(socket.id).emit('join_failed', { error: 'Username is taken' });
+					return;
+				}
+
+				player = { username };
+
 				if (room.hasStarted) return io.to(socket.id).emit('join_failed', { error: 'game has already started' });
 				if (room.players.size >= room.maxPlayers) return io.to(socket.id).emit('join_failed', { error: 'room is full' });
 
 				room.players.set(socket.id, player);
 
-				socket.join(stream);
-				io.to(socket.id).emit('joined', { id: stream, player, room: room.getStatus() });
+				socket.join(roomId);
+				io.to(socket.id).emit('joined', { id: roomId, player, room: room.getStatus() });
 				socket.to(room.id).emit('update', { room: room.getStatus() });
 			} else {
 				io.to(socket.id).emit('join_failed', { error: 'room does not exist' });
