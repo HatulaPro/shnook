@@ -482,6 +482,11 @@ html {
 	margin-top: 1rem;
 }
 
+input:focus {
+	outline: none;
+	background-color: #cdcdcd;
+}
+
 .join-or-create {
 	display: flex;
 	width: 200vw;
