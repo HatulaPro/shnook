@@ -426,6 +426,11 @@ html {
 	position: absolute;
 }
 
+.join-or-create-button {
+	width: 8rem;
+	margin: auto;
+}
+
 .join-or-create-form {
 	height: 200px;
 	border: 1px solid #a1a1a1;
