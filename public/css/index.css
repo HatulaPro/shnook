@@ -428,6 +428,7 @@ html {
 
 .join-or-create-swap:hover {
 	background-color: transparent;
+	filter: hue-rotate(-40deg) brightness(1.7);
 }
 .join-or-create-swap {
 	position: relative;
