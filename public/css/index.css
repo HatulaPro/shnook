@@ -67,12 +67,18 @@ html {
 	background-image: url(/public/images/round.png);
 }
 
+#room-id-title {
+	background-image: url(/public/images/copy.png);
+}
+
 #room-players,
-#room-rounds {
-	background-position: 0px 10%;
+#room-rounds,
+#room-id-title {
+	background-position: 0;
 	background-repeat: no-repeat;
-	padding-left: 40px;
-	background-size: 28%;
+	padding-left: 50px;
+	background-size: contain;
+	height: fit-content;
 }
 
 #room-owner-start {
