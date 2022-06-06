@@ -174,6 +174,30 @@ joinRoomInput.addEventListener('keypress', function (e) {
 	}
 });
 
+roomIdTitle.addEventListener('click', () => {
+	if (!roomData) return;
+	navigator.clipboard.writeText(`#${roomData.id}`).then(() => {
+		// success
+		roomIdTitle.animate(
+			[
+				{
+					transform: 'scale(1)',
+				},
+				{
+					transform: 'scale(0.97)',
+				},
+				{
+					transform: 'scale(1.03)',
+				},
+			],
+			{
+				duration: 250,
+				iterations: 1,
+			}
+		);
+	});
+});
+
 ownerStartButton.addEventListener('click', () => {
 	if (isAdmin) {
 		socket.emit('start');

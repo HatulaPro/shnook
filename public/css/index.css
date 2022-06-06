@@ -71,6 +71,11 @@ html {
 	background-image: url(/public/images/copy.png);
 }
 
+#room-id-title:hover {
+	cursor: pointer;
+	transform: scale(1.05);
+}
+
 #room-players,
 #room-rounds,
 #room-id-title {
@@ -79,6 +84,7 @@ html {
 	padding-left: 50px;
 	background-size: contain;
 	height: fit-content;
+	transition: 0.2s transform;
 }
 
 #room-owner-start {
