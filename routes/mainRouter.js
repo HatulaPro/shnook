@@ -7,7 +7,7 @@ const indexRenderer = (req, res) => {
 const router = express.Router();
 
 router.get('/', (req, res) => {
-	res.send('home');
+	res.redirect('/join');
 });
 
 router.get('/game/:gameId', indexRenderer);
