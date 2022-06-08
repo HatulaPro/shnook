@@ -74,8 +74,47 @@ const challengeDiv = document.querySelector('.challenge-div');
 const cards = document.querySelectorAll('.card');
 const mainCards = document.querySelector('.main-cards');
 
+const hideAllDiv = document.querySelector('.hide-all');
+
 function cardIndexToLetter(index) {
 	return String.fromCharCode('A'.charCodeAt(0) + index);
+}
+
+function sceneTransition(func) {
+	const duration = 1000;
+	hideAllDiv.style.display = 'block';
+	hideAllDiv.animate(
+		[
+			{
+				transform: 'translateY(-100%)',
+			},
+			{
+				transform: 'translateX(0)',
+			},
+			{
+				transform: 'translateX(0)',
+			},
+			{
+				transform: 'translateX(0)',
+			},
+			{
+				transform: 'translateY(100%)',
+			},
+		],
+		{
+			duration,
+			iterations: 1,
+		}
+	);
+
+	// Start animation, call func mid-animation, wait untill animation is over and hide the div
+	setTimeout(() => {
+		func();
+
+		setTimeout(() => {
+			hideAllDiv.style.display = 'none';
+		}, 500);
+	}, duration - 500);
 }
 
 cards.forEach((card, i) => {
@@ -294,7 +333,9 @@ function update() {
 	// Game Over
 	if (roomData.roundsPlayed === roomData.maxRounds) {
 		winner = orderedPlayers[0];
-		setState(STATES.OVER);
+		sceneTransition(() => {
+			setState(STATES.OVER);
+		});
 	}
 
 	if (roomData.hasStarted) {

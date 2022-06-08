@@ -5,7 +5,7 @@ function getTimestamp() {
 module.exports = class Room {
 	static rooms = new Map();
 	static MAX_PLAYERS = 10;
-	static MAX_ROUNDS = 3;
+	static MAX_ROUNDS = 1;
 	static TIME_PER_ROUND = 10;
 	static TIME_BETWEEN_ROUNDS = 3;
 	static CHANCE_OF_CHALLENGE = 1.0;

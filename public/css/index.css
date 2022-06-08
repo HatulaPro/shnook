@@ -568,6 +568,24 @@ input:focus {
 	width: 0;
 }
 
+.hide-all {
+	background-color: #191919;
+	width: 100vw;
+	height: 100vh;
+	line-height: 100vh;
+	z-index: 9999999999999999;
+	position: fixed;
+	inset: 0;
+	display: none;
+	font-size: 9rem;
+	text-decoration: underline;
+	text-decoration-color: #dd11aa;
+	color: white;
+	font-style: italic;
+	font-weight: bold;
+	text-align: center;
+}
+
 @media only screen and (max-width: 800px) {
 	.main-title {
 		margin: 1rem;
