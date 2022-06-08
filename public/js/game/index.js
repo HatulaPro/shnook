@@ -500,7 +500,7 @@ function setState(s) {
 		gameModeSpan.style.display = 'none';
 		challengeDiv.style.display = 'none';
 		let playerElement = document.querySelector(`[data-username='${winner.username}']`);
-		playerElement.innerText = '👑 ' + playerElement.innerText;
+		playerElement.innerHTML = '👑 ' + playerElement.innerHTML;
 		chatContent.innerHTML = '';
 		history.pushState({}, '', `/game/${roomData.id}`);
 	} else {
