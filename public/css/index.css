@@ -564,10 +564,6 @@ input:focus {
 	display: flex;
 	margin: 0.5rem;
 }
-.flex-break {
-	flex-basis: 0;
-	width: 0;
-}
 
 .hide-all {
 	background-color: #191919;
@@ -603,16 +599,17 @@ input:focus {
 		flex-wrap: wrap;
 		justify-content: center;
 	}
-	.flex-break {
-		flex-basis: 100%;
+	.main-cards {
+		flex: 3 0 100%;
+		order: -1;
 	}
 	.player-li {
 		font-size: 1rem;
 	}
-	.main-chat {
-		margin: 2rem;
-		max-width: 50vw;
-		max-height: 50vw;
+	.main-chat,
+	.main-players {
+		margin: 2rem 1rem;
+		max-height: 50vh;
 	}
 	.challenge-div-points {
 		font-size: 1rem;
