@@ -96,6 +96,17 @@ module.exports = class Room {
 		this.lastEffect = null;
 	}
 
+	gameOver() {
+		this.adjustScore();
+		this.players.forEach((player) => {
+			player.guess = -1;
+			this.lier = null;
+			this.treasure = null;
+			this.lastEffect = null;
+			this.challenge = null;
+		});
+	}
+
 	generateChallenge() {
 		if (Math.random() > Room.CHANCE_OF_CHALLENGE) return null;
 

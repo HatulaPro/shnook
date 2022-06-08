@@ -556,6 +556,13 @@ function setState(s) {
 		let playerElement = document.querySelector(`[data-username='${winner.username}']`);
 		playerElement.innerHTML = '👑 ' + playerElement.innerHTML;
 		chatContent.innerHTML = '';
+
+		document.querySelectorAll('.player-li').forEach((playerLi) => {
+			playerLi.style.color = null;
+			playerLi.children[0].innerText = '';
+			console.log('set');
+		});
+
 		history.pushState({}, '', `/game/${roomData.id}`);
 	} else {
 		throw Error('Invalid state');
