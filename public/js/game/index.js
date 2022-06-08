@@ -328,9 +328,12 @@ function update() {
 
 		roomData.players.forEach((player, index) => {
 			const playerScoreElement = document.querySelector(`[data-username='${player.username}']`);
-			if (index === roomData.lier) {
+			// If lier and game is not over
+			if (index === roomData.lier && roomData.roundsPlayed < roomData.maxRounds) {
 				playerScoreElement.children[0].innerText = ' (lier)';
-			} else if (player.guess !== -1) {
+			}
+			// If player didn't make a guess
+			else if (player.guess !== -1) {
 				playerScoreElement.children[0].innerText = ` (${cardIndexToLetter(player.guess)})`;
 			} else {
 				playerScoreElement.children[0].innerText = '';
