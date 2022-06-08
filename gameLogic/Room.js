@@ -9,7 +9,7 @@ module.exports = class Room {
 	static TIME_PER_ROUND = 10;
 	static TIME_BETWEEN_ROUNDS = 3;
 	static NUMBER_OF_CHALLENGEs = 2;
-	static CHANCE_OF_CHALLENGE = 1.0;
+	static CHANCE_OF_CHALLENGE = 0.4;
 
 	// players: a map of socket to info
 	constructor(id, maxPlayers, timePerRound, maxRounds, hasStarted, socketId, player) {
