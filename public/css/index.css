@@ -618,4 +618,7 @@ input:focus {
 		padding: 0.2rem;
 		margin: 0.1rem;
 	}
+	.hide-all {
+		font-size: 4rem;
+	}
 }
