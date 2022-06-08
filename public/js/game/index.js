@@ -87,9 +87,11 @@ function sceneTransition(func, text, duration) {
 		[
 			{
 				transform: 'translateY(-100%)',
+				offset: 0.05,
 			},
 			{
 				transform: 'translateX(0)',
+				offset: 0.15,
 			},
 			{
 				transform: 'translateX(0)',
@@ -108,13 +110,10 @@ function sceneTransition(func, text, duration) {
 	);
 
 	// Start animation, call func mid-animation, wait untill animation is over and hide the div
+	func();
 	setTimeout(() => {
-		func();
-
-		setTimeout(() => {
-			hideAllDiv.style.display = 'none';
-		}, Math.floor(duration * 0.3));
-	}, duration - Math.floor(duration * 0.3));
+		hideAllDiv.style.display = 'none';
+	}, duration);
 }
 
 cards.forEach((card, i) => {
