@@ -461,9 +461,7 @@ html {
 }
 
 .join-or-create-options {
-	border: 1px solid #a1a1a1;
-	margin: 0 1vw;
-	border-radius: 1rem;
+	margin: 3rem 1vw;
 }
 
 .join-or-create-options * {
