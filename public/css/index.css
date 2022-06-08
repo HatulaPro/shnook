@@ -57,6 +57,7 @@ html {
 .room-info {
 	display: flex;
 	justify-content: space-evenly;
+	align-items: center;
 }
 
 #room-players {
@@ -590,7 +591,8 @@ input:focus {
 	}
 	.secondary-title {
 		margin: 0.8rem;
-		font-size: 1.7rem;
+		font-size: 1.2rem;
+		padding-left: 30px !important;
 	}
 	.main {
 		margin-top: 1.6rem;
