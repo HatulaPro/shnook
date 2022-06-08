@@ -244,11 +244,15 @@ html {
 	transition: top 0.8s;
 }
 
-.player-li span {
+.player-li .player-li-points {
 	display: block;
 	color: gray;
 	font-size: 1rem;
 	padding: 0.1rem;
+}
+
+.player-li .player-li-guess {
+	color: blue;
 }
 
 .main-chat {

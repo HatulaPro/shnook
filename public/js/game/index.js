@@ -73,6 +73,11 @@ const challengeDiv = document.querySelector('.challenge-div');
 
 const cards = document.querySelectorAll('.card');
 const mainCards = document.querySelector('.main-cards');
+
+function cardIndexToLetter(index) {
+	return String.fromCharCode('A'.charCodeAt(0) + index);
+}
+
 cards.forEach((card, i) => {
 	card.addEventListener('click', () => {
 		if (roomData && player && roomData.hasStarted) {
@@ -85,7 +90,7 @@ cards.forEach((card, i) => {
 		}
 	});
 
-	new Array(...card.children[2].children).forEach((cardButton, buttonIndex) => {
+	new Array(...card.children[1].children).forEach((cardButton, buttonIndex) => {
 		cardButton.style.backgroundImage = `url(${Object.values(CARD_EFFECTS)[buttonIndex].image})`;
 		cardButton.style.display = 'none';
 		cardButton.addEventListener('click', () => {
@@ -146,7 +151,7 @@ function showCardEffect(effectType, cardIndex) {
 	if (effectType === 0) return;
 
 	const effect = Object.values(CARD_EFFECTS).find((eff) => eff.number === effectType);
-	showMessage('SYSTEM', `${roomData.players[roomData.lier].username} is showing ${effect.name} on card ${String.fromCharCode('A'.charCodeAt(0) + cardIndex)}!`, (system = true));
+	showMessage('SYSTEM', `${roomData.players[roomData.lier].username} is showing ${effect.name} on card ${cardIndexToLetter(cardIndex)}!`, (system = true));
 
 	cards[cardIndex].children[0].classList.add(effect.className);
 }
@@ -240,10 +245,13 @@ function getTimestamp() {
 function createPlayerElement(p) {
 	const playerElement = document.createElement('div');
 	const pointsElement = document.createElement('span');
+	const guessElement = document.createElement('span');
 
 	playerElement.setAttribute('data-username', p.username);
 
 	playerElement.classList.add('player-li');
+	pointsElement.classList.add('player-li-points');
+	guessElement.classList.add('player-li-guess');
 
 	playerElement.innerText = p.username;
 
@@ -251,6 +259,7 @@ function createPlayerElement(p) {
 		playerElement.style.backgroundColor = '#acacac';
 	}
 
+	playerElement.appendChild(guessElement);
 	playerElement.appendChild(pointsElement);
 	pointsElement.innerText = `score: ${p.score || '#'}`;
 
@@ -300,7 +309,6 @@ function update() {
 		}
 
 		cards.forEach((card, index) => {
-			card.children[1].innerText = '';
 			if (player.guess === index) {
 				card.classList.add('card-locked');
 			} else {
@@ -308,18 +316,24 @@ function update() {
 			}
 
 			if (isGuessing) {
-				new Array(...card.children[2].children).forEach((cardButton) => {
+				new Array(...card.children[1].children).forEach((cardButton) => {
 					cardButton.style.display = 'none';
 				});
 			} else {
-				new Array(...card.children[2].children).forEach((cardButton) => {
+				new Array(...card.children[1].children).forEach((cardButton) => {
 					cardButton.style.display = 'block';
 				});
 			}
 		});
-		roomData.players.forEach((player) => {
-			if (player.guess !== -1) {
-				cards[player.guess].children[1].innerText += player.username + ' ';
+
+		roomData.players.forEach((player, index) => {
+			const playerScoreElement = document.querySelector(`[data-username='${player.username}']`);
+			if (index === roomData.lier) {
+				playerScoreElement.children[0].innerText = ' (lier)';
+			} else if (player.guess !== -1) {
+				playerScoreElement.children[0].innerText = ` (${cardIndexToLetter(player.guess)})`;
+			} else {
+				playerScoreElement.children[0].innerText = '';
 			}
 		});
 	}
