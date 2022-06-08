@@ -8,6 +8,7 @@ module.exports = class Room {
 	static MAX_ROUNDS = 3;
 	static TIME_PER_ROUND = 10;
 	static TIME_BETWEEN_ROUNDS = 3;
+	static NUMBER_OF_CHALLENGEs = 2;
 	static CHANCE_OF_CHALLENGE = 1.0;
 
 	// players: a map of socket to info
@@ -97,8 +98,15 @@ module.exports = class Room {
 
 	generateChallenge() {
 		if (Math.random() > Room.CHANCE_OF_CHALLENGE) return null;
-		// TODO: More challenges
-		return { effect: 1, time: 5000, bonus: 300 };
+
+		const effect = Math.floor(Math.random() * Room.NUMBER_OF_CHALLENGEs + 1);
+		const time = (Math.floor(Math.random() * Room.TIME_PER_ROUND * 0.7) + 1) * 1000;
+		const bonus = Math.floor(Math.random() * Math.sqrt(time / 400) + 1) * 50;
+		return {
+			effect,
+			time,
+			bonus,
+		};
 	}
 
 	start() {
