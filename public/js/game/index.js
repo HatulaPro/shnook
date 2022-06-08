@@ -80,9 +80,9 @@ function cardIndexToLetter(index) {
 	return String.fromCharCode('A'.charCodeAt(0) + index);
 }
 
-function sceneTransition(func) {
-	const duration = 1000;
+function sceneTransition(func, text, duration) {
 	hideAllDiv.style.display = 'block';
+	hideAllDiv.innerText = text;
 	hideAllDiv.animate(
 		[
 			{
@@ -113,8 +113,8 @@ function sceneTransition(func) {
 
 		setTimeout(() => {
 			hideAllDiv.style.display = 'none';
-		}, 500);
-	}, duration - 500);
+		}, Math.floor(duration * 0.3));
+	}, duration - Math.floor(duration * 0.3));
 }
 
 cards.forEach((card, i) => {
@@ -333,9 +333,13 @@ function update() {
 	// Game Over
 	if (roomData.roundsPlayed === roomData.maxRounds) {
 		winner = orderedPlayers[0];
-		sceneTransition(() => {
-			setState(STATES.OVER);
-		});
+		sceneTransition(
+			() => {
+				setState(STATES.OVER);
+			},
+			'GG',
+			1000
+		);
 	}
 
 	if (roomData.hasStarted) {
@@ -532,13 +536,20 @@ function setState(s) {
 			history.pushState({}, '', '/create');
 		}
 	} else if (s === STATES.PLAY) {
-		mainDiv.style.display = 'block';
-		mainCards.style.display = 'flex';
-		gameModeSpan.style.display = 'none';
-		joinOrCreateDiv.style.display = 'none';
-		timerSpan.style.display = 'flex';
-		timerSpan.innerText = roomData.timePerRound;
-		history.pushState({}, '', `/game/${roomData.id}`);
+		// Looks a lot better with this transition
+		sceneTransition(
+			() => {
+				mainDiv.style.display = 'block';
+				mainCards.style.display = 'flex';
+				gameModeSpan.style.display = 'none';
+				joinOrCreateDiv.style.display = 'none';
+				timerSpan.style.display = 'flex';
+				timerSpan.innerText = roomData.timePerRound;
+				history.pushState({}, '', `/game/${roomData.id}`);
+			},
+			"Let's Go!",
+			1000
+		);
 	} else if (s === STATES.OVER) {
 		mainCards.style.display = 'none';
 		gameModeSpan.style.display = 'none';
