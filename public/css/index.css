@@ -522,7 +522,7 @@ input:focus {
 	display: flex;
 	background-color: #87f080;
 	padding: 0.2rem 0.4rem;
-	max-width: 20vw;
+	max-width: 80vw;
 	border-top-right-radius: 0.5rem;
 	border-bottom-right-radius: 0.5rem;
 	animation: challengeGoIn 0.5s;
@@ -543,6 +543,7 @@ input:focus {
 	align-items: center;
 	justify-content: center;
 	display: flex;
+	flex-shrink: 0;
 }
 .challenge-div-content {
 	align-items: center;
@@ -612,9 +613,6 @@ input:focus {
 		margin: 2rem;
 		max-width: 50vw;
 		max-height: 50vw;
-	}
-	.challenge-div {
-		max-width: none;
 	}
 	.challenge-div-points {
 		font-size: 1rem;
