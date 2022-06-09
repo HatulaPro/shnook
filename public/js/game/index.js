@@ -374,8 +374,7 @@ function update() {
 				});
 			}
 
-			card.children[2].children[0].style.backgroundSize = `auto ${votes[index] / roomData.players.length * 50}%`;
-			console.log(card.children[2].children[0].style.backgroundSize, card.children[2].children[0]);
+			card.children[2].children[0].style.backgroundSize = `auto ${(votes[index] / roomData.players.length) * 50}%`;
 		});
 
 		roomData.players.forEach((player, index) => {
@@ -415,7 +414,6 @@ socket.on('joined', (stream) => {
 // Change state once joined
 socket.on('update', (stream) => {
 	roomData = stream.room;
-	console.log(roomData);
 	update();
 });
 
@@ -485,7 +483,7 @@ socket.on('effect', ({ effectType, cardIndex }) => {
 	showCardEffect(effectType, cardIndex);
 });
 
-socket.on('success', (challenge) => {
+socket.on('success', ({ challenge }) => {
 	challengeDiv.children[2].innerText = '✔';
 	challengeDiv.classList.add('challenge-div-complete');
 	challengeDiv.animate(
@@ -508,6 +506,14 @@ socket.on('success', (challenge) => {
 			iterations: 1,
 		}
 	);
+	const roomPlayer = roomData.players.find((p) => p.username === player.username);
+	roomPlayer.score += challenge.bonus;
+
+	if (player !== roomPlayer) {
+		player.score += challenge.bonus;
+	}
+
+	update();
 });
 
 joinOrCreateSwapStateButton.addEventListener('click', () => {

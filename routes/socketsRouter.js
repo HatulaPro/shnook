@@ -152,6 +152,7 @@ module.exports = (io) => {
 							if (new Date().getTime() - room.lastEffect.added * 1000 >= room.challenge.time) {
 								io.to(room.getLierSocketId()).emit('success', { challenge: room.challenge });
 								room.playersList()[room.lier].score += room.challenge.bonus;
+								room.challenge = null;
 							}
 						} catch (e) {
 							// In case room.lastEffect has changed during execution
