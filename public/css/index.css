@@ -348,6 +348,15 @@ html {
 	}
 }
 
+@keyframes hueEffect {
+	0% {
+		filter: hue-rotate(0deg);
+	}
+	100% {
+		filter: hue-rotate(30deg);
+	}
+}
+
 .wave-wrapper {
 	width: calc(100% + 2rem);
 	overflow: hidden;
@@ -362,7 +371,7 @@ html {
 	height: 100%;
 	background-position: bottom;
 	transition: background-size 0.2s;
-	animation: wave 12s cubic-bezier(0.36, 0.45, 0.63, 0.53) infinite, swell 8s ease -1.25s infinite;
+	animation: wave 12s cubic-bezier(0.36, 0.45, 0.63, 0.53) infinite, hueEffect 2s alternate-reverse infinite;
 	transform: translate3d(0, 0, 0);
 	opacity: 0.6;
 }
