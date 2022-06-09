@@ -325,6 +325,7 @@ html {
 	align-content: center;
 	flex-direction: column;
 	font-size: 8rem;
+	overflow: hidden;
 	border-radius: 1rem;
 }
 
@@ -336,6 +337,34 @@ html {
 	position: absolute;
 	left: 50%;
 	transform: translateX(-50%);
+}
+
+@keyframes wave {
+	0% {
+		margin-left: 0;
+	}
+	100% {
+		margin-left: -100%;
+	}
+}
+
+.wave-wrapper {
+	width: calc(100% + 2rem);
+	overflow: hidden;
+	margin: -1rem;
+	position: inherit;
+	height: calc(100% + 2rem);
+}
+.card-wave {
+	background: url(/public/images/wave.svg);
+	background-repeat: repeat-x;
+	width: 300%;
+	height: 100%;
+	background-position: bottom;
+	transition: background-size 0.2s;
+	animation: wave 12s cubic-bezier(0.36, 0.45, 0.63, 0.53) infinite, swell 8s ease -1.25s infinite;
+	transform: translate3d(0, 0, 0);
+	opacity: 0.6;
 }
 
 @keyframes cardEffectKingAnimation {

@@ -132,6 +132,8 @@ cards.forEach((card, i) => {
 			}
 		});
 	});
+
+	card.children[2].children[0].style.backgroundSize = 'auto 0%';
 });
 function showMessage(p, c, system = false) {
 	const viewMessage = document.createElement('p');
@@ -347,6 +349,14 @@ function update() {
 			gameModeSpan.style.backgroundColor = 'rgb(107, 105, 222)';
 		}
 
+		const votes = [0, 0, 0, 0];
+
+		roomData.players.forEach((p) => {
+			if (p.guess !== -1) {
+				votes[p.guess]++;
+			}
+		});
+
 		cards.forEach((card, index) => {
 			if (player.guess === index) {
 				card.classList.add('card-locked');
@@ -363,6 +373,9 @@ function update() {
 					cardButton.style.display = 'block';
 				});
 			}
+
+			card.children[2].children[0].style.backgroundSize = `auto ${votes[index] / roomData.players.length * 50}%`;
+			console.log(card.children[2].children[0].style.backgroundSize, card.children[2].children[0]);
 		});
 
 		roomData.players.forEach((player, index) => {
@@ -442,6 +455,7 @@ socket.on('start', (stream) => {
 		element.classList.remove('secret-card');
 		element.classList.remove('card-locked');
 		player.guess = -1;
+		element.children[2].children[0].style.backgroundSize = 'auto 0%';
 	});
 
 	challengeDiv.style.display = 'none';
