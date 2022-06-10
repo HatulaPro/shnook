@@ -173,7 +173,7 @@ html {
 
 .secret-card::before {
 	content: 'TOP SECRET';
-	z-index: 999999;
+	z-index: 999;
 	color: red;
 	width: fit-content;
 	transform: rotate(15deg) translateX(-50%);
@@ -338,6 +338,7 @@ html {
 	position: absolute;
 	left: 50%;
 	transform: translateX(-50%);
+	z-index: 9999;
 }
 
 @keyframes wave {
