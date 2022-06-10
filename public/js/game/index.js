@@ -342,43 +342,45 @@ function update() {
 	}
 
 	if (roomData.hasStarted) {
-		gameModeSpan.style.display = 'block';
-		isGuessing = roomData.players[roomData.lier].username !== player.username;
-		if (isGuessing) {
-			gameModeSpan.innerText = 'Guess The Card!';
-			gameModeSpan.style.backgroundColor = 'rgb(107, 222, 105)';
-		} else {
-			gameModeSpan.innerText = 'SHNOOK them all!';
-			gameModeSpan.style.backgroundColor = 'rgb(107, 105, 222)';
-		}
-
-		const votes = [0, 0, 0, 0];
-
-		roomData.players.forEach((p) => {
-			if (p.guess !== -1) {
-				votes[p.guess]++;
-			}
-		});
-
-		cards.forEach((card, index) => {
-			if (player.guess === index) {
-				card.classList.add('card-locked');
-			} else {
-				card.classList.remove('card-locked');
-			}
-
+		if (roomData.lier !== null) {
+			gameModeSpan.style.display = 'block';
+			isGuessing = roomData.players[roomData.lier].username !== player.username;
 			if (isGuessing) {
-				new Array(...card.children[1].children).forEach((cardButton) => {
-					cardButton.style.display = 'none';
-				});
+				gameModeSpan.innerText = 'Guess The Card!';
+				gameModeSpan.style.backgroundColor = 'rgb(107, 222, 105)';
 			} else {
-				new Array(...card.children[1].children).forEach((cardButton) => {
-					cardButton.style.display = 'block';
-				});
+				gameModeSpan.innerText = 'SHNOOK them all!';
+				gameModeSpan.style.backgroundColor = 'rgb(107, 105, 222)';
 			}
 
-			card.children[2].children[0].style.backgroundSize = `auto ${(votes[index] / roomData.players.length) * 50}%`;
-		});
+			const votes = [0, 0, 0, 0];
+
+			roomData.players.forEach((p) => {
+				if (p.guess !== -1) {
+					votes[p.guess]++;
+				}
+			});
+
+			cards.forEach((card, index) => {
+				if (player.guess === index) {
+					card.classList.add('card-locked');
+				} else {
+					card.classList.remove('card-locked');
+				}
+
+				if (isGuessing) {
+					new Array(...card.children[1].children).forEach((cardButton) => {
+						cardButton.style.display = 'none';
+					});
+				} else {
+					new Array(...card.children[1].children).forEach((cardButton) => {
+						cardButton.style.display = 'block';
+					});
+				}
+
+				card.children[2].children[0].style.backgroundSize = `auto ${(votes[index] / roomData.players.length) * 50}%`;
+			});
+		}
 
 		roomData.players.forEach((player, index) => {
 			const playerScoreElement = document.querySelector(`[data-username='${player.username}']`);
