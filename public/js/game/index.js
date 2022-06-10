@@ -308,6 +308,7 @@ function update() {
 
 	// playersDiv.innerHTML = '';
 	const orderedPlayers = roomData.players.slice().sort((a, b) => b.score - a.score);
+	let height = 0;
 	orderedPlayers.forEach((p, index) => {
 		let playerElement = document.querySelector(`[data-username='${p.username}']`);
 		if (playerElement === null) {
@@ -323,8 +324,10 @@ function update() {
 			}
 			playerElement.children[playerElement.children.length - 1].innerText = `score: ${p.score || '#'}`;
 		}
-		playerElement.style.top = `${playerElement.clientHeight * index}px`;
+		height = playerElement.clientHeight;
+		playerElement.style.top = `${height * index}px`;
 	});
+	playersDiv.style.height = `${height * orderedPlayers.length}px`;
 
 	// Game Over
 	if (roomData.roundsPlayed === roomData.maxRounds) {

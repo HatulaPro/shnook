@@ -228,7 +228,6 @@ html {
 	padding-left: 6px;
 	padding-right: 6px;
 	transition: 0.3s all;
-	overflow-y: scroll;
 }
 
 .player-li {
