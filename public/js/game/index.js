@@ -35,6 +35,12 @@ const CARD_EFFECTS = {
 		image: '/public/images/confetti.png',
 		name: 'Confetti',
 	},
+	ARROW: {
+		number: 3,
+		className: 'card-effect-arrow',
+		image: '/public/images/downArrow.png',
+		name: 'Arrow',
+	},
 };
 
 let player = null;
@@ -128,6 +134,7 @@ cards.forEach((card, i) => {
 		cardButton.style.display = 'none';
 		cardButton.addEventListener('click', () => {
 			if (roomData && player && roomData.hasStarted && !isGuessing) {
+				console.log({ effectType: buttonIndex, cardIndex: i });
 				socket.emit('effect', { effectType: buttonIndex, cardIndex: i });
 			}
 		});

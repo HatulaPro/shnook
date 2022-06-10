@@ -137,7 +137,7 @@ module.exports = (io) => {
 			if (!Number.isInteger(cardIndex)) return;
 			if (cardIndex < 0 || cardIndex > 3) return;
 			if (socket.id !== room.getLierSocketId()) return;
-			if (effectType < 0 || effectType > 2) return;
+			if (effectType < 0 || effectType > Room.NUMBER_OF_CHALLENGES) return;
 
 			room.applyEffect(effectType, cardIndex);
 
