@@ -310,6 +310,7 @@ html {
 	gap: 1rem;
 	justify-content: center;
 	align-items: center;
+	align-content: center;
 }
 
 .main-cards .card {
