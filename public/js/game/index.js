@@ -147,11 +147,11 @@ function showMessage(p, c, system = false) {
 
 	if (p === player.username) {
 		messageUser.innerText = `[${p} (you)]: `;
-		if (roomData.hasStarted && p === roomData.players[roomData.lier].username) {
+		if (roomData.roundsPlayed < roomData.maxRounds && roomData.hasStarted && p === roomData.players[roomData.lier].username) {
 			messageUser.innerText = `[${p} (you, lier)]: `;
 			messageUser.style.color = 'purple';
 		}
-	} else if (roomData.hasStarted && p === roomData.players[roomData.lier].username) {
+	} else if (roomData.roundsPlayed < roomData.maxRounds && roomData.hasStarted && p === roomData.players[roomData.lier].username) {
 		messageUser.innerText = `[${p} (lier)]: `;
 		messageUser.style.color = 'purple';
 	}
