@@ -555,8 +555,6 @@ function setState(s) {
 		timerSpan.style.display = 'none';
 		challengeDiv.style.display = 'none';
 
-		usernameInput.focus();
-
 		roomIdTitle.innerText = '';
 		roomPlayers.innerText = '';
 		roomRounds.innerText = '';
