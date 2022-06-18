@@ -687,12 +687,11 @@ input:focus {
 	.main .flex {
 		flex-wrap: wrap;
 		justify-content: center;
+		padding: 4px;
 	}
 	.main-cards {
 		flex: 3 0 96%;
 		order: -1;
-		padding-left: 12px;
-		padding-right: 12px;
 	}
 	.card {
 		flex-basis: 30% !important;
