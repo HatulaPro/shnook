@@ -78,8 +78,12 @@ module.exports = (io) => {
 		socket.on('start', () => {
 			if (!loggedIn()) return;
 			if (!room.isAdmin(player)) return;
-			if (room.hasStarted) return;
 			if (room.players.size < 2) return;
+
+			if (room.hasStarted && room.roundsPlayed < Room.MAX_ROUNDS) return;
+			if (room.roundsPlayed === Room.MAX_ROUNDS) {
+				room.restart();
+			}
 
 			gameTimer = setInterval(() => {
 				room.roundsPlayed += 1;

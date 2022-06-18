@@ -29,6 +29,19 @@ module.exports = class Room {
 		this.challenge = null;
 	}
 
+	restart() {
+		this.startedAt = null;
+		this.players.forEach((player) => {
+			player.guess = -1;
+			player.score = 0;
+		});
+		this.lier = null;
+		this.treasure = null;
+		this.lastEffect = null;
+		this.challenge = null;
+		this.roundsPlayed = 0;
+	}
+
 	hasUsername(username) {
 		for (const player of this.playersList()) {
 			if (player.username === username) return true;
@@ -105,6 +118,7 @@ module.exports = class Room {
 			this.lastEffect = null;
 			this.challenge = null;
 		});
+		this.hasStarted = false;
 	}
 
 	generateChallenge() {

@@ -432,6 +432,8 @@ socket.on('update', (stream) => {
 socket.on('start', (stream) => {
 	roomData = stream.room;
 
+	if (state !== STATES.PLAY) setState(STATES.PLAY);
+
 	chatContent.innerHTML = '';
 	if (timer !== null) {
 		clearInterval(timer);
@@ -580,6 +582,10 @@ function setState(s) {
 		mainCards.style.display = 'none';
 		gameModeSpan.style.display = 'none';
 		challengeDiv.style.display = 'none';
+		if (isAdmin) {
+			ownerStartButton.innerText = 'restart';
+			ownerStartButton.style.transform = '';
+		}
 		let playerElement = document.querySelector(`[data-username='${winner.username}']`);
 		playerElement.innerHTML = '👑 ' + playerElement.innerHTML;
 		chatContent.innerHTML = '';
