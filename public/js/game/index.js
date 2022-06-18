@@ -60,6 +60,10 @@ const createForm = document.querySelector('.create-form');
 const joinOrCreateSwapStateButton = document.querySelector('.join-or-create-swap');
 
 const createButton = document.querySelector('.create-form button');
+const timePerRoundInput = document.querySelector('.timePerRoundInput');
+const numberOfRoundsInput = document.querySelector('.numberOfRoundsInput');
+const maxPlayersInput = document.querySelector('.maxPlayersInput');
+
 const joinButton = document.querySelector('.join-form button');
 const joinRoomInput = document.querySelector('#room-id-input');
 const usernameInput = document.querySelector('#username-input');
@@ -208,7 +212,12 @@ chatInput.addEventListener('keypress', function (e) {
 
 // Listening to create room
 const onCreate = () => {
-	socket.emit('create', { username: usernameInput.value });
+	socket.emit('create', {
+		username: usernameInput.value,
+		timePerRound: Number.parseInt(timePerRoundInput.value),
+		maxRounds: Number.parseInt(numberOfRoundsInput.value),
+		maxPlayers: Number.parseInt(maxPlayersInput.value),
+	});
 };
 createButton.addEventListener('click', onCreate);
 

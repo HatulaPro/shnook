@@ -125,7 +125,7 @@ module.exports = class Room {
 		if (Math.random() > Room.CHANCE_OF_CHALLENGE) return null;
 
 		const effect = Math.floor(Math.random() * Room.NUMBER_OF_CHALLENGES + 1);
-		const time = (Math.floor(Math.random() * Room.TIME_PER_ROUND * 0.7) + 1) * 1000;
+		const time = (Math.floor(Math.random() * this.timePerRound * 0.7) + 1) * 1000;
 		const bonus = Math.floor(Math.random() * Math.sqrt(time / 400) + 1) * 50;
 		return {
 			effect,

@@ -555,6 +555,20 @@ input:focus {
 	background-color: #cdcdcd;
 }
 
+.input-and-text {
+	margin-top: 0.4rem;
+	margin-bottom: 0.4rem;
+}
+.input-and-text * {
+	color: white;
+	vertical-align: middle;
+}
+
+.input-and-text span {
+	width: 3rem;
+	display: inline-block;
+}
+
 .join-or-create {
 	display: flex;
 	width: 200vw;

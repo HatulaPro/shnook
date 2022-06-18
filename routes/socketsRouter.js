@@ -23,8 +23,12 @@ module.exports = (io) => {
 		};
 
 		// TODO: destructuring breaks when the stream is undefined
-		socket.on('create', ({ username }) => {
+		socket.on('create', ({ username, timePerRound, maxRounds, maxPlayers }) => {
 			if (typeof username !== 'string') return;
+			if (!Number.isInteger(timePerRound) || timePerRound < 5 || timePerRound > 60) return;
+			if (!Number.isInteger(maxRounds) || maxRounds < 3 || maxRounds > 20) return;
+			if (!Number.isInteger(maxPlayers) || maxPlayers < 2 || maxPlayers > 12) return;
+
 			username = username.trim();
 			const errorMsg = validateUsername(username);
 			if (errorMsg !== true) {
@@ -33,7 +37,7 @@ module.exports = (io) => {
 			}
 			const id = nanoid(6);
 			player = { username };
-			room = new Room(id, Room.MAX_PLAYERS, Room.TIME_PER_ROUND, Room.MAX_ROUNDS, false, socket.id, player);
+			room = new Room(id, maxPlayers, timePerRound, maxRounds, false, socket.id, player);
 
 			socket.join(id);
 			io.to(socket.id).emit('joined', { id, player, room: room.getStatus() });
@@ -80,8 +84,8 @@ module.exports = (io) => {
 			if (!room.isAdmin(player)) return;
 			if (room.players.size < 2) return;
 
-			if (room.hasStarted && room.roundsPlayed < Room.MAX_ROUNDS) return;
-			if (room.roundsPlayed === Room.MAX_ROUNDS) {
+			if (room.hasStarted && room.roundsPlayed < room.maxRounds) return;
+			if (room.roundsPlayed === room.maxRounds) {
 				room.restart();
 			}
 
