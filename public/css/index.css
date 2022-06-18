@@ -161,39 +161,47 @@ html {
 	padding: 0.2rem;
 }
 
-@keyframes slapSecret {
-	from {
-		transform: scale(4) translateZ(5rem) translateX(-50%);
+@keyframes showSecret {
+	0% {
+		bottom: -200%;
 	}
-
-	to {
-		transform: rotate(15deg) translateX(-50%);
+	35% {
+		bottom: 10%;
+	}
+	70% {
+		bottom: 10%;
+	}
+	100% {
+		bottom: -10%;
 	}
 }
 
-.secret-card::before {
-	content: 'TOP SECRET';
-	z-index: 999;
-	color: red;
-	width: fit-content;
-	transform: rotate(15deg) translateX(-50%);
-	font-size: 2rem;
-	background-color: #85313155;
-	background-blend-mode: multiply;
-	background-image: url('/public/images/noise.jpg');
-	background-repeat: no-repeat;
-	background-size: cover;
-	background-position: center;
-	position: absolute;
-	top: 25%;
-	left: 70%;
-	padding: 0.4rem;
-	border: 2px solid red;
+.secret-card span {
+	color: #fff484 !important;
+	text-shadow: 2px 2px black;
+}
 
-	animation-name: slapSecret;
-	animation-duration: 0.2s;
-	animation-timing-function: ease-in;
+.secret-card::before {
+	content: '';
+	height: 4rem;
+	width: 100%;
+	margin: -1rem;
+	background-image: url(/public/images/secret.png);
+	background-repeat: no-repeat;
+	background-size: contain;
+	background-position: center;
+	overflow: hidden;
+	position: absolute;
+	bottom: -10%;
+	transition: 0.4s bottom;
+
+	animation-name: showSecret;
+	animation-duration: 2s;
 	animation-iteration-count: 1;
+}
+
+.secret-card:hover::before {
+	bottom: 10%;
 }
 
 @keyframes titleAnimation {
@@ -348,6 +356,7 @@ html {
 	position: absolute;
 	left: 50%;
 	transform: translateX(-50%);
+	transition: color 0.4s;
 	z-index: 9999;
 }
 
