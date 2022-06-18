@@ -208,6 +208,8 @@ html {
 
 .main-title-shnooked {
 	color: gray;
+	font-family: 'Do Hyeon';
+	font-weight: 200;
 	animation-name: titleAnimation;
 	animation-duration: 0.5s;
 	animation-direction: alternate-reverse;
