@@ -692,6 +692,9 @@ input:focus {
 		flex: 3 0 100%;
 		order: -1;
 	}
+	.card {
+		flex-basis: 30% !important;
+	}
 	.player-li {
 		font-size: 1rem;
 	}
