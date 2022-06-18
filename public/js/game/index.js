@@ -277,6 +277,9 @@ ownerStartButton.addEventListener('click', () => {
 			}
 		);
 		ownerStartButton.style.transform = 'translateY(-10000%)';
+		document.querySelectorAll('.player-li').forEach((playerLi) => {
+			playerLi.innerHTML = playerLi.innerHTML.replaceAll('👑', '');
+		});
 	}
 });
 
@@ -593,7 +596,6 @@ function setState(s) {
 		document.querySelectorAll('.player-li').forEach((playerLi) => {
 			playerLi.style.color = null;
 			playerLi.children[0].innerText = '';
-			console.log('set');
 		});
 
 		history.pushState({}, '', `/game/${roomData.id}`);
