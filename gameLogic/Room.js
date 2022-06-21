@@ -82,8 +82,8 @@ module.exports = class Room {
 
 	adjustScore() {
 		const lier = this.playersList()[this.lier];
-		this.players.forEach((player) => {
-			if (lier.username === player.username) return;
+		this.playersList().forEach((player, index) => {
+			if (index === this.lier) return;
 			if (player.guess === this.treasure) {
 				player.score += 600;
 				lier.score -= 200;
