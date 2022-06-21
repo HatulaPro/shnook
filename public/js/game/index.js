@@ -72,6 +72,7 @@ const joinFailSpan = document.querySelector('.join-or-create-fail');
 const chatInput = document.querySelector('#chat-input');
 const chatButton = document.querySelector('#chat-button');
 const chatContent = document.querySelector('.chat-content');
+const goToChatButton = document.querySelector('.go-to-chat-btn');
 
 const playersDiv = document.querySelector('.main-players');
 
@@ -146,6 +147,11 @@ cards.forEach((card, i) => {
 
 	card.children[2].children[0].style.backgroundSize = 'auto 0%';
 });
+
+goToChatButton.addEventListener('click', () => {
+	chatButton.scrollIntoView({ behavior: 'smooth', block: 'center' });
+});
+
 function showMessage(p, c, system = false) {
 	const viewMessage = document.createElement('p');
 	const messageUser = document.createElement('span');
