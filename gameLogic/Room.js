@@ -98,8 +98,8 @@ module.exports = class Room {
 		if (isFirst) {
 			this.lier = 0;
 		} else {
-			this.lier = Math.floor(Math.random() * this.players.size);
 			this.adjustScore();
+			this.lier = Math.floor(Math.random() * this.players.size);
 		}
 		this.players.forEach((player) => {
 			player.guess = -1;
