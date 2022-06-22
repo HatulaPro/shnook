@@ -49,6 +49,7 @@ let isGuessing = false;
 let roomData = null;
 let timer = null;
 let winner = null;
+let newMessagesCounter = 0;
 
 const mainDiv = document.querySelector('.main');
 const roomIdTitle = document.querySelector('#room-id-title');
@@ -149,8 +150,19 @@ cards.forEach((card, i) => {
 });
 
 goToChatButton.addEventListener('click', () => {
+	setNewMessagesCounter(0);
 	chatButton.scrollIntoView({ behavior: 'smooth', block: 'center' });
 });
+
+function setNewMessagesCounter(count) {
+	newMessagesCounter = count;
+	if (count === 0) {
+		goToChatButton.children[0].style.display = 'none';
+	} else {
+		goToChatButton.children[0].style.display = 'inline';
+		goToChatButton.children[0].innerText = count;
+	}
+}
 
 function showMessage(p, c, system = false) {
 	const viewMessage = document.createElement('p');
@@ -187,6 +199,7 @@ const onMessageSubmit = () => {
 		chatInput.value = '';
 
 		showMessage(player.username, value);
+		setNewMessagesCounter(newMessagesCounter + 1);
 
 		socket.emit('message', value);
 	}
@@ -453,6 +466,7 @@ socket.on('start', (stream) => {
 	if (state !== STATES.PLAY) setState(STATES.PLAY);
 
 	chatContent.innerHTML = '';
+	setNewMessagesCounter(0);
 	if (timer !== null) {
 		clearInterval(timer);
 		timer = null;
@@ -509,6 +523,7 @@ socket.on('join_failed', (stream) => {
 
 socket.on('message', (stream) => {
 	showMessage(stream.user, stream.message);
+	setNewMessagesCounter(newMessagesCounter + 1);
 });
 
 socket.on('effect', ({ effectType, cardIndex }) => {
@@ -548,12 +563,22 @@ socket.on('success', ({ challenge }) => {
 	update();
 });
 
+window.addEventListener('scroll', function () {
+	const position = chatInput.getBoundingClientRect();
+
+	// Hide comments count when chatInput is fully visible
+	if (position.top >= 0 && position.bottom <= window.innerHeight) {
+		setNewMessagesCounter(0);
+	}
+});
+
 joinOrCreateSwapStateButton.addEventListener('click', () => {
 	setState(state === STATES.JOIN ? STATES.CREATE : STATES.JOIN);
 });
 
 // Function to call when state changes
 function setState(s) {
+	setNewMessagesCounter(0);
 	if (s === STATES.JOIN || s === STATES.CREATE) {
 		mainDiv.style.display = 'none';
 		joinOrCreateDiv.style.display = 'block';

@@ -649,6 +649,9 @@ input:focus {
 	cursor: pointer;
 	filter: hue-rotate(30deg);
 }
+.go-to-chat-btn span {
+	display: none;
+}
 
 .error {
 	color: red;
@@ -791,5 +794,19 @@ input:focus {
 	.go-to-chat-btn {
 		width: 2rem;
 		height: 2rem;
+	}
+	.go-to-chat-btn span {
+		display: inline;
+		background-color: #191919;
+		color: white;
+		padding: 0.2rem;
+		position: absolute;
+		border-radius: 9999px;
+		width: 40%;
+		height: 40%;
+		text-align: center;
+		line-height: 100%;
+		left: 60%;
+		top: 60%;
 	}
 }
