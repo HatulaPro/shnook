@@ -344,7 +344,6 @@ function update() {
 	roomPlayers.innerText = `${roomData.players.length}/${roomData.maxPlayers}`;
 	roomRounds.innerText = `${roomData.roundsPlayed}/${roomData.maxRounds}`;
 
-	// playersDiv.innerHTML = '';
 	const orderedPlayers = roomData.players.slice().sort((a, b) => b.score - a.score);
 	let height = 0;
 	orderedPlayers.forEach((p, index) => {
@@ -366,6 +365,14 @@ function update() {
 		playerElement.style.top = `${height * index}px`;
 	});
 	playersDiv.style.height = `${height * orderedPlayers.length}px`;
+
+	const playerElements = document.querySelectorAll(`[data-username]`);
+	playerElements.forEach((element) => {
+		const playerElementId = roomData.players.findIndex((p) => p.username === element.getAttribute('data-username'));
+		if (playerElementId === -1) {
+			playersDiv.removeChild(element);
+		}
+	});
 
 	// Game Over
 	if (roomData.roundsPlayed === roomData.maxRounds) {
