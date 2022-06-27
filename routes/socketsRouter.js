@@ -181,11 +181,13 @@ module.exports = (io) => {
 			socket.broadcast.to(room.id).emit('message', { user: player.username, message: stream });
 		});
 
-		socket.on('accept', (stream) => {
+		socket.on('accepted_double', () => {
 			if (!loggedIn()) return;
 			if (socket.id === room.getLierSocketId()) return;
+			if (!room.doublingEnabled) return;
 
 			player.scoringFactor = 2;
+			io.to(room.id).emit('accepted_double', { username: player.username });
 		});
 
 		socket.on('disconnecting', () => {

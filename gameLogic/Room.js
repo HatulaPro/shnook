@@ -10,6 +10,7 @@ module.exports = class Room {
 	static TIME_BETWEEN_ROUNDS = 4;
 	static NUMBER_OF_CHALLENGES = 3;
 	static CHANCE_OF_CHALLENGE = 0.4;
+	static CHANCE_OF_DOUBLING = 0.3;
 
 	// players: a map of socket to info
 	constructor(id, maxPlayers, timePerRound, maxRounds, hasStarted, socketId, player) {
@@ -28,6 +29,7 @@ module.exports = class Room {
 		this.roundsPlayed = 0;
 		this.lastEffect = null;
 		this.challenge = null;
+		this.doublingEnabled = false;
 	}
 
 	restart() {
@@ -42,6 +44,7 @@ module.exports = class Room {
 		this.lastEffect = null;
 		this.challenge = null;
 		this.roundsPlayed = 0;
+		this.doublingEnabled = false;
 	}
 
 	hasUsername(username) {
@@ -112,6 +115,7 @@ module.exports = class Room {
 		this.treasure = Math.floor(Math.random() * 4);
 		this.challenge = this.generateChallenge();
 		this.lastEffect = null;
+		this.doublingEnabled = Math.random() < Room.CHANCE_OF_DOUBLING;
 	}
 
 	gameOver() {
@@ -161,6 +165,7 @@ module.exports = class Room {
 			lier: this.lier,
 			roundsPlayed: this.roundsPlayed,
 			lastTreasure: this.lastTreasure,
+			doublingEnabled: this.doublingEnabled,
 		};
 	}
 };

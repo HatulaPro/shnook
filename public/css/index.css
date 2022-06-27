@@ -792,6 +792,7 @@ input:focus {
 	font-size: 1rem;
 }
 
+.player-li.player-doubling::before,
 .challenge-double::before {
 	content: '2X';
 	color: white;
@@ -802,6 +803,12 @@ input:focus {
 	left: 1rem;
 	top: -0.7em;
 	text-shadow: #1515ff 3px 2px;
+}
+
+.player-li.player-doubling::before {
+	top: 0;
+	font-size: 1.6rem;
+	color: red;
 }
 
 .hide-all {

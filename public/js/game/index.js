@@ -158,7 +158,7 @@ goToChatButton.addEventListener('click', () => {
 });
 
 doubleChallengeDivAccept.addEventListener('click', () => {
-	socket.emit('accept', {});
+	socket.emit('accepted_double');
 	doubleChallengeDiv.classList.add('challenge-div-complete');
 });
 
@@ -371,6 +371,7 @@ function update() {
 					playerElement.style.color = '#313131';
 				}
 			}
+			playerElement.classList.remove('player-doubling');
 			playerElement.children[playerElement.children.length - 1].innerText = `score: ${p.score || '#'}`;
 		}
 		height = playerElement.clientHeight;
@@ -494,6 +495,10 @@ socket.on('update', (stream) => {
 	update();
 });
 
+socket.on('accepted_double', ({ username }) => {
+	const playerElement = document.querySelector(`[data-username='${username}']`);
+	playerElement.classList.add('player-doubling');
+});
 socket.on('start', (stream) => {
 	roomData = stream.room;
 
@@ -553,7 +558,7 @@ socket.on('start', (stream) => {
 
 	challengeDiv.style.display = 'none';
 
-	if (isGuessing) {
+	if (isGuessing && roomData.doublingEnabled) {
 		doubleChallengeDiv.style.display = 'flex';
 	} else {
 		doubleChallengeDiv.style.display = 'none';
