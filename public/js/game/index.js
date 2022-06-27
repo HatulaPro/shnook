@@ -377,13 +377,28 @@ function update() {
 	// Game Over
 	if (roomData.roundsPlayed === roomData.maxRounds) {
 		winner = orderedPlayers[0];
-		sceneTransition(
-			() => {
-				setState(STATES.OVER);
-			},
-			'GG',
-			1000
-		);
+
+		cards.forEach((cardElement, index) => {
+			if (Number.isInteger(roomData.lastTreasure) && index !== roomData.lastTreasure) {
+				cardElement.classList.add('wrong-card');
+				cardElement.classList.remove('show-card');
+			}
+		});
+
+		setTimeout(() => {
+			cards.forEach((cardElement) => {
+				cardElement.classList.remove('wrong-card');
+				cardElement.classList.add('show-card');
+			});
+
+			sceneTransition(
+				() => {
+					setState(STATES.OVER);
+				},
+				'GG',
+				1000
+			);
+		}, 1000);
 	}
 
 	if (roomData.hasStarted) {
