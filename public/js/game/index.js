@@ -478,27 +478,42 @@ socket.on('start', (stream) => {
 		clearInterval(timer);
 		timer = null;
 	}
-	timer = setInterval(() => {
-		timerSpan.classList.remove('timer-go');
-		const seconds = roomData.startedAt - getTimestamp() + roomData.timePerRound + roomData.timeBetweenRounds;
-		if (seconds >= roomData.timePerRound) {
-			timerSpan.classList.add('timer-before-round');
-			const timeShown = seconds - roomData.timePerRound;
-			if (timeShown === 0) {
-				timerSpan.classList.add('timer-go');
-				timerSpan.innerText = 'GO!';
+
+	cards.forEach((cardElement, index) => {
+		if (Number.isInteger(roomData.lastTreasure) && index !== roomData.lastTreasure) {
+			cardElement.classList.add('wrong-card');
+			cardElement.classList.remove('show-card');
+		}
+	});
+
+	setTimeout(() => {
+		cards.forEach((cardElement) => {
+			cardElement.classList.remove('wrong-card');
+			cardElement.classList.add('show-card');
+		});
+
+		timer = setInterval(() => {
+			timerSpan.classList.remove('timer-go');
+			const seconds = roomData.startedAt - getTimestamp() + roomData.timePerRound - 1 + roomData.timeBetweenRounds;
+			if (seconds >= roomData.timePerRound) {
+				timerSpan.classList.add('timer-before-round');
+				const timeShown = seconds - roomData.timePerRound + 1;
+				if (timeShown === 0) {
+					timerSpan.classList.add('timer-go');
+					timerSpan.innerText = 'GO!';
+				} else {
+					timerSpan.innerText = timeShown;
+				}
 			} else {
-				timerSpan.innerText = timeShown;
+				timerSpan.classList.remove('timer-before-round');
+				timerSpan.innerText = seconds;
 			}
-		} else {
-			timerSpan.classList.remove('timer-before-round');
-			timerSpan.innerText = seconds;
-		}
-		if (timerSpan.innerText === '0') {
-			clearInterval(timer);
-			timer = null;
-		}
-	}, 500);
+			if (timerSpan.innerText === '0') {
+				clearInterval(timer);
+				timer = null;
+			}
+		}, 200);
+	}, 1000);
 
 	update();
 

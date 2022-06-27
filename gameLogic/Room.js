@@ -7,7 +7,7 @@ module.exports = class Room {
 	static MAX_PLAYERS = 10;
 	static MAX_ROUNDS = 3;
 	static TIME_PER_ROUND = 10;
-	static TIME_BETWEEN_ROUNDS = 3;
+	static TIME_BETWEEN_ROUNDS = 4;
 	static NUMBER_OF_CHALLENGES = 3;
 	static CHANCE_OF_CHALLENGE = 0.4;
 
@@ -24,6 +24,7 @@ module.exports = class Room {
 		this.id = id;
 		this.lier = null;
 		this.treasure = null;
+		this.lastTreasure = null;
 		this.roundsPlayed = 0;
 		this.lastEffect = null;
 		this.challenge = null;
@@ -105,6 +106,7 @@ module.exports = class Room {
 			player.guess = -1;
 		});
 		this.startedAt = getTimestamp();
+		this.lastTreasure = this.treasure;
 		this.treasure = Math.floor(Math.random() * 4);
 		this.challenge = this.generateChallenge();
 		this.lastEffect = null;
@@ -155,6 +157,7 @@ module.exports = class Room {
 			id: this.id,
 			lier: this.lier,
 			roundsPlayed: this.roundsPlayed,
+			lastTreasure: this.lastTreasure,
 		};
 	}
 };

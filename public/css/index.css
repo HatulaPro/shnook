@@ -320,6 +320,43 @@ html {
 	z-index: 9999;
 }
 
+@keyframes fadeOut {
+	0% {
+		opacity: 1;
+		transform: translateY(0);
+	}
+	8% {
+		transform: translateY(-20px);
+	}
+	30% {
+		opacity: 0;
+		transform: rotateY(720deg) translateY(25%);
+	}
+	100% {
+		opacity: 0;
+		transform: translateY(25%);
+	}
+}
+
+@keyframes fadeIn {
+	0% {
+		opacity: 0;
+	}
+	100% {
+		opacity: 1;
+	}
+}
+
+.wrong-card {
+	animation-name: fadeOut;
+	animation-duration: 1s;
+}
+
+.show-card {
+	animation-name: fadeIn;
+	animation-duration: 0.2s;
+}
+
 @keyframes wave {
 	0% {
 		margin-left: 0;
