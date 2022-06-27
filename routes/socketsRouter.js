@@ -181,6 +181,13 @@ module.exports = (io) => {
 			socket.broadcast.to(room.id).emit('message', { user: player.username, message: stream });
 		});
 
+		socket.on('accept', (stream) => {
+			if (!loggedIn()) return;
+			if (socket.id === room.getLierSocketId()) return;
+
+			player.scoringFactor = 2;
+		});
+
 		socket.on('disconnecting', () => {
 			socket.rooms.forEach((room) => {
 				if (Room.rooms.has(room)) {

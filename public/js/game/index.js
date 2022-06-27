@@ -82,6 +82,9 @@ const timerSpan = document.querySelector('#room-timer');
 const gameModeSpan = document.querySelector('#game-mode-span');
 
 const challengeDiv = document.querySelector('.challenge-div');
+const doubleChallengeDiv = document.querySelector('.challenge-double');
+const doubleChallengeDivAccept = document.querySelector('.challenge-double .btn-accept');
+const doubleChallengeDivReject = document.querySelector('.challenge-double .btn-reject');
 
 const cards = document.querySelectorAll('.card');
 const mainCards = document.querySelector('.main-cards');
@@ -152,6 +155,15 @@ cards.forEach((card, i) => {
 goToChatButton.addEventListener('click', () => {
 	setNewMessagesCounter(0);
 	chatButton.scrollIntoView({ behavior: 'smooth', block: 'center' });
+});
+
+doubleChallengeDivAccept.addEventListener('click', () => {
+	socket.emit('accept', {});
+	doubleChallengeDiv.classList.add('challenge-div-complete');
+});
+
+doubleChallengeDivReject.addEventListener('click', () => {
+	doubleChallengeDiv.classList.add('challenge-div-complete');
 });
 
 function setNewMessagesCounter(count) {
@@ -540,7 +552,16 @@ socket.on('start', (stream) => {
 	});
 
 	challengeDiv.style.display = 'none';
+
+	if (isGuessing) {
+		doubleChallengeDiv.style.display = 'flex';
+	} else {
+		doubleChallengeDiv.style.display = 'none';
+	}
+
 	challengeDiv.classList.remove('challenge-div-complete');
+	doubleChallengeDiv.classList.remove('challenge-div-complete');
+
 	if (stream.treasure !== undefined) {
 		document.querySelector(`.card:nth-of-type(${stream.treasure + 1})`).classList.add('secret-card');
 		if (stream.challenge) {
@@ -622,6 +643,7 @@ function setState(s) {
 		ownerStartButton.style.display = 'none';
 		timerSpan.style.display = 'none';
 		challengeDiv.style.display = 'none';
+		doubleChallengeDiv.style.display = 'none';
 
 		roomIdTitle.innerText = '';
 		roomPlayers.innerText = '';
@@ -660,6 +682,7 @@ function setState(s) {
 		mainCards.style.display = 'none';
 		gameModeSpan.style.display = 'none';
 		challengeDiv.style.display = 'none';
+		doubleChallengeDiv.style.display = 'none';
 		if (isAdmin) {
 			ownerStartButton.innerText = 'restart';
 			ownerStartButton.style.transform = '';

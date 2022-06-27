@@ -35,6 +35,7 @@ module.exports = class Room {
 		this.players.forEach((player) => {
 			player.guess = -1;
 			player.score = 0;
+			player.scoringFactor = 1;
 		});
 		this.lier = null;
 		this.treasure = null;
@@ -86,11 +87,11 @@ module.exports = class Room {
 		this.playersList().forEach((player, index) => {
 			if (index === this.lier) return;
 			if (player.guess === this.treasure) {
-				player.score += 600;
+				player.score += 600 * player.scoringFactor;
 				lier.score -= 200;
 			} else {
 				lier.score += 100;
-				player.score -= 50;
+				player.score -= 50 * player.scoringFactor;
 			}
 		});
 	}
@@ -104,6 +105,7 @@ module.exports = class Room {
 		}
 		this.players.forEach((player) => {
 			player.guess = -1;
+			player.scoringFactor = 1;
 		});
 		this.startedAt = getTimestamp();
 		this.lastTreasure = this.treasure;
@@ -141,6 +143,7 @@ module.exports = class Room {
 		this.hasStarted = true;
 		this.players.forEach((player) => {
 			player.score = 0;
+			player.scoringFactor = 1;
 		});
 		this.startRound(true);
 	}

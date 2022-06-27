@@ -26,6 +26,26 @@ html {
 	background-color: #a293c3;
 }
 
+.btn-accept {
+	background-color: #71eb68;
+	border-bottom-right-radius: 0 !important;
+	border-top-right-radius: 0 !important;
+}
+
+.btn-accept:hover {
+	background-color: #40b038;
+}
+
+.btn-reject {
+	background-color: #ee987e;
+	border-bottom-left-radius: 0 !important;
+	border-top-left-radius: 0 !important;
+}
+
+.btn-reject:hover {
+	background-color: #db3a12;
+}
+
 .inp {
 	border: none;
 	margin: 4px;
@@ -716,6 +736,7 @@ input:focus {
 	display: flex;
 	background-color: #87f080;
 	padding: 0.2rem 0.4rem;
+	align-items: center;
 	max-width: 80vw;
 	border-top-right-radius: 0.5rem;
 	border-bottom-right-radius: 0.5rem;
@@ -757,6 +778,30 @@ input:focus {
 	justify-content: center;
 	display: flex;
 	margin: 0.5rem;
+}
+
+.challenge-double {
+	background-color: #fff484;
+}
+.challenge-double span {
+	padding: 1rem;
+}
+
+.challenge-double button {
+	margin: 0.1rem;
+	font-size: 1rem;
+}
+
+.challenge-double::before {
+	content: '2X';
+	color: white;
+	font-style: italic;
+	font-size: 2.4rem;
+	font-weight: 900;
+	position: absolute;
+	left: 1rem;
+	top: -0.7em;
+	text-shadow: #1515ff 3px 2px;
 }
 
 .hide-all {
