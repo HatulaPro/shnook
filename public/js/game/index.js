@@ -512,6 +512,7 @@ function update(isStart = false) {
 			}
 			if (isStart) {
 				playerElement.classList.remove('player-doubling');
+				playerElement.childNodes[0].textContent = playerElement.getAttribute('data-username');
 			}
 			playerElement.children[playerElement.children.length - 2].innerText = `score: ${p.score || '#'}`;
 		}
