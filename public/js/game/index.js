@@ -14,6 +14,18 @@ const IS_RIGHT_PATH = {
 	OVER: (path) => Boolean(path.match(/^\/game\/[A-Za-z0-9\-_]{6}$/)),
 };
 
+const SHAPES = [
+	{
+		path: '/public/images/avatar/triangle.gif',
+	},
+	{
+		path: '/public/images/avatar/square.gif',
+	},
+	{
+		path: '/public/images/avatar/circle.gif',
+	},
+];
+
 let state = STATES.JOIN;
 
 const CARD_EFFECTS = {
@@ -50,6 +62,7 @@ let roomData = null;
 let timer = null;
 let winner = null;
 let newMessagesCounter = 0;
+let currentJoinOrCreateShapeIndex = 0;
 
 const mainDiv = document.querySelector('.main');
 const roomIdTitle = document.querySelector('#room-id-title');
@@ -69,6 +82,10 @@ const joinButton = document.querySelector('.join-form button');
 const joinRoomInput = document.querySelector('#room-id-input');
 const usernameInput = document.querySelector('#username-input');
 const joinFailSpan = document.querySelector('.join-or-create-fail');
+
+const leftShapeArrow = document.querySelector('#left-shape-arrow');
+const rightShapeArrow = document.querySelector('#right-shape-arrow');
+const avatarImage = document.querySelector('.avatar-image');
 
 const chatInput = document.querySelector('#chat-input');
 const chatButton = document.querySelector('#chat-button');
@@ -245,6 +262,7 @@ chatInput.addEventListener('keypress', function (e) {
 const onCreate = () => {
 	socket.emit('create', {
 		username: usernameInput.value,
+		shape: currentJoinOrCreateShapeIndex,
 		timePerRound: Number.parseInt(timePerRoundInput.value),
 		maxRounds: Number.parseInt(numberOfRoundsInput.value),
 		maxPlayers: Number.parseInt(maxPlayersInput.value),
@@ -254,7 +272,7 @@ createButton.addEventListener('click', onCreate);
 
 // Listening to join room
 const onJoin = () => {
-	socket.emit('join', { roomId: joinRoomInput.value, username: usernameInput.value });
+	socket.emit('join', { roomId: joinRoomInput.value, username: usernameInput.value, shape: currentJoinOrCreateShapeIndex });
 };
 joinButton.addEventListener('click', onJoin);
 joinRoomInput.addEventListener('keypress', (e) => {
@@ -323,8 +341,28 @@ ownerStartButton.addEventListener('click', () => {
 	}
 });
 
+leftShapeArrow.addEventListener('click', () => {
+	currentJoinOrCreateShapeIndex -= 1;
+	currentJoinOrCreateShapeIndex %= 3;
+	avatarImage.src = SHAPES[currentJoinOrCreateShapeIndex].path;
+});
+rightShapeArrow.addEventListener('click', () => {
+	currentJoinOrCreateShapeIndex += 1;
+	currentJoinOrCreateShapeIndex %= 3;
+	avatarImage.src = SHAPES[currentJoinOrCreateShapeIndex].path;
+});
+
 function getTimestamp() {
 	return Math.floor(new Date().getTime() / 1000);
+}
+
+function createTinyAvatar(shapeId) {
+	const tinyAvatarElement = document.createElement('div');
+
+	tinyAvatarElement.classList.add('tiny-avatar');
+	tinyAvatarElement.style.backgroundImage = `url(${SHAPES[shapeId].path})`;
+
+	return tinyAvatarElement;
 }
 
 function createPlayerElement(p) {
@@ -347,6 +385,7 @@ function createPlayerElement(p) {
 	playerElement.appendChild(guessElement);
 	playerElement.appendChild(pointsElement);
 	pointsElement.innerText = `score: ${p.score || '#'}`;
+	playerElement.appendChild(createTinyAvatar(p.shape));
 
 	return playerElement;
 }

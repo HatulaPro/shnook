@@ -23,11 +23,12 @@ module.exports = (io) => {
 		};
 
 		// TODO: destructuring breaks when the stream is undefined
-		socket.on('create', ({ username, timePerRound, maxRounds, maxPlayers }) => {
+		socket.on('create', ({ username, shape, timePerRound, maxRounds, maxPlayers }) => {
 			if (typeof username !== 'string') return;
 			if (!Number.isInteger(timePerRound) || timePerRound < 5 || timePerRound > 60) return;
 			if (!Number.isInteger(maxRounds) || maxRounds < 3 || maxRounds > 20) return;
 			if (!Number.isInteger(maxPlayers) || maxPlayers < 2 || maxPlayers > 12) return;
+			if (!Number.isInteger(shape) || shape < 0 || shape > 2) return;
 
 			username = username.trim();
 			const errorMsg = validateUsername(username);
@@ -36,7 +37,7 @@ module.exports = (io) => {
 				return;
 			}
 			const id = nanoid(6);
-			player = { username };
+			player = { username, shape };
 			room = new Room(id, maxPlayers, timePerRound, maxRounds, false, socket.id, player);
 
 			socket.join(id);
@@ -45,9 +46,10 @@ module.exports = (io) => {
 			Room.rooms.set(id, room);
 		});
 
-		socket.on('join', async ({ roomId, username }) => {
+		socket.on('join', async ({ roomId, username, shape }) => {
 			if (typeof roomId !== 'string') return;
 			if (typeof username !== 'string') return;
+			if (!Number.isInteger(shape) || shape < 0 || shape > 2) return;
 			if (roomId.length > 0 && roomId[0] === '#') {
 				roomId = roomId.trim().substring(1);
 			}
@@ -64,7 +66,7 @@ module.exports = (io) => {
 					return;
 				}
 
-				player = { username };
+				player = { username, shape };
 
 				if (room.hasStarted) return io.to(socket.id).emit('join_failed', { error: 'game has already started' });
 				if (room.players.size >= room.maxPlayers) return io.to(socket.id).emit('join_failed', { error: 'room is full' });
