@@ -510,7 +510,7 @@ function update() {
 				}
 			}
 			playerElement.classList.remove('player-doubling');
-			playerElement.children[playerElement.children.length - 1].innerText = `score: ${p.score || '#'}`;
+			playerElement.children[playerElement.children.length - 2].innerText = `score: ${p.score || '#'}`;
 		}
 		height = playerElement.clientHeight;
 		playerElement.style.top = `${height * index}px`;
