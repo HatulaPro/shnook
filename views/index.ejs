@@ -43,8 +43,9 @@
 			<div class="flex">
 				<div class="main-players"></div>
 				<div class="main-cards">
+					<% for (let char of ['A', 'B', 'C', 'D']){ %>
 					<div class="card">
-						<span> A </span>
+						<span> <%= char %> </span>
 						<div class="card-buttons">
 							<button></button>
 							<button></button>
@@ -55,42 +56,7 @@
 							<div class="card-wave"></div>
 						</div>
 					</div>
-					<div class="card">
-						<span> B </span>
-						<div class="card-buttons">
-							<button></button>
-							<button></button>
-							<button></button>
-							<button></button>
-						</div>
-						<div class="wave-wrapper">
-							<div class="card-wave"></div>
-						</div>
-					</div>
-					<div class="card">
-						<span> C </span>
-						<div class="card-buttons">
-							<button></button>
-							<button></button>
-							<button></button>
-							<button></button>
-						</div>
-						<div class="wave-wrapper">
-							<div class="card-wave"></div>
-						</div>
-					</div>
-					<div class="card">
-						<span> D </span>
-						<div class="card-buttons">
-							<button></button>
-							<button></button>
-							<button></button>
-							<button></button>
-						</div>
-						<div class="wave-wrapper">
-							<div class="card-wave"></div>
-						</div>
-					</div>
+					<% } %>
 				</div>
 				<div class="main-chat">
 					<span id="game-mode-span"></span>
