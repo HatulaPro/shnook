@@ -103,6 +103,7 @@ let winner = null;
 let newMessagesCounter = 0;
 let currentJoinOrCreateShapeIndex = 0;
 let currentJoinOrCreateColorIndex = 0;
+let doubledPlayerUsernames = new Set();
 
 const mainDiv = document.querySelector('.main');
 const roomIdTitle = document.querySelector('#room-id-title');
@@ -489,7 +490,7 @@ function createPlayerElement(p) {
 	return playerElement;
 }
 
-function update() {
+function update(isStart = false) {
 	roomIdTitle.innerText = `#${roomData.id}`;
 	roomPlayers.innerText = `${roomData.players.length}/${roomData.maxPlayers}`;
 	roomRounds.innerText = `${roomData.roundsPlayed}/${roomData.maxRounds}`;
@@ -509,7 +510,9 @@ function update() {
 					playerElement.style.color = '#313131';
 				}
 			}
-			playerElement.classList.remove('player-doubling');
+			if (isStart) {
+				playerElement.classList.remove('player-doubling');
+			}
 			playerElement.children[playerElement.children.length - 2].innerText = `score: ${p.score || '#'}`;
 		}
 		height = playerElement.clientHeight;
@@ -685,7 +688,7 @@ socket.on('start', (stream) => {
 		}, 200);
 	}, 1000);
 
-	update();
+	update(true);
 
 	document.querySelectorAll('.card').forEach((element) => {
 		element.classList.remove('secret-card');
