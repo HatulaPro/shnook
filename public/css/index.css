@@ -813,7 +813,7 @@ input:focus {
 	background-color: #87f080;
 	padding: 0.2rem 0.4rem;
 	align-items: center;
-	max-width: 80vw;
+	max-width: 90vw;
 	border-top-right-radius: 0.5rem;
 	border-bottom-right-radius: 0.5rem;
 	animation: challengeGoIn 0.5s;
@@ -991,5 +991,21 @@ input:focus {
 
 	.tiny-avatar-eyes {
 		border: 2px solid white;
+	}
+
+	.challenge-div,
+	.challenge-div button,
+	.challenge-div span {
+		font-size: smaller;
+	}
+
+	.challenge-div-buttons {
+		display: flex;
+		margin-left: 1rem;
+		margin-right: 1rem;
+	}
+	.challenge-double {
+		padding-top: 1rem;
+		display: block;
 	}
 }
