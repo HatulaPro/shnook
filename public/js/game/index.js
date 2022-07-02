@@ -396,18 +396,18 @@ rightShapeArrow.addEventListener('click', () => {
 	avatarImage.src = SHAPES[currentJoinOrCreateShapeIndex].path;
 });
 
-avatarColor.style.backgroundColor = AVATAR_COLORS[currentJoinOrCreateColorIndex].color;
+avatarColor.children[0].style.fill = AVATAR_COLORS[currentJoinOrCreateColorIndex].color;
 avatarImage.style.filter = AVATAR_COLORS[currentJoinOrCreateColorIndex].filter;
 leftColorArrow.addEventListener('click', () => {
 	currentJoinOrCreateColorIndex -= 1 - AVATAR_COLORS.length;
 	currentJoinOrCreateColorIndex %= AVATAR_COLORS.length;
-	avatarColor.style.backgroundColor = AVATAR_COLORS[currentJoinOrCreateColorIndex].color;
+	avatarColor.children[0].style.fill = AVATAR_COLORS[currentJoinOrCreateColorIndex].color;
 	avatarImage.style.filter = AVATAR_COLORS[currentJoinOrCreateColorIndex].filter;
 });
 rightColorArrow.addEventListener('click', () => {
 	currentJoinOrCreateColorIndex += 1;
 	currentJoinOrCreateColorIndex %= AVATAR_COLORS.length;
-	avatarColor.style.backgroundColor = AVATAR_COLORS[currentJoinOrCreateColorIndex].color;
+	avatarColor.children[0].style.fill = AVATAR_COLORS[currentJoinOrCreateColorIndex].color;
 	avatarImage.style.filter = AVATAR_COLORS[currentJoinOrCreateColorIndex].filter;
 });
 
