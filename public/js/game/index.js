@@ -381,7 +381,7 @@ ownerStartButton.addEventListener('click', () => {
 		);
 		ownerStartButton.style.transform = 'translateY(-10000%)';
 		document.querySelectorAll('.player-li').forEach((playerLi) => {
-			playerLi.innerHTML = playerLi.innerHTML.replaceAll('👑', '');
+			playerLi.childNodes[0].textContent = playerLi.getAttribute('data-username');
 		});
 	}
 });
