@@ -710,6 +710,11 @@ html {
 	margin: auto;
 }
 
+.tiny-avatar-vote {
+	bottom: 0;
+	top: 50%;
+}
+
 .tiny-avatar-body {
 	width: 100%;
 	height: 100%;

@@ -416,7 +416,7 @@ function getTimestamp() {
 	return Math.floor(new Date().getTime() / 1000);
 }
 
-function createTinyAvatar(shapeId, colorId) {
+function createTinyAvatar(shapeId, colorId, index = -1) {
 	const avatarParent = document.createElement('div');
 	const tinyAvatarBody = document.createElement('div');
 	const tinyAvatarEye1 = document.createElement('div');
@@ -461,6 +461,19 @@ function createTinyAvatar(shapeId, colorId) {
 	avatarParent.appendChild(tinyAvatarBody);
 	avatarParent.appendChild(tinyAvatarEye1);
 	avatarParent.appendChild(tinyAvatarEye2);
+
+	if (index !== -1) {
+		avatarParent.classList.add('tiny-avatar-vote');
+		avatarParent.style.right = `${index * 24}px`;
+		avatarParent.style.zIndex = 99 - index;
+
+		avatarParent.animate([{ transform: 'translateY(0) scaleY(1)' }, { transform: 'translateY(0) scaleY(1)' }, { transform: 'translateY(0) scaleY(1)' }, { transform: 'translateY(0) scaleY(0.95)' }, { transform: 'translateY(-10px) scaleY(1.05)' }, { transform: 'translateY(-8px) scaleY(1)' }, { transform: 'translateY(0) scaleY(1)' }, { transform: 'translateY(0) scaleY(1)' }, { transform: 'translateY(0) scaleY(1)' }, { transform: 'translateY(0) scaleY(1)' }], {
+			duration: 1000,
+			endDelay: Math.floor(Math.random() * 3000) + 2200,
+			delay: Math.floor(Math.random() * 2000),
+			iterations: Infinity,
+		});
+	}
 
 	return avatarParent;
 }
@@ -568,11 +581,11 @@ function update(isStart = false) {
 				gameModeSpan.style.backgroundColor = 'rgb(107, 105, 222)';
 			}
 
-			const votes = [0, 0, 0, 0];
+			const votes = [[], [], [], []];
 
-			roomData.players.forEach((p) => {
+			roomData.players.forEach((p, index) => {
 				if (p.guess !== -1) {
-					votes[p.guess]++;
+					votes[p.guess].push(createTinyAvatar(p.shape, p.color, votes[p.guess].length));
 				}
 			});
 
@@ -593,7 +606,11 @@ function update(isStart = false) {
 					});
 				}
 
-				card.children[2].children[0].style.backgroundSize = `auto ${(votes[index] / roomData.players.length) * 50}%`;
+				card.children[2].children[0].style.backgroundSize = `auto ${(votes[index].length / roomData.players.length) * 50}%`;
+				card.children[2].children[1].innerHTML = '';
+				votes[index].forEach((voter) => {
+					card.children[2].children[1].appendChild(voter);
+				});
 			});
 		}
 
