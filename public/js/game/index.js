@@ -841,6 +841,7 @@ function setState(s) {
 		document.querySelectorAll('.player-li').forEach((playerLi) => {
 			playerLi.style.color = null;
 			playerLi.children[0].innerText = '';
+			playerLi.classList.remove('player-doubling');
 		});
 
 		history.pushState({}, '', `/game/${roomData.id}`);
