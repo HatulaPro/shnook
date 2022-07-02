@@ -365,6 +365,34 @@ function createTinyAvatar(shapeId) {
 	tinyAvatarEye1.classList.add('tiny-avatar-eyes');
 	tinyAvatarEye2.classList.add('tiny-avatar-eyes');
 
+	const tinyEyeAnimation = [
+		{
+			transform: 'scaleY(1)',
+		},
+		{
+			transform: 'scaleY(1)',
+		},
+		{
+			transform: 'scaleY(1)',
+		},
+		{
+			transform: 'scaleY(0.2)',
+		},
+		{
+			transform: 'scaleY(1)',
+		},
+		{
+			transform: 'scaleY(1)',
+		},
+		{
+			transform: 'scaleY(1)',
+		},
+	];
+	const tinyEyeAnimationOptions = { duration: 1200, endDelay: Math.floor(Math.random() * 8000) + 2200, delay: Math.floor(Math.random() * 2000), iterations: Infinity };
+
+	tinyAvatarEye1.animate(tinyEyeAnimation, tinyEyeAnimationOptions);
+	tinyAvatarEye2.animate(tinyEyeAnimation, tinyEyeAnimationOptions);
+
 	tinyAvatarElement.style.backgroundImage = `url(${SHAPES[shapeId].path})`;
 
 	tinyAvatarElement.appendChild(tinyAvatarEye1);
