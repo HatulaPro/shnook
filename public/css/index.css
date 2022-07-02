@@ -717,21 +717,21 @@ html {
 }
 
 .tiny-avatar-eyes {
-	width: 6px;
-	height: 6px;
+	width: 10%;
+	height: 10%;
 	background-color: black;
 	border: 4px solid white;
 	border-radius: 999px;
 	position: absolute;
-	top: 4px;
+	top: 7%;
 }
 
 .tiny-avatar-eyes:nth-of-type(odd) {
-	left: 8px;
+	left: 14%;
 }
 
 .tiny-avatar-eyes:nth-of-type(even) {
-	right: 8px;
+	right: 14%;
 }
 
 #username-input {
@@ -935,7 +935,7 @@ input:focus {
 	}
 	.main-chat,
 	.main-players {
-		margin: 2rem 1rem;
+		margin: 2rem 0.1rem;
 		max-height: 50vh;
 	}
 	.challenge-div-points {
@@ -972,5 +972,13 @@ input:focus {
 		line-height: 100%;
 		left: 60%;
 		top: 60%;
+	}
+	.tiny-avatar {
+		width: 32px;
+		height: 32px;
+	}
+
+	.tiny-avatar-eyes {
+		border: 2px solid white;
 	}
 }
