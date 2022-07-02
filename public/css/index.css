@@ -956,6 +956,16 @@ input:focus {
 		padding: 0.2rem;
 		font-size: 1.2rem;
 	}
+	#room-timer {
+		font-size: 1.4rem;
+		flex-basis: 2rem;
+		width: 2rem;
+		height: 2rem;
+		padding: 0.25rem;
+	}
+	.room-info {
+		height: 2.6rem;
+	}
 	.go-to-chat-btn {
 		width: 2rem;
 		height: 2rem;
