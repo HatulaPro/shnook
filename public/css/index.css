@@ -937,6 +937,7 @@ input:focus {
 	.main-players {
 		margin: 2rem 0.1rem;
 		max-height: 50vh;
+		flex-basis: 40vw;
 	}
 	.challenge-div-points {
 		font-size: 1rem;
