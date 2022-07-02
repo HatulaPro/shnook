@@ -669,7 +669,7 @@ html {
 .make-avatar-arrow {
 	width: 0;
 	height: 0;
-	border: 60px solid transparent;
+	border: 30px solid transparent;
 	background: none;
 	outline: none;
 }
@@ -680,30 +680,36 @@ html {
 }
 
 .make-avatar-arrow:nth-of-type(odd) {
-	border-right: 60px solid purple;
+	border-right: 30px solid purple;
 }
 
 .make-avatar-arrow:nth-of-type(even) {
-	border-left: 60px solid purple;
+	border-left: 30px solid purple;
 }
 
-.avatar-image {
-	width: 128px;
-	height: 128px;
+.avatar-image,
+.avatar-color {
+	width: 96px;
+	height: 96px;
 }
 
 .tiny-avatar {
 	display: inline-block;
 	width: 56px;
 	height: 56px;
-	background-size: contain;
-	background-repeat: no-repeat;
-	background-position: center;
 	position: absolute;
 	right: 0.2rem;
 	top: 0;
 	bottom: 0;
 	margin: auto;
+}
+
+.tiny-avatar-body {
+	width: 100%;
+	height: 100%;
+	background-size: contain;
+	background-repeat: no-repeat;
+	background-position: center;
 }
 
 .tiny-avatar-eyes {

@@ -26,6 +26,45 @@ const SHAPES = [
 	},
 ];
 
+const AVATAR_COLORS = [
+	{
+		color: '#f54d33',
+		filter: 'invert(51%) sepia(61%) saturate(5211%) hue-rotate(339deg) brightness(96%) contrast(101%)',
+	},
+	{
+		color: '#fa972d',
+		filter: 'invert(69%) sepia(61%) saturate(1899%) hue-rotate(16deg) brightness(127%) contrast(97%)',
+	},
+	{
+		color: '#94fa2d',
+		filter: 'invert(80%) sepia(40%) saturate(759%) hue-rotate(37deg) brightness(355%) contrast(110%)',
+	},
+	{
+		color: '#1ceb1c',
+		filter: 'invert(56%) sepia(75%) saturate(1085%) hue-rotate(74deg) brightness(108%) contrast(102%)',
+	},
+	{
+		color: '#1cebe4',
+		filter: 'invert(81%) sepia(40%) saturate(920%) hue-rotate(130deg) brightness(350%) contrast(93%)',
+	},
+	{
+		color: '#2189eb',
+		filter: 'invert(52%) sepia(41%) saturate(6406%) hue-rotate(191deg) brightness(97%) contrast(90%)',
+	},
+	{
+		color: '#9321eb',
+		filter: 'invert(42%) sepia(100%) saturate(7199%) hue-rotate(268deg) brightness(87%) contrast(99%)',
+	},
+	{
+		color: '#f728f0',
+		filter: 'invert(38%) sepia(69%) saturate(5761%) hue-rotate(283deg) brightness(100%) contrast(111%)',
+	},
+	{
+		color: '#e31e59',
+		filter: 'invert(35%) sepia(74%) saturate(7401%) hue-rotate(330deg) brightness(91%) contrast(95%)',
+	},
+];
+
 let state = STATES.JOIN;
 
 const CARD_EFFECTS = {
@@ -63,6 +102,7 @@ let timer = null;
 let winner = null;
 let newMessagesCounter = 0;
 let currentJoinOrCreateShapeIndex = 0;
+let currentJoinOrCreateColorIndex = 0;
 
 const mainDiv = document.querySelector('.main');
 const roomIdTitle = document.querySelector('#room-id-title');
@@ -86,6 +126,9 @@ const joinFailSpan = document.querySelector('.join-or-create-fail');
 const leftShapeArrow = document.querySelector('#left-shape-arrow');
 const rightShapeArrow = document.querySelector('#right-shape-arrow');
 const avatarImage = document.querySelector('.avatar-image');
+const leftColorArrow = document.querySelector('#left-color-arrow');
+const rightColorArrow = document.querySelector('#right-color-arrow');
+const avatarColor = document.querySelector('.avatar-color');
 
 const chatInput = document.querySelector('#chat-input');
 const chatButton = document.querySelector('#chat-button');
@@ -263,6 +306,7 @@ const onCreate = () => {
 	socket.emit('create', {
 		username: usernameInput.value,
 		shape: currentJoinOrCreateShapeIndex,
+		color: currentJoinOrCreateColorIndex,
 		timePerRound: Number.parseInt(timePerRoundInput.value),
 		maxRounds: Number.parseInt(numberOfRoundsInput.value),
 		maxPlayers: Number.parseInt(maxPlayersInput.value),
@@ -272,7 +316,7 @@ createButton.addEventListener('click', onCreate);
 
 // Listening to join room
 const onJoin = () => {
-	socket.emit('join', { roomId: joinRoomInput.value, username: usernameInput.value, shape: currentJoinOrCreateShapeIndex });
+	socket.emit('join', { roomId: joinRoomInput.value, username: usernameInput.value, shape: currentJoinOrCreateShapeIndex, color: currentJoinOrCreateColorIndex });
 };
 joinButton.addEventListener('click', onJoin);
 joinRoomInput.addEventListener('keypress', (e) => {
@@ -342,26 +386,43 @@ ownerStartButton.addEventListener('click', () => {
 });
 
 leftShapeArrow.addEventListener('click', () => {
-	currentJoinOrCreateShapeIndex -= 1;
-	currentJoinOrCreateShapeIndex %= 3;
+	currentJoinOrCreateShapeIndex -= 1 - SHAPES.length;
+	currentJoinOrCreateShapeIndex %= SHAPES.length;
 	avatarImage.src = SHAPES[currentJoinOrCreateShapeIndex].path;
 });
 rightShapeArrow.addEventListener('click', () => {
 	currentJoinOrCreateShapeIndex += 1;
-	currentJoinOrCreateShapeIndex %= 3;
+	currentJoinOrCreateShapeIndex %= SHAPES.length;
 	avatarImage.src = SHAPES[currentJoinOrCreateShapeIndex].path;
+});
+
+avatarColor.style.backgroundColor = AVATAR_COLORS[currentJoinOrCreateColorIndex].color;
+avatarImage.style.filter = AVATAR_COLORS[currentJoinOrCreateColorIndex].filter;
+leftColorArrow.addEventListener('click', () => {
+	currentJoinOrCreateColorIndex -= 1 - AVATAR_COLORS.length;
+	currentJoinOrCreateColorIndex %= AVATAR_COLORS.length;
+	avatarColor.style.backgroundColor = AVATAR_COLORS[currentJoinOrCreateColorIndex].color;
+	avatarImage.style.filter = AVATAR_COLORS[currentJoinOrCreateColorIndex].filter;
+});
+rightColorArrow.addEventListener('click', () => {
+	currentJoinOrCreateColorIndex += 1;
+	currentJoinOrCreateColorIndex %= AVATAR_COLORS.length;
+	avatarColor.style.backgroundColor = AVATAR_COLORS[currentJoinOrCreateColorIndex].color;
+	avatarImage.style.filter = AVATAR_COLORS[currentJoinOrCreateColorIndex].filter;
 });
 
 function getTimestamp() {
 	return Math.floor(new Date().getTime() / 1000);
 }
 
-function createTinyAvatar(shapeId) {
-	const tinyAvatarElement = document.createElement('div');
+function createTinyAvatar(shapeId, colorId) {
+	const avatarParent = document.createElement('div');
+	const tinyAvatarBody = document.createElement('div');
 	const tinyAvatarEye1 = document.createElement('div');
 	const tinyAvatarEye2 = document.createElement('div');
 
-	tinyAvatarElement.classList.add('tiny-avatar');
+	avatarParent.classList.add('tiny-avatar');
+	tinyAvatarBody.classList.add('tiny-avatar-body');
 	tinyAvatarEye1.classList.add('tiny-avatar-eyes');
 	tinyAvatarEye2.classList.add('tiny-avatar-eyes');
 
@@ -393,12 +454,14 @@ function createTinyAvatar(shapeId) {
 	tinyAvatarEye1.animate(tinyEyeAnimation, tinyEyeAnimationOptions);
 	tinyAvatarEye2.animate(tinyEyeAnimation, tinyEyeAnimationOptions);
 
-	tinyAvatarElement.style.backgroundImage = `url(${SHAPES[shapeId].path})`;
+	tinyAvatarBody.style.backgroundImage = `url(${SHAPES[shapeId].path})`;
+	tinyAvatarBody.style.filter = AVATAR_COLORS[colorId].filter;
 
-	tinyAvatarElement.appendChild(tinyAvatarEye1);
-	tinyAvatarElement.appendChild(tinyAvatarEye2);
+	avatarParent.appendChild(tinyAvatarBody);
+	avatarParent.appendChild(tinyAvatarEye1);
+	avatarParent.appendChild(tinyAvatarEye2);
 
-	return tinyAvatarElement;
+	return avatarParent;
 }
 
 function createPlayerElement(p) {
@@ -421,7 +484,7 @@ function createPlayerElement(p) {
 	playerElement.appendChild(guessElement);
 	playerElement.appendChild(pointsElement);
 	pointsElement.innerText = `score: ${p.score || '#'}`;
-	playerElement.appendChild(createTinyAvatar(p.shape));
+	playerElement.appendChild(createTinyAvatar(p.shape, p.color));
 
 	return playerElement;
 }
