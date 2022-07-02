@@ -358,9 +358,17 @@ function getTimestamp() {
 
 function createTinyAvatar(shapeId) {
 	const tinyAvatarElement = document.createElement('div');
+	const tinyAvatarEye1 = document.createElement('div');
+	const tinyAvatarEye2 = document.createElement('div');
 
 	tinyAvatarElement.classList.add('tiny-avatar');
+	tinyAvatarEye1.classList.add('tiny-avatar-eyes');
+	tinyAvatarEye2.classList.add('tiny-avatar-eyes');
+
 	tinyAvatarElement.style.backgroundImage = `url(${SHAPES[shapeId].path})`;
+
+	tinyAvatarElement.appendChild(tinyAvatarEye1);
+	tinyAvatarElement.appendChild(tinyAvatarEye2);
 
 	return tinyAvatarElement;
 }
