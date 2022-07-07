@@ -369,6 +369,10 @@ roomIdTitle.addEventListener('click', () => {
 		// If sharing is not possible
 		navigator.clipboard.writeText(`#${roomData.id}`).then(clickAnimation);
 	}
+	roomIdTitle.classList.add('room-id-title-copied');
+	setTimeout(() => {
+		roomIdTitle.classList.remove('room-id-title-copied');
+	}, 800);
 });
 
 ownerStartButton.addEventListener('click', () => {
