@@ -22,8 +22,8 @@ module.exports = (io) => {
 			return player !== null;
 		};
 
-		// TODO: destructuring breaks when the stream is undefined
-		socket.on('create', ({ username, shape, color, timePerRound, maxRounds, maxPlayers }) => {
+		socket.on('create', (stream) => {
+			let { username, shape, color, timePerRound, maxRounds, maxPlayers } = stream || {};
 			if (typeof username !== 'string') return;
 			if (!Number.isInteger(timePerRound) || timePerRound < 5 || timePerRound > 60) return;
 			if (!Number.isInteger(maxRounds) || maxRounds < 3 || maxRounds > 20) return;
@@ -47,7 +47,8 @@ module.exports = (io) => {
 			Room.rooms.set(id, room);
 		});
 
-		socket.on('join', async ({ roomId, username, shape, color }) => {
+		socket.on('join', async (stream) => {
+			let { roomId, username, shape, color } = stream || {};
 			if (typeof roomId !== 'string') return;
 			if (typeof username !== 'string') return;
 			if (!Number.isInteger(shape) || shape < 0 || shape > 2) return;
@@ -142,7 +143,8 @@ module.exports = (io) => {
 		1: Crown
 		2: Confetti
 		*/
-		socket.on('effect', ({ effectType, cardIndex }) => {
+		socket.on('effect', (stream) => {
+			let { effectType, cardIndex } = stream || {};
 			if (!loggedIn()) return;
 			if (!room.hasStarted) return;
 			if (!Number.isInteger(effectType)) return;
