@@ -358,7 +358,7 @@ roomIdTitle.addEventListener('click', () => {
 		);
 	};
 	// If sharing is possible
-	if (navigator.canShare()) {
+	if (navigator.share) {
 		const shareData = {
 			title: 'Shnook',
 			text: 'Play Shnook against your friends!',
