@@ -814,6 +814,7 @@ input:focus {
 
 .challenge-div {
 	position: fixed;
+	z-index: 999999;
 	top: 4rem;
 	left: 0rem;
 	display: flex;
