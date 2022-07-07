@@ -6,6 +6,10 @@ html {
 	font-family: 'Roboto';
 }
 
+* {
+	-webkit-tap-highlight-color: transparent;
+}
+
 .flex {
 	display: flex;
 }
