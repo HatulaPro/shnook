@@ -310,11 +310,16 @@ html {
 }
 
 #chat-button {
-	width: 30px;
+	width: 2rem;
 	background-color: #a1a1ff;
 	border: none;
 	font-size: 1.2rem;
 	padding: 0.2rem;
+	background-image: url(/public/images/send.png);
+	background-repeat: no-repeat;
+	background-position: center;
+	background-size: 70%;
+	transform: scaleX(-1);
 }
 
 #chat-button:hover {
