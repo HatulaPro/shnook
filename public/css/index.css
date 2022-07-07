@@ -291,6 +291,7 @@ html {
 	width: 100%;
 	display: inline-flex;
 	justify-content: center;
+	transform: translateY(50%);
 }
 
 #chat-input {
@@ -325,7 +326,11 @@ html {
 	text-align: start;
 	overflow-y: scroll;
 	max-height: 560px;
-	padding: 1rem;
+	padding: 1rem 0.4rem;
+}
+
+.chat-content p {
+	overflow-wrap: anywhere;
 }
 
 .main-cards {
