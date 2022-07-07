@@ -95,15 +95,15 @@ html {
 
 @keyframes copiedAnimation {
 	0% {
-		transform: translateY(0) translateX(-50%) scale(0.9);
+		transform: translateY(0) translateX(50%) scale(0.9);
 		opacity: 1;
 	}
 	30% {
-		transform: translateY(0) translateX(-50%) scale(1);
+		transform: translateY(0) translateX(50%) scale(1);
 		opacity: 1;
 	}
 	100% {
-		transform: translateY(-4rem) translateX(-50%);
+		transform: translateY(-4rem) translateX(50%);
 		opacity: 0;
 	}
 }
@@ -111,7 +111,7 @@ html {
 .room-id-title-copied::before {
 	content: 'Copied!';
 	opacity: 0;
-	position: fixed;
+	position: absolute;
 	display: block;
 	color: black;
 	background-color: white;
@@ -119,9 +119,6 @@ html {
 	padding: 4px;
 	font-size: small;
 	animation: copiedAnimation 0.8s;
-	left: 50%;
-	top: 50%;
-	transform: translateX(-50%);
 }
 
 #room-id-title:hover {
