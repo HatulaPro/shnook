@@ -337,7 +337,7 @@ usernameInput.addEventListener('keypress', (e) => {
 
 roomIdTitle.addEventListener('click', () => {
 	if (!roomData) return;
-	navigator.clipboard.writeText(`#${roomData.id}`).then(() => {
+	const clickAnimation = () => {
 		// success
 		roomIdTitle.animate(
 			[
@@ -356,7 +356,19 @@ roomIdTitle.addEventListener('click', () => {
 				iterations: 1,
 			}
 		);
-	});
+	};
+	// If sharing is possible
+	if (navigator.canShare()) {
+		const shareData = {
+			title: 'Shnook',
+			text: 'Play Shnook against your friends!',
+			url: `${window.location.origin}/game/${roomData.id}`,
+		};
+		navigator.share(shareData).then(clickAnimation);
+	} else {
+		// If sharing is not possible
+		navigator.clipboard.writeText(`#${roomData.id}`).then(clickAnimation);
+	}
 });
 
 ownerStartButton.addEventListener('click', () => {
