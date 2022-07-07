@@ -839,7 +839,7 @@ input:focus {
 	filter: hue-rotate(30deg);
 }
 .go-to-chat-btn span {
-	display: none;
+	opacity: 0;
 }
 
 .error {
@@ -1041,6 +1041,7 @@ input:focus {
 		height: 2rem;
 	}
 	.go-to-chat-btn span {
+		opacity: 1;
 		display: inline;
 		background-color: #191919;
 		color: white;
