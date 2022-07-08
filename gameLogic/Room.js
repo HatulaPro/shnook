@@ -104,7 +104,7 @@ module.exports = class Room {
 			this.lier = 0;
 		} else {
 			this.adjustScore();
-			this.lier = Math.floor(Math.random() * this.players.size);
+			this.lier = (this.lier + 1) % this.players.size;
 		}
 		this.players.forEach((player) => {
 			player.guess = -1;
