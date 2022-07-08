@@ -29,7 +29,9 @@ module.exports = class Room {
 		this.roundsPlayed = 0;
 		this.lastEffect = null;
 		this.challenge = null;
-		this.doublingEnabled = false;
+		this.specials = {
+			doubling: false,
+		};
 	}
 
 	restart() {
@@ -44,7 +46,7 @@ module.exports = class Room {
 		this.lastEffect = null;
 		this.challenge = null;
 		this.roundsPlayed = 0;
-		this.doublingEnabled = false;
+		this.specials = { doubling: false };
 	}
 
 	hasUsername(username) {
@@ -115,7 +117,9 @@ module.exports = class Room {
 		this.treasure = Math.floor(Math.random() * 4);
 		this.challenge = this.generateChallenge();
 		this.lastEffect = null;
-		this.doublingEnabled = Math.random() < Room.CHANCE_OF_DOUBLING;
+		this.specials = {
+			doubling: Math.random() < Room.CHANCE_OF_DOUBLING,
+		};
 	}
 
 	gameOver() {
@@ -143,6 +147,16 @@ module.exports = class Room {
 		};
 	}
 
+	applySpecial(specialName, player, isLier) {
+		const funcsMap = {
+			doubling: (player, isLier) => {
+				if (isLier) return;
+				player.scoringFactor = 2;
+			},
+		};
+		funcsMap[specialName](player, isLier);
+	}
+
 	start() {
 		this.hasStarted = true;
 		this.players.forEach((player) => {
@@ -165,7 +179,7 @@ module.exports = class Room {
 			lier: this.lier,
 			roundsPlayed: this.roundsPlayed,
 			lastTreasure: this.lastTreasure,
-			doublingEnabled: this.doublingEnabled,
+			specials: this.specials,
 		};
 	}
 };

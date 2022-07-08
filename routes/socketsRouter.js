@@ -187,13 +187,14 @@ module.exports = (io) => {
 			socket.broadcast.to(room.id).emit('message', { user: player.username, message: stream });
 		});
 
-		socket.on('accepted_double', () => {
+		socket.on('accepted_special', (specialName) => {
 			if (!loggedIn()) return;
-			if (socket.id === room.getLierSocketId()) return;
-			if (!room.doublingEnabled) return;
+			if (typeof specialName !== 'string') return;
+			if (!room.specials[specialName]) return;
 
-			player.scoringFactor = 2;
-			io.to(room.id).emit('accepted_double', { username: player.username });
+			room.applySpecial(specialName, player, socket.id === room.getLierSocketId());
+
+			io.to(room.id).emit('accepted_special', { username: player.username, specialName });
 		});
 
 		socket.on('disconnecting', () => {
