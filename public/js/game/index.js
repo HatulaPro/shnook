@@ -591,6 +591,8 @@ function update(isStart = false) {
 		const specialsList = Object.entries(roomData.specials).filter((special) => special[1]);
 		if (specialsList.length) {
 			currentSpecial = specialsList[0][0];
+		} else {
+			currentSpecial = null;
 		}
 		if (roomData.lier !== null) {
 			gameModeSpan.style.display = 'block';
