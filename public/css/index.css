@@ -938,10 +938,22 @@ input:focus {
 	text-shadow: #1515ff 3px 2px;
 }
 
+@keyframes comeFromTheLeft {
+	0% {
+		transform: translateX(-10rem);
+		opacity: 0;
+	}
+	100% {
+		transform: none;
+		opacity: 1;
+	}
+}
+
 .player-li.player-doubling::before {
 	top: 0;
 	font-size: 1.6rem;
 	color: red;
+	animation: comeFromTheLeft 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
 .hide-all {
