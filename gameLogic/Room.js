@@ -134,7 +134,6 @@ module.exports = class Room {
 			const entries = Object.entries(this.specials);
 			entries[Math.floor(Math.random() * entries.length)][1] = true;
 			this.specials = Object.fromEntries(entries);
-			console.log(this.specials);
 		}
 	}
 
