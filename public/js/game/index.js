@@ -221,7 +221,7 @@ goToChatButton.addEventListener('click', () => {
 
 acceptableChallengeDivAccept.addEventListener('click', () => {
 	// Emit the name of the only special that is currently enabled
-	socket.emit('accepted_special', Object.entries(roomData.specials).filter((special) => special[1])[0][0]);
+	socket.emit('accepted_special', currentSpecial);
 	acceptableChallengeDiv.classList.add('challenge-div-complete');
 });
 
@@ -588,6 +588,10 @@ function update(isStart = false) {
 	}
 
 	if (roomData.hasStarted) {
+		const specialsList = Object.entries(roomData.specials).filter((special) => special[1]);
+		if (specialsList.length) {
+			currentSpecial = specialsList[0][0];
+		}
 		if (roomData.lier !== null) {
 			gameModeSpan.style.display = 'block';
 			isGuessing = roomData.players[roomData.lier].username !== player.username;
@@ -674,13 +678,12 @@ socket.on('update', (stream) => {
 
 socket.on('accepted_special', ({ username, specialName, room }) => {
 	roomData = room;
-	currentSpecial = specialName;
 	update();
 	const playerElement = document.querySelector(`[data-username='${username}']`);
 
-	if (currentSpecial === 'doubling') {
+	if (specialName === 'doubling') {
 		playerElement.classList.add('player-doubling');
-	} else if (currentSpecial === 'earthquake') {
+	} else if (specialName === 'earthquake') {
 		cards.forEach((card) => {
 			card.animate(
 				[
@@ -740,8 +743,9 @@ socket.on('start', (stream) => {
 		});
 
 		timer = setInterval(() => {
+			const timestamp = getTimestamp();
 			timerSpan.classList.remove('timer-go');
-			const seconds = roomData.startedAt - getTimestamp() + roomData.timePerRound - 1 + roomData.timeBetweenRounds;
+			const seconds = roomData.startedAt - timestamp + roomData.timePerRound - 1 + roomData.timeBetweenRounds;
 			if (seconds >= roomData.timePerRound) {
 				timerSpan.classList.add('timer-before-round');
 				const timeShown = seconds - roomData.timePerRound + 1;
@@ -755,6 +759,13 @@ socket.on('start', (stream) => {
 				timerSpan.classList.remove('timer-before-round');
 				timerSpan.innerText = seconds;
 			}
+
+			// If there are less than 3 seconds less to the round, remove the option to start an earthquake
+			console.log(currentSpecial);
+			if (seconds <= 3 && currentSpecial === 'earthquake') {
+				acceptableChallengeDivReject.click();
+			}
+
 			if (timerSpan.innerText === '0') {
 				clearInterval(timer);
 				timer = null;
