@@ -12,7 +12,7 @@ module.exports = class Room {
 	static TIME_BETWEEN_ROUNDS = 4;
 	static NUMBER_OF_CHALLENGES = 3;
 	static CHANCE_OF_CHALLENGE = 0.4;
-	static CHANCE_OF_DOUBLING = 0.3;
+	static CHANCE_OF_SPECIAL = 0.3;
 
 	static SPECIALS = {
 		doubling: new Special(false, 'doubling', (player, isLier, room) => {
@@ -128,9 +128,14 @@ module.exports = class Room {
 		this.treasure = Math.floor(Math.random() * 4);
 		this.challenge = this.generateChallenge();
 		this.lastEffect = null;
-		this.specials = {
-			doubling: Math.random() < Room.CHANCE_OF_DOUBLING,
-		};
+
+		this.defaultSpecials();
+		if (Math.random() < Room.CHANCE_OF_SPECIAL) {
+			const entries = Object.entries(this.specials);
+			entries[Math.floor(Math.random() * entries.length)][1] = true;
+			this.specials = Object.fromEntries(entries);
+			console.log(this.specials);
+		}
 	}
 
 	gameOver() {
