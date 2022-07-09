@@ -54,6 +54,11 @@ body {
 	background-color: #db3a12;
 }
 
+.btn-accept,
+.btn-reject {
+	min-width: unset;
+}
+
 .inp {
 	border: none;
 	margin: 4px;
