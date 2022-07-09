@@ -24,7 +24,7 @@ module.exports = class Room {
 			if (!isLier) return;
 			room.specials.earthquake = false;
 			// If round has less than 3 seconds before it ends, earthquake can no longer be used
-			if (getTimestamp() - room.startedAt - Room.TIME_BETWEEN_ROUNDS <= 3) return;
+			if (getTimestamp() > room.startedAt + Room.TIME_BETWEEN_ROUNDS + Room.TIME_PER_ROUND - 3) return;
 			room.playersList().forEach((p) => {
 				p.guess = -1;
 			});

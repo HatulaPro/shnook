@@ -652,15 +652,21 @@ function update(isStart = false) {
 			}
 		});
 
+		acceptableChallengeDiv.classList.remove('challenge-doubling');
+		acceptableChallengeDiv.classList.remove('challenge-earthquake');
 		if (currentSpecial) {
 			themeDiv.classList.remove('main-theme-hidden');
 			themeDiv.classList.add('main-theme-visib');
 			if (currentSpecial === 'doubling') {
 				themeDiv.classList.add('main-theme-doubles');
 				themeDiv.children[0].innerHTML = 'Doubles';
+
+				acceptableChallengeDiv.classList.add('challenge-doubling');
 			} else if (currentSpecial === 'earthquake') {
 				themeDiv.classList.add('main-theme-earthquake');
 				themeDiv.children[0].innerHTML = 'Earthquakes';
+
+				acceptableChallengeDiv.classList.add('challenge-earthquake');
 			}
 		} else {
 			themeDiv.classList.remove('main-theme-visib');
@@ -787,7 +793,9 @@ socket.on('start', (stream) => {
 				update();
 			} else if (seconds <= 0.6 && currentSpecial) {
 				acceptableChallengeDivReject.click();
-				roomData.specials = {};
+				Object.keys(roomData.specials).forEach((special) => {
+					roomData.specials[special] = false;
+				});
 				update();
 			}
 

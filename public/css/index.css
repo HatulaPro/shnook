@@ -999,7 +999,7 @@ input:focus {
 }
 
 .player-li.player-doubling::before,
-.challenge-acceptable::before {
+.challenge-doubling::before {
 	content: '2X';
 	color: white;
 	font-style: italic;
@@ -1009,6 +1009,17 @@ input:focus {
 	left: 1rem;
 	top: -0.7em;
 	text-shadow: #1515ff 3px 2px;
+}
+
+.challenge-earthquake::before {
+	content: '';
+	background-image: url(/public/images/destruction.png);
+	position: absolute;
+	left: 1rem;
+	top: -1.7rem;
+	width: 60px;
+	height: 60px;
+	background-size: contain;
 }
 
 @keyframes comeFromTheLeft {
