@@ -12,7 +12,7 @@ module.exports = class Room {
 	static TIME_PER_ROUND = 10;
 	static TIME_BETWEEN_ROUNDS = 4;
 	static NUMBER_OF_CHALLENGES = 3;
-	static CHANCE_OF_CHALLENGE = 0.4;
+	static CHANCE_OF_CHALLENGE = 0; //.4;
 	static CHANCE_OF_SPECIAL = 1;
 
 	static SPECIALS = {

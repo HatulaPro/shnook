@@ -59,10 +59,6 @@ html {
 	color: black;
 }
 
-.main {
-	margin: auto;
-}
-
 .main-title {
 	margin: 5rem;
 	margin-bottom: 1rem;
@@ -238,6 +234,77 @@ html {
 .main {
 	display: flex;
 	margin: 0;
+}
+
+.main-theme {
+	transition: visibility 0.2s, opacity 0.2s;
+	font-size: 2rem;
+	text-align: center;
+	width: fit-content;
+	position: relative;
+	margin: auto;
+	margin-bottom: 1rem;
+	padding: 0.7rem;
+	border-radius: 8px;
+	color: white;
+}
+
+.main-theme-hidden {
+	visibility: hidden;
+	opacity: 0;
+}
+
+.main-theme-visib {
+	transition-delay: 4500ms;
+	visibility: visible;
+	opacity: 1;
+}
+
+@keyframes glassyAnimation {
+	0% {
+		left: -6%;
+		opacity: 0;
+	}
+	10% {
+		opacity: 0.5;
+	}
+	75% {
+		opacity: 0;
+	}
+	76% {
+		opacity: 0;
+		left: 100%;
+	}
+	100% {
+		opacity: 0;
+		left: 100%;
+	}
+}
+
+.main-theme::after {
+	content: '';
+	background: white;
+	width: 22px;
+	height: 1em;
+	display: inline-block;
+	position: absolute;
+	transform: skewX(39deg);
+	animation: glassyAnimation 3s cubic-bezier(0.645, 0.045, 0.355, 1);
+	animation-iteration-count: infinite;
+}
+
+.main-theme-doubles span {
+	color: #ff7a7a;
+	text-shadow: 2px 2px 2px blue;
+}
+.main-theme-earthquake span {
+	text-shadow: 3px 3px 0px #ed7520;
+}
+.main-theme-earthquake {
+	background-color: #191919;
+	background-image: url(/public/images/cracking.gif);
+	background-blend-mode: soft-light;
+	background-size: contain;
 }
 
 .main-players {

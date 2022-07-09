@@ -138,6 +138,7 @@ const chatContent = document.querySelector('.chat-content');
 const goToChatButton = document.querySelector('.go-to-chat-btn');
 
 const playersDiv = document.querySelector('.main-players');
+const themeDiv = document.querySelector('.main-theme');
 
 const ownerStartButton = document.querySelector('#room-owner-start');
 const timerSpan = document.querySelector('#room-timer');
@@ -205,7 +206,6 @@ cards.forEach((card, i) => {
 		cardButton.style.display = 'none';
 		cardButton.addEventListener('click', () => {
 			if (roomData && player && roomData.hasStarted && !isGuessing) {
-				console.log({ effectType: buttonIndex, cardIndex: i });
 				socket.emit('effect', { effectType: buttonIndex, cardIndex: i });
 			}
 		});
@@ -651,6 +651,24 @@ function update(isStart = false) {
 				playerScoreElement.children[0].innerText = '';
 			}
 		});
+
+		if (currentSpecial) {
+			themeDiv.classList.remove('main-theme-hidden');
+			themeDiv.classList.add('main-theme-visib');
+			if (currentSpecial === 'doubling') {
+				themeDiv.classList.add('main-theme-doubles');
+				themeDiv.children[0].innerHTML = 'Doubles';
+			} else if (currentSpecial === 'earthquake') {
+				themeDiv.classList.add('main-theme-earthquake');
+				themeDiv.children[0].innerHTML = 'Earthquakes';
+			}
+		} else {
+			themeDiv.classList.remove('main-theme-visib');
+			themeDiv.classList.add('main-theme-hidden');
+
+			themeDiv.classList.remove('main-theme-earthquake');
+			themeDiv.classList.remove('main-theme-doubles');
+		}
 	}
 
 	isAdmin = roomData.players[0].username === player.username;
@@ -763,9 +781,10 @@ socket.on('start', (stream) => {
 			}
 
 			// If there are less than 3 seconds less to the round, remove the option to start an earthquake
-			console.log(currentSpecial);
 			if (seconds <= 3 && currentSpecial === 'earthquake') {
 				acceptableChallengeDivReject.click();
+				roomData.specials.earthquake = false;
+				update();
 			}
 
 			if (timerSpan.innerText === '0') {
