@@ -1,3 +1,4 @@
+const Player = require('./Player');
 const Special = require('./Special');
 
 function getTimestamp() {
@@ -44,9 +45,7 @@ module.exports = class Room {
 	restart() {
 		this.startedAt = null;
 		this.players.forEach((player) => {
-			player.guess = -1;
-			player.score = 0;
-			player.scoringFactor = 1;
+			player.gameReset();
 		});
 		this.lier = null;
 		this.treasure = null;
@@ -120,8 +119,7 @@ module.exports = class Room {
 			this.lier = (this.lier + 1) % this.players.size;
 		}
 		this.players.forEach((player) => {
-			player.guess = -1;
-			player.scoringFactor = 1;
+			player.roundReset();
 		});
 		this.startedAt = getTimestamp();
 		this.lastTreasure = this.treasure;
@@ -172,7 +170,6 @@ module.exports = class Room {
 		this.hasStarted = true;
 		this.players.forEach((player) => {
 			player.score = 0;
-			player.scoringFactor = 1;
 		});
 		this.startRound(true);
 	}

@@ -1,4 +1,5 @@
 const { nanoid } = require('nanoid');
+const Player = require('../gameLogic/Player');
 const Room = require('../gameLogic/Room');
 
 function validateUsername(username) {
@@ -38,7 +39,7 @@ module.exports = (io) => {
 				return;
 			}
 			const id = nanoid(6);
-			player = { username, shape, color };
+			player = new Player(username, shape, color);
 			room = new Room(id, maxPlayers, timePerRound, maxRounds, false, socket.id, player);
 
 			socket.join(id);
@@ -69,7 +70,7 @@ module.exports = (io) => {
 					return;
 				}
 
-				player = { username, shape, color };
+				player = new Player(username, shape, color);
 
 				if (room.hasStarted) return io.to(socket.id).emit('join_failed', { error: 'game has already started' });
 				if (room.players.size >= room.maxPlayers) return io.to(socket.id).emit('join_failed', { error: 'room is full' });
