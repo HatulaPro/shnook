@@ -1016,10 +1016,10 @@ input:focus {
 	content: '';
 	background-image: url(/public/images/destruction.png);
 	position: absolute;
-	left: 1rem;
-	top: -1.7rem;
-	width: 60px;
-	height: 60px;
+	transform: translateY(-3em);
+	left: 1em;
+	width: 4em;
+	height: 4em;
 	background-size: contain;
 }
 
@@ -1109,6 +1109,9 @@ input:focus {
 		height: 2rem;
 		padding: 0.2rem;
 		margin: 0.1rem;
+	}
+	.challenge-earthquake::before {
+		transform: translateY(-4em);
 	}
 	.hide-all {
 		font-size: 4rem;
