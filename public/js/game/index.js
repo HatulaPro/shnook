@@ -785,6 +785,10 @@ socket.on('start', (stream) => {
 				acceptableChallengeDivReject.click();
 				roomData.specials.earthquake = false;
 				update();
+			} else if (seconds <= 0.6 && currentSpecial) {
+				acceptableChallengeDivReject.click();
+				roomData.specials = {};
+				update();
 			}
 
 			if (timerSpan.innerText === '0') {
