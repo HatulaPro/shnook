@@ -6,6 +6,10 @@ html {
 	font-family: 'Roboto';
 }
 
+body {
+	margin-bottom: 15vh;
+}
+
 * {
 	-webkit-tap-highlight-color: transparent;
 }
@@ -60,7 +64,7 @@ html {
 }
 
 .main-title {
-	margin: 5rem;
+	margin: 1rem;
 	margin-bottom: 1rem;
 	font-size: 4rem;
 	text-align: center;
@@ -68,8 +72,8 @@ html {
 }
 
 .secondary-title {
-	margin: 2rem;
-	font-size: 2.2rem;
+	margin: 0 1.6rem;
+	font-size: 1.8rem;
 	text-align: center;
 	color: #bdbdbd;
 	user-select: none;
@@ -347,7 +351,7 @@ html {
 	background-color: white;
 	margin-left: 1rem;
 	flex: 1;
-	height: 600px;
+	height: 60vh;
 	position: relative;
 	transition: 0.3s all;
 }
@@ -412,7 +416,7 @@ html {
 
 .main-cards .card {
 	flex-basis: 40%;
-	height: 200px;
+	height: 25vh;
 	background-color: #a1a1a1;
 	color: #191919;
 	position: relative;
@@ -902,6 +906,7 @@ input:focus {
 	bottom: 1rem;
 	border: none;
 	background-color: transparent;
+	display: none;
 }
 .go-to-chat-btn:hover {
 	cursor: pointer;
@@ -1067,7 +1072,6 @@ input:focus {
 
 @media only screen and (max-width: 800px) {
 	.main-title {
-		margin: 1rem;
 		font-size: 2.4rem;
 	}
 	.secondary-title {
@@ -1142,6 +1146,7 @@ input:focus {
 	.go-to-chat-btn {
 		width: 2rem;
 		height: 2rem;
+		display: block;
 	}
 	.go-to-chat-btn span {
 		opacity: 1;
