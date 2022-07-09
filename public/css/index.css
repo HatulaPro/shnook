@@ -86,9 +86,11 @@ body {
 
 .room-info {
 	display: flex;
+	position: relative;
 	justify-content: space-evenly;
 	align-items: center;
 	flex-wrap: wrap;
+	height: 4.5rem;
 }
 
 #room-players {
@@ -1149,7 +1151,7 @@ input:focus {
 		animation-iteration-count: infinite;
 	}
 	.room-info {
-		height: 2.6rem;
+		height: 0.2rem;
 	}
 	.go-to-chat-btn {
 		width: 2rem;
