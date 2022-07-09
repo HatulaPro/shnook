@@ -1,3 +1,5 @@
+const Special = require('./Special');
+
 function getTimestamp() {
 	return Math.floor(new Date().getTime() / 1000);
 }
@@ -11,6 +13,13 @@ module.exports = class Room {
 	static NUMBER_OF_CHALLENGES = 3;
 	static CHANCE_OF_CHALLENGE = 0.4;
 	static CHANCE_OF_DOUBLING = 0.3;
+
+	static SPECIALS = {
+		doubling: new Special(false, 'doubling', (player, isLier) => {
+			if (isLier) return;
+			player.scoringFactor = 2;
+		}),
+	};
 
 	// players: a map of socket to info
 	constructor(id, maxPlayers, timePerRound, maxRounds, hasStarted, socketId, player) {
@@ -29,9 +38,7 @@ module.exports = class Room {
 		this.roundsPlayed = 0;
 		this.lastEffect = null;
 		this.challenge = null;
-		this.specials = {
-			doubling: false,
-		};
+		this.defaultSpecials();
 	}
 
 	restart() {
@@ -46,7 +53,11 @@ module.exports = class Room {
 		this.lastEffect = null;
 		this.challenge = null;
 		this.roundsPlayed = 0;
-		this.specials = { doubling: false };
+		this.defaultSpecials();
+	}
+
+	defaultSpecials() {
+		this.specials = Object.fromEntries(Object.entries(Room.SPECIALS).map((entry) => [entry[0], entry[1].def]));
 	}
 
 	hasUsername(username) {
@@ -148,13 +159,9 @@ module.exports = class Room {
 	}
 
 	applySpecial(specialName, player, isLier) {
-		const funcsMap = {
-			doubling: (player, isLier) => {
-				if (isLier) return;
-				player.scoringFactor = 2;
-			},
-		};
-		funcsMap[specialName](player, isLier);
+		if (this.specials[specialName]) {
+			Room.SPECIALS[specialName].applySpecial(player, isLier);
+		}
 	}
 
 	start() {
