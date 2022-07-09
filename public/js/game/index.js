@@ -362,12 +362,12 @@ roomIdTitle.addEventListener('click', () => {
 		const shareData = {
 			title: 'Shnook',
 			text: 'Play Shnook against your friends!',
-			url: `${window.location.origin}/game/${roomData.id}`,
+			url: document.location,
 		};
 		navigator.share(shareData).then(clickAnimation);
 	} else {
 		// If sharing is not possible
-		navigator.clipboard.writeText(`#${roomData.id}`).then(clickAnimation);
+		navigator.clipboard.writeText(document.location).then(clickAnimation);
 	}
 	roomIdTitle.classList.add('room-id-title-copied');
 	setTimeout(() => {
