@@ -15,7 +15,7 @@ module.exports = class Room {
 	static CHANCE_OF_DOUBLING = 0.3;
 
 	static SPECIALS = {
-		doubling: new Special(false, 'doubling', (player, isLier) => {
+		doubling: new Special(false, 'doubling', (player, isLier, room) => {
 			if (isLier) return;
 			player.scoringFactor = 2;
 		}),
@@ -160,7 +160,7 @@ module.exports = class Room {
 
 	applySpecial(specialName, player, isLier) {
 		if (this.specials[specialName]) {
-			Room.SPECIALS[specialName].applySpecial(player, isLier);
+			Room.SPECIALS[specialName].applySpecial(player, isLier, this);
 		}
 	}
 
