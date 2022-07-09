@@ -923,11 +923,11 @@ function setState(s) {
 		}
 
 		if (s === STATES.JOIN) {
-			joinForm.scrollIntoView({ behavior: 'smooth', block: 'center' });
+			joinForm.scrollIntoView({ behavior: 'smooth', block: 'end' });
 			joinOrCreateSwapStateButton.style.transform = 'rotateY(0deg)';
 			history.pushState({}, '', '/join');
 		} else {
-			createForm.scrollIntoView({ behavior: 'smooth', block: 'center' });
+			createForm.scrollIntoView({ behavior: 'smooth', block: 'end' });
 			joinOrCreateSwapStateButton.style.transform = 'rotateY(180deg)';
 			history.pushState({}, '', '/create');
 		}
