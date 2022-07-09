@@ -20,6 +20,12 @@ module.exports = class Room {
 			if (isLier) return;
 			player.scoringFactor = 2;
 		}),
+		earthquake: new Special(false, 'earthquake', (player, isLier, room) => {
+			if (!isLier) return;
+			room.players.forEach((p) => {
+				p.guess = -1;
+			});
+		}),
 	};
 
 	// players: a map of socket to info

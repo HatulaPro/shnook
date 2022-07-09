@@ -670,9 +670,11 @@ socket.on('update', (stream) => {
 	update();
 });
 
-socket.on('accepted_special', ({ username, specialName }) => {
+socket.on('accepted_special', ({ username, specialName, room }) => {
+	roomData = room;
+	update();
 	const playerElement = document.querySelector(`[data-username='${username}']`);
-	console.log(specialName);
+
 	if (specialName === 'doubling') {
 		playerElement.classList.add('player-doubling');
 	}

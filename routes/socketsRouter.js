@@ -190,12 +190,14 @@ module.exports = (io) => {
 
 		socket.on('accepted_special', (specialName) => {
 			if (!loggedIn()) return;
+			if (!room.hasStarted) return;
+			if (room.roundsPlayed === room.maxRounds) return;
 			if (typeof specialName !== 'string') return;
 			if (!room.specials[specialName]) return;
 
 			room.applySpecial(specialName, player, socket.id === room.getLierSocketId());
 
-			io.to(room.id).emit('accepted_special', { username: player.username, specialName });
+			io.to(room.id).emit('accepted_special', { username: player.username, specialName, room: room.getStatus() });
 		});
 
 		socket.on('disconnecting', () => {
