@@ -939,6 +939,8 @@ function setState(s) {
 		gameModeSpan.style.display = 'none';
 		challengeDiv.style.display = 'none';
 		acceptableChallengeDiv.style.display = 'none';
+		themeDiv.classList.add('main-theme-hidden');
+		themeDiv.classList.remove('main-theme-visib');
 		if (isAdmin) {
 			ownerStartButton.innerText = 'restart';
 			ownerStartButton.style.transform = '';
