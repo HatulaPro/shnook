@@ -914,20 +914,20 @@ input:focus {
 	margin: 0.5rem;
 }
 
-.challenge-double {
+.challenge-acceptable {
 	background-color: #fff484;
 }
-.challenge-double span {
+.challenge-acceptable span {
 	padding: 1rem;
 }
 
-.challenge-double button {
+.challenge-acceptable button {
 	margin: 0.1rem;
 	font-size: 1rem;
 }
 
 .player-li.player-doubling::before,
-.challenge-double::before {
+.challenge-acceptable::before {
 	content: '2X';
 	color: white;
 	font-style: italic;
@@ -1099,7 +1099,7 @@ input:focus {
 		margin-left: 1rem;
 		margin-right: 1rem;
 	}
-	.challenge-double {
+	.challenge-acceptable {
 		padding-top: 1rem;
 		display: block;
 	}

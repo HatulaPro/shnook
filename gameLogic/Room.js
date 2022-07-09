@@ -22,7 +22,7 @@ module.exports = class Room {
 		}),
 		earthquake: new Special(false, 'earthquake', (player, isLier, room) => {
 			if (!isLier) return;
-			room.players.forEach((p) => {
+			room.playersList().forEach((p) => {
 				p.guess = -1;
 			});
 		}),
@@ -62,7 +62,7 @@ module.exports = class Room {
 	}
 
 	defaultSpecials() {
-		this.specials = Object.fromEntries(Object.entries(Room.SPECIALS).map((entry) => [entry[0], entry[1].def]));
+		this.specials = Object.fromEntries(Object.entries(Room.SPECIALS).map((entry) => [entry[0], entry[1].default]));
 	}
 
 	hasUsername(username) {

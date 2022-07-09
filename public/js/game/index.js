@@ -104,6 +104,7 @@ let newMessagesCounter = 0;
 let currentJoinOrCreateShapeIndex = 0;
 let currentJoinOrCreateColorIndex = 0;
 let doubledPlayerUsernames = new Set();
+let currentSpecial = null;
 
 const mainDiv = document.querySelector('.main');
 const roomIdTitle = document.querySelector('#room-id-title');
@@ -143,9 +144,9 @@ const timerSpan = document.querySelector('#room-timer');
 const gameModeSpan = document.querySelector('#game-mode-span');
 
 const challengeDiv = document.querySelector('.challenge-div');
-const doubleChallengeDiv = document.querySelector('.challenge-double');
-const doubleChallengeDivAccept = document.querySelector('.challenge-double .btn-accept');
-const doubleChallengeDivReject = document.querySelector('.challenge-double .btn-reject');
+const acceptableChallengeDiv = document.querySelector('.challenge-acceptable');
+const acceptableChallengeDivAccept = document.querySelector('.challenge-acceptable .btn-accept');
+const acceptableChallengeDivReject = document.querySelector('.challenge-acceptable .btn-reject');
 
 const cards = document.querySelectorAll('.card');
 const mainCards = document.querySelector('.main-cards');
@@ -218,13 +219,14 @@ goToChatButton.addEventListener('click', () => {
 	chatButton.scrollIntoView({ behavior: 'smooth', block: 'center' });
 });
 
-doubleChallengeDivAccept.addEventListener('click', () => {
-	socket.emit('accepted_special', 'doubling');
-	doubleChallengeDiv.classList.add('challenge-div-complete');
+acceptableChallengeDivAccept.addEventListener('click', () => {
+	// Emit the name of the only special that is currently enabled
+	socket.emit('accepted_special', Object.entries(roomData.specials).filter((special) => special[1])[0][0]);
+	acceptableChallengeDiv.classList.add('challenge-div-complete');
 });
 
-doubleChallengeDivReject.addEventListener('click', () => {
-	doubleChallengeDiv.classList.add('challenge-div-complete');
+acceptableChallengeDivReject.addEventListener('click', () => {
+	acceptableChallengeDiv.classList.add('challenge-div-complete');
 });
 
 function setNewMessagesCounter(count) {
@@ -672,11 +674,14 @@ socket.on('update', (stream) => {
 
 socket.on('accepted_special', ({ username, specialName, room }) => {
 	roomData = room;
+	currentSpecial = specialName;
 	update();
 	const playerElement = document.querySelector(`[data-username='${username}']`);
 
-	if (specialName === 'doubling') {
+	if (currentSpecial === 'doubling') {
 		playerElement.classList.add('player-doubling');
+	} else if (currentSpecial === 'earthquake') {
+		// TODO: implement this effect
 	}
 });
 socket.on('start', (stream) => {
@@ -739,13 +744,17 @@ socket.on('start', (stream) => {
 	challengeDiv.style.display = 'none';
 
 	if (isGuessing && roomData.specials.doubling) {
-		doubleChallengeDiv.style.display = 'flex';
+		acceptableChallengeDiv.style.display = 'flex';
+		acceptableChallengeDiv.children[0].innerText = 'Double the risk, double the reward!';
+	} else if (!isGuessing && roomData.specials.earthquake) {
+		acceptableChallengeDiv.style.display = 'flex';
+		acceptableChallengeDiv.children[0].innerText = 'TAKE OUT THEIR VOTES!';
 	} else {
-		doubleChallengeDiv.style.display = 'none';
+		acceptableChallengeDiv.style.display = 'none';
 	}
 
 	challengeDiv.classList.remove('challenge-div-complete');
-	doubleChallengeDiv.classList.remove('challenge-div-complete');
+	acceptableChallengeDiv.classList.remove('challenge-div-complete');
 
 	if (stream.treasure !== undefined) {
 		document.querySelector(`.card:nth-of-type(${stream.treasure + 1})`).classList.add('secret-card');
@@ -828,7 +837,7 @@ function setState(s) {
 		ownerStartButton.style.display = 'none';
 		timerSpan.style.display = 'none';
 		challengeDiv.style.display = 'none';
-		doubleChallengeDiv.style.display = 'none';
+		acceptableChallengeDiv.style.display = 'none';
 
 		roomIdTitle.innerText = '';
 		roomPlayers.innerText = '';
@@ -867,7 +876,7 @@ function setState(s) {
 		mainCards.style.display = 'none';
 		gameModeSpan.style.display = 'none';
 		challengeDiv.style.display = 'none';
-		doubleChallengeDiv.style.display = 'none';
+		acceptableChallengeDiv.style.display = 'none';
 		if (isAdmin) {
 			ownerStartButton.innerText = 'restart';
 			ownerStartButton.style.transform = '';
