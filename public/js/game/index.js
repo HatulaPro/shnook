@@ -681,7 +681,37 @@ socket.on('accepted_special', ({ username, specialName, room }) => {
 	if (currentSpecial === 'doubling') {
 		playerElement.classList.add('player-doubling');
 	} else if (currentSpecial === 'earthquake') {
-		// TODO: implement this effect
+		cards.forEach((card) => {
+			card.animate(
+				[
+					{
+						transform: 'none',
+					},
+					{
+						transform: `translateY(${Math.floor(Math.random() * 16)}px) rotate(4deg)`,
+					},
+					{
+						transform: `translateY(-${Math.floor(Math.random() * 16)}px)`,
+					},
+					{
+						transform: `translateY(${Math.floor(Math.random() * 16)}px) rotate(-4deg)`,
+					},
+					{
+						transform: `translateY(-${Math.floor(Math.random() * 16)}px)`,
+					},
+				],
+				{
+					duration: 150,
+					iterations: 4,
+				}
+			);
+			card.classList.add('card-earthquake');
+		});
+		setTimeout(() => {
+			cards.forEach((card) => {
+				card.classList.remove('card-earthquake');
+			});
+		}, 700);
 	}
 });
 socket.on('start', (stream) => {

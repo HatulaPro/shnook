@@ -407,6 +407,11 @@ html {
 	}
 }
 
+.card-earthquake {
+	background-image: url(/public/images/cracking.gif);
+	background-blend-mode: difference;
+}
+
 .wrong-card {
 	animation-name: fadeOut;
 	animation-duration: 1s;
