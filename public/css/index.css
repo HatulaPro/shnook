@@ -954,6 +954,7 @@ input:focus {
 	max-width: 90vw;
 	border-top-right-radius: 0.5rem;
 	border-bottom-right-radius: 0.5rem;
+	transition: transform 0.3s;
 	animation: challengeGoIn 0.5s;
 	animation-timing-function: linear;
 }
