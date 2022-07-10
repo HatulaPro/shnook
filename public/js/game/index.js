@@ -107,6 +107,7 @@ let doubledPlayerUsernames = new Set();
 let currentSpecial = null;
 
 const mainDiv = document.querySelector('.main');
+const roomInfoDiv = document.querySelector('.room-info');
 const roomIdTitle = document.querySelector('#room-id-title');
 const roomPlayers = document.querySelector('#room-players');
 const roomRounds = document.querySelector('#room-rounds');
@@ -909,6 +910,7 @@ function setState(s) {
 		mainDiv.style.display = 'none';
 		joinOrCreateDiv.style.display = 'block';
 		ownerStartButton.style.display = 'none';
+		roomInfoDiv.style.display = 'none';
 		timerSpan.style.display = 'none';
 		challengeDiv.style.display = 'none';
 		acceptableChallengeDiv.style.display = 'none';
@@ -936,6 +938,7 @@ function setState(s) {
 		sceneTransition(
 			() => {
 				mainDiv.style.display = 'block';
+				roomInfoDiv.style.display = 'flex';
 				mainCards.style.display = 'flex';
 				gameModeSpan.style.display = 'none';
 				joinOrCreateDiv.style.display = 'none';
@@ -948,6 +951,7 @@ function setState(s) {
 		);
 	} else if (s === STATES.OVER) {
 		mainCards.style.display = 'none';
+		roomInfoDiv.style.display = 'flex';
 		gameModeSpan.style.display = 'none';
 		challengeDiv.style.display = 'none';
 		acceptableChallengeDiv.style.display = 'none';
