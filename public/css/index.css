@@ -264,9 +264,10 @@ body {
 	color: white;
 }
 
-.main-theme-hidden {
-	visibility: hidden;
-	opacity: 0;
+.main-theme-hidden,
+.tutorial-div-hidden {
+	visibility: hidden !important;
+	opacity: 0 !important;
 }
 
 .main-theme-visib {
@@ -1071,8 +1072,10 @@ input:focus {
 }
 
 .tutorial-div {
+	transition: visibility 0.2s, opacity 0.2s;
+	visibility: visible;
+	opacity: 1;
 	background-color: #191919;
-	display: none;
 	width: 100vw;
 	height: 100vh;
 	z-index: 99999999999999999;

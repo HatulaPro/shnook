@@ -964,12 +964,36 @@ joinOrCreateSwapStateButton.addEventListener('click', () => {
 });
 
 function updateTutorialPage() {
-	tutorialDiv.children[0].children[0].innerText = `${TUTORIAL_PAGES[currentTutorialPage].title} (${currentTutorialPage + 1}/${TUTORIAL_PAGES.length})`;
-	tutorialDiv.children[0].children[1].src = TUTORIAL_PAGES[currentTutorialPage].image;
-	tutorialDiv.children[0].children[2].innerText = TUTORIAL_PAGES[currentTutorialPage].content;
+	setTimeout(() => {
+		tutorialDiv.children[0].children[0].innerText = `${TUTORIAL_PAGES[currentTutorialPage].title} (${currentTutorialPage + 1}/${TUTORIAL_PAGES.length})`;
+		tutorialDiv.children[0].children[1].src = TUTORIAL_PAGES[currentTutorialPage].image;
+		tutorialDiv.children[0].children[2].innerText = TUTORIAL_PAGES[currentTutorialPage].content;
 
-	tutorialDiv.children[1].children[0].disabled = currentTutorialPage === 0;
-	tutorialDiv.children[1].children[1].disabled = currentTutorialPage === TUTORIAL_PAGES.length - 1;
+		tutorialDiv.children[1].children[0].disabled = currentTutorialPage === 0;
+		tutorialDiv.children[1].children[1].disabled = currentTutorialPage === TUTORIAL_PAGES.length - 1;
+	}, 100);
+
+	tutorialDiv.children[0].animate(
+		[
+			{
+				transform: 'translateX(-20px)',
+				overflowY: 'hidden',
+			},
+			{
+				transform: 'translateX(0px)',
+				overflowY: 'hidden',
+			},
+			{
+				transform: 'translateX(20px)',
+				overflowY: 'hidden',
+			},
+		],
+		{
+			duration: 30,
+			iterations: 3,
+			direction: 'alternate-reverse',
+		}
+	);
 }
 
 // Back tutorial button
@@ -989,7 +1013,7 @@ tutorialDiv.children[1].children[1].addEventListener('click', () => {
 // Close tutorial button
 tutorialDiv.children[2].addEventListener('click', () => {
 	currentTutorialPage = 0;
-	tutorialDiv.style.display = 'none';
+	tutorialDiv.classList.add('tutorial-div-hidden');
 });
 
 updateTutorialPage();
@@ -1044,7 +1068,7 @@ function setState(s) {
 		if (!localStorage.getItem('showTutorial')) {
 			localStorage.setItem('showTutorial', true);
 
-			tutorialDiv.style.display = 'block';
+			tutorialDiv.classList.remove('tutorial-div-hidden');
 			updateTutorialPage();
 		}
 	} else if (s === STATES.OVER) {
