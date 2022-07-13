@@ -1107,13 +1107,13 @@ input:focus {
 	font-size: 1.4rem;
 	width: 80vw;
 	margin: 2rem auto;
-
-	height: 80%;
+	height: 100%;
 }
 
 .tutorial-div .challenge-div-buttons {
 	top: 100%;
 	width: 100%;
+	transform: translateY(50%);
 	text-align: center;
 }
 
