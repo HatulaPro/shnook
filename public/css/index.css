@@ -44,18 +44,10 @@ body {
 	border-top-right-radius: 0 !important;
 }
 
-.btn-accept:hover {
-	background-color: #40b038 !important;
-}
-
 .btn-reject {
 	background-color: #ee987e;
 	border-bottom-left-radius: 0 !important;
 	border-top-left-radius: 0 !important;
-}
-
-.btn-reject:hover {
-	background-color: #db3a12 !important;
 }
 
 .btn-accept,
@@ -707,6 +699,14 @@ body {
 		cursor: pointer;
 		transform: scale(1.05);
 	}
+
+	.btn-accept:active {
+		background-color: #40b038 !important;
+	}
+
+	.btn-reject:active {
+		background-color: #db3a12 !important;
+	}
 }
 @media (hover: hover) {
 	.card:hover::after {
@@ -734,6 +734,14 @@ body {
 	#room-id-title:hover {
 		cursor: pointer;
 		transform: scale(1.05);
+	}
+
+	.btn-accept:hover {
+		background-color: #40b038 !important;
+	}
+
+	.btn-reject:hover {
+		background-color: #db3a12 !important;
 	}
 }
 
