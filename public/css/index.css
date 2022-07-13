@@ -1094,6 +1094,8 @@ input:focus {
 
 .tutorial-content {
 	text-align: center;
+	height: 90%;
+	overflow-y: scroll;
 }
 
 .tutorial-content img {
@@ -1107,13 +1109,11 @@ input:focus {
 	font-size: 1.4rem;
 	width: 80vw;
 	margin: 2rem auto;
-	height: 100%;
 }
 
 .tutorial-div .challenge-div-buttons {
-	top: 100%;
 	width: 100%;
-	transform: translateY(50%);
+	height: 10%;
 	text-align: center;
 }
 
