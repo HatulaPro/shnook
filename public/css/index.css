@@ -1078,6 +1078,8 @@ input:focus {
 	z-index: 99999999999999999;
 	position: fixed;
 	inset: 0;
+	overflow-y: auto;
+	overflow-x: hidden;
 }
 
 .tutorial-div h2 {
