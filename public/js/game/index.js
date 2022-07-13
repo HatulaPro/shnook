@@ -368,14 +368,15 @@ roomIdTitle.addEventListener('click', () => {
 			url: document.location,
 		};
 		navigator.share(shareData).then(clickAnimation);
-	} else {
+	} else if (navigator.clipboard) {
 		// If sharing is not possible
 		navigator.clipboard.writeText(document.location).then(clickAnimation);
+		// Only adding 'copied' if the browser does not support sharing
+		roomIdTitle.classList.add('room-id-title-copied');
+		setTimeout(() => {
+			roomIdTitle.classList.remove('room-id-title-copied');
+		}, 800);
 	}
-	roomIdTitle.classList.add('room-id-title-copied');
-	setTimeout(() => {
-		roomIdTitle.classList.remove('room-id-title-copied');
-	}, 800);
 });
 
 ownerStartButton.addEventListener('click', () => {
