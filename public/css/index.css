@@ -1110,11 +1110,8 @@ input:focus {
 }
 
 .tutorial-div .challenge-div-buttons {
-	position: absolute;
-	bottom: 0;
+	top: 100%;
 	width: 100%;
-	right: 0;
-	left: 0;
 	text-align: center;
 }
 
@@ -1247,7 +1244,7 @@ input:focus {
 		font-size: smaller;
 	}
 
-	.challenge-div-buttons {
+	.challenge-div .challenge-div-buttons {
 		display: flex;
 		margin-left: 1rem;
 		margin-right: 1rem;
