@@ -29,7 +29,11 @@ body {
 	color: black;
 }
 
-.btn:hover {
+.btn:disabled {
+	filter: grayscale(1);
+}
+
+.btn:hover:enabled {
 	cursor: pointer;
 	background-color: #a293c3;
 }
@@ -41,7 +45,7 @@ body {
 }
 
 .btn-accept:hover {
-	background-color: #40b038;
+	background-color: #40b038 !important;
 }
 
 .btn-reject {
@@ -51,7 +55,7 @@ body {
 }
 
 .btn-reject:hover {
-	background-color: #db3a12;
+	background-color: #db3a12 !important;
 }
 
 .btn-accept,
@@ -766,7 +770,7 @@ body {
 }
 
 .join-or-create-swap:hover {
-	background-color: transparent;
+	background-color: transparent !important;
 	filter: hue-rotate(-40deg) brightness(1.7);
 }
 .join-or-create-swap {
@@ -1091,7 +1095,8 @@ input:focus {
 }
 
 .tutorial-content img {
-	height: 50vh;
+	max-height: 50vh;
+	max-width: 50vh;
 	margin: auto;
 }
 

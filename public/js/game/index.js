@@ -98,13 +98,56 @@ const TUTORIAL_PAGES = [
 	{
 		image: '/public/images/tutorial/what-you-see.png',
 		title: 'The Great Four',
-		content: "These are the four cards that the game is based around. Each round a lier and a random card are chosen. \
+		content: "These are the four cards that the game is based around.\n Each round a lier and a random card are chosen. \
 		The lier's job is to make sure no one manages to guess the secret card. ",
 	},
 	{
 		image: '/public/images/tutorial/what-the-lier-sees.png',
 		title: 'The Great Four',
 		content: "Being the lier gives you the ability to see the secret card. \n Don't let anyone else know it!",
+	},
+	{
+		image: '/public/images/tutorial/timer.png',
+		title: 'The Timer',
+		content: 'The timer shows the time left until the end of the round. ',
+	},
+	{
+		image: '/public/images/tutorial/gamecode.png',
+		title: 'The Gamecode',
+		content: 'The code of the room. Click it to share it with some friends, so they can play too!',
+	},
+	{
+		image: '/public/images/tutorial/scoreboard.png',
+		title: 'The Scoreboard',
+		content: 'The scoreboard shows the players who are playing with you, as well as some additional information about them, \
+		such as their guess, whether or not they are the lier, their score and more.\n \
+		Notice that your score is highlighted with a darker background.',
+	},
+	{
+		image: '/public/images/tutorial/chat.png',
+		title: "Chattin'",
+		content: 'Feel free to chat with your buddies! Also, manipulation is cool here so have fun or something',
+	},
+	{
+		image: '/public/images/tutorial/clicked-card.png',
+		title: 'Pick A Card!',
+		content: 'Guessers can vote on a specific card, just click on it!',
+	},
+	{
+		image: '/public/images/tutorial/effect.png',
+		title: 'Shnooking?',
+		content: "Are you the lier? Well, that means you can't vote. But what can you do?\n \
+		You can always apply a cool effect on a card of your choice!",
+	},
+	{
+		image: '/public/images/tutorial/challenge.png',
+		title: 'Free Points???',
+		content: 'Liers can also gain points by completing challenges! Do as the hint says, keep your secret, and enjoy the free points!',
+	},
+	{
+		image: '/public/images/tutorial/specials.png',
+		title: 'Need Some Boosting?',
+		content: 'The specials are another cool feature. Sometimes, certain players can use some abilities to get an advantage (removing other votes, doubling the points gained, etc.)',
 	},
 ];
 
@@ -921,15 +964,17 @@ joinOrCreateSwapStateButton.addEventListener('click', () => {
 });
 
 function updateTutorialPage() {
-	tutorialDiv.style.display = 'block';
-	tutorialDiv.children[0].children[0].innerText = TUTORIAL_PAGES[currentTutorialPage].title;
+	tutorialDiv.children[0].children[0].innerText = `${TUTORIAL_PAGES[currentTutorialPage].title} (${currentTutorialPage + 1}/${TUTORIAL_PAGES.length})`;
 	tutorialDiv.children[0].children[1].src = TUTORIAL_PAGES[currentTutorialPage].image;
 	tutorialDiv.children[0].children[2].innerText = TUTORIAL_PAGES[currentTutorialPage].content;
+
+	tutorialDiv.children[1].children[0].disabled = currentTutorialPage === 0;
+	tutorialDiv.children[1].children[1].disabled = currentTutorialPage === TUTORIAL_PAGES.length - 1;
 }
 
 // Back tutorial button
 tutorialDiv.children[1].children[0].addEventListener('click', () => {
-	currentTutorialPage -= 1 - TUTORIAL_PAGES.length;
+	currentTutorialPage -= 1;
 	currentTutorialPage %= TUTORIAL_PAGES.length;
 	updateTutorialPage();
 });
@@ -947,6 +992,7 @@ tutorialDiv.children[2].addEventListener('click', () => {
 	tutorialDiv.style.display = 'none';
 });
 
+updateTutorialPage();
 // Function to call when state changes
 function setState(s) {
 	setNewMessagesCounter(0);
@@ -998,6 +1044,7 @@ function setState(s) {
 		if (!localStorage.getItem('showTutorial')) {
 			localStorage.setItem('showTutorial', true);
 
+			tutorialDiv.style.display = 'block';
 			updateTutorialPage();
 		}
 	} else if (s === STATES.OVER) {
