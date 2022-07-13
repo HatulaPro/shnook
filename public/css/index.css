@@ -33,11 +33,6 @@ body {
 	filter: grayscale(1);
 }
 
-.btn:hover:enabled {
-	cursor: pointer;
-	background-color: #a293c3;
-}
-
 .btn-accept {
 	background-color: #71eb68;
 	border-bottom-right-radius: 0 !important;
@@ -707,6 +702,11 @@ body {
 	.btn-reject:active {
 		background-color: #db3a12 !important;
 	}
+
+	.btn:hover:active {
+		cursor: pointer;
+		background-color: #a293c3;
+	}
 }
 @media (hover: hover) {
 	.card:hover::after {
@@ -742,6 +742,11 @@ body {
 
 	.btn-reject:hover {
 		background-color: #db3a12 !important;
+	}
+
+	.btn:hover:enabled {
+		cursor: pointer;
+		background-color: #a293c3;
 	}
 }
 
