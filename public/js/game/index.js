@@ -965,13 +965,39 @@ joinOrCreateSwapStateButton.addEventListener('click', () => {
 	setState(state === STATES.JOIN ? STATES.CREATE : STATES.JOIN);
 });
 
-function updateTutorialPage() {
-	tutorialDiv.children[0].children[0].innerText = `${TUTORIAL_PAGES[currentTutorialPage].title} (${currentTutorialPage + 1}/${TUTORIAL_PAGES.length})`;
-	tutorialDiv.children[0].children[1].src = TUTORIAL_PAGES[currentTutorialPage].image;
-	tutorialDiv.children[0].children[2].innerText = TUTORIAL_PAGES[currentTutorialPage].content;
+function updateTutorialPage(showAnimation = true) {
+	const domUpdate = () => {
+		tutorialDiv.children[0].children[0].innerText = `${TUTORIAL_PAGES[currentTutorialPage].title} (${currentTutorialPage + 1}/${TUTORIAL_PAGES.length})`;
+		tutorialDiv.children[0].children[1].src = TUTORIAL_PAGES[currentTutorialPage].image;
+		tutorialDiv.children[0].children[2].innerText = TUTORIAL_PAGES[currentTutorialPage].content;
 
-	tutorialDiv.children[1].children[0].disabled = currentTutorialPage === 0;
-	tutorialDiv.children[1].children[1].disabled = currentTutorialPage === TUTORIAL_PAGES.length - 1;
+		tutorialDiv.children[1].children[0].disabled = currentTutorialPage === 0;
+		tutorialDiv.children[1].children[1].disabled = currentTutorialPage === TUTORIAL_PAGES.length - 1;
+	};
+
+	if (showAnimation) {
+		tutorialDiv.animate(
+			[
+				{
+					transform: 'translateX(-6px)',
+				},
+				{
+					transform: 'translateX(0px)',
+				},
+				{
+					transform: 'translateX(6px)',
+				},
+			],
+			{
+				duration: 30,
+				iterations: 3,
+				direction: 'alternate-reverse',
+			}
+		);
+		setTimeout(domUpdate, 50);
+	} else {
+		domUpdate();
+	}
 }
 
 // Back tutorial button
@@ -997,7 +1023,7 @@ tutorialDiv.children[2].addEventListener('click', () => {
 helpBtn.addEventListener('click', () => {
 	localStorage.setItem('showTutorial', true);
 	tutorialDiv.classList.remove('tutorial-div-hidden');
-	updateTutorialPage();
+	updateTutorialPage(false);
 });
 
 updateTutorialPage();
@@ -1053,7 +1079,7 @@ function setState(s) {
 			localStorage.setItem('showTutorial', true);
 
 			tutorialDiv.classList.remove('tutorial-div-hidden');
-			updateTutorialPage();
+			updateTutorialPage(false);
 		}
 	} else if (s === STATES.OVER) {
 		mainCards.style.display = 'none';
