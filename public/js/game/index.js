@@ -94,6 +94,20 @@ const CARD_EFFECTS = {
 	},
 };
 
+const TUTORIAL_PAGES = [
+	{
+		image: '/public/images/tutorial/what-you-see.png',
+		title: 'The Great Four',
+		content: "These are the four cards that the game is based around. Each round a lier and a random card are chosen. \
+		The lier's job is to make sure no one manages to guess the secret card. ",
+	},
+	{
+		image: '/public/images/tutorial/what-the-lier-sees.png',
+		title: 'The Great Four',
+		content: "Being the lier gives you the ability to see the secret card. \n Don't let anyone else know it!",
+	},
+];
+
 let player = null;
 let isAdmin = false;
 let isGuessing = false;
@@ -105,6 +119,7 @@ let currentJoinOrCreateShapeIndex = 0;
 let currentJoinOrCreateColorIndex = 0;
 let doubledPlayerUsernames = new Set();
 let currentSpecial = null;
+let currentTutorialPage = 0;
 
 const mainDiv = document.querySelector('.main');
 const roomInfoDiv = document.querySelector('.room-info');
@@ -154,6 +169,7 @@ const cards = document.querySelectorAll('.card');
 const mainCards = document.querySelector('.main-cards');
 
 const hideAllDiv = document.querySelector('.hide-all');
+const tutorialDiv = document.querySelector('.tutorial-div');
 
 function cardIndexToLetter(index) {
 	return String.fromCharCode('A'.charCodeAt(0) + index);
@@ -904,6 +920,33 @@ joinOrCreateSwapStateButton.addEventListener('click', () => {
 	setState(state === STATES.JOIN ? STATES.CREATE : STATES.JOIN);
 });
 
+function updateTutorialPage() {
+	tutorialDiv.style.display = 'block';
+	tutorialDiv.children[0].children[0].innerText = TUTORIAL_PAGES[currentTutorialPage].title;
+	tutorialDiv.children[0].children[1].src = TUTORIAL_PAGES[currentTutorialPage].image;
+	tutorialDiv.children[0].children[2].innerText = TUTORIAL_PAGES[currentTutorialPage].content;
+}
+
+// Back tutorial button
+tutorialDiv.children[1].children[0].addEventListener('click', () => {
+	currentTutorialPage -= 1 - TUTORIAL_PAGES.length;
+	currentTutorialPage %= TUTORIAL_PAGES.length;
+	updateTutorialPage();
+});
+
+// Forward tutorial button
+tutorialDiv.children[1].children[1].addEventListener('click', () => {
+	currentTutorialPage += 1;
+	currentTutorialPage %= TUTORIAL_PAGES.length;
+	updateTutorialPage();
+});
+
+// Close tutorial button
+tutorialDiv.children[2].addEventListener('click', () => {
+	currentTutorialPage = 0;
+	tutorialDiv.style.display = 'none';
+});
+
 // Function to call when state changes
 function setState(s) {
 	setNewMessagesCounter(0);
@@ -950,6 +993,13 @@ function setState(s) {
 			"Let's Go!",
 			1000
 		);
+
+		// Show tutorial div if user hasn't seen the tutorial yet
+		if (!localStorage.getItem('showTutorial')) {
+			localStorage.setItem('showTutorial', true);
+
+			updateTutorialPage();
+		}
 	} else if (s === STATES.OVER) {
 		mainCards.style.display = 'none';
 		roomInfoDiv.style.display = 'flex';

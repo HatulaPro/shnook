@@ -1066,6 +1066,69 @@ input:focus {
 	text-align: center;
 }
 
+.tutorial-div {
+	background-color: #191919;
+	display: none;
+	width: 100vw;
+	height: 100vh;
+	z-index: 99999999999999999;
+	position: fixed;
+	inset: 0;
+}
+
+.tutorial-div h2 {
+	font-size: 3rem;
+	text-decoration: underline;
+	text-decoration-color: #dd11aa;
+	color: white;
+	font-style: italic;
+	font-weight: bold;
+	text-align: center;
+}
+
+.tutorial-content {
+	text-align: center;
+}
+
+.tutorial-content img {
+	height: 50vh;
+	margin: auto;
+}
+
+.tutorial-content p {
+	color: white;
+	font-size: 1.4rem;
+	width: 80vw;
+	margin: 2rem auto;
+}
+
+.tutorial-div .challenge-div-buttons {
+	position: absolute;
+	bottom: 0;
+	width: 100%;
+	right: 0;
+	left: 0;
+	text-align: center;
+}
+
+.close-tutorial {
+	color: white;
+	background-color: red;
+	width: 2.4rem;
+	height: 2rem;
+	font-size: 1.5rem;
+	position: fixed;
+	top: 0;
+	right: 0;
+	border: 0;
+	outline: 0;
+}
+
+.close-tutorial:hover {
+	cursor: pointer;
+	filter: grayscale(0.4);
+}
+
 @media only screen and (max-width: 800px) {
 	.main-title {
 		font-size: 2.4rem;
