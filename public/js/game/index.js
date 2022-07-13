@@ -966,6 +966,8 @@ joinOrCreateSwapStateButton.addEventListener('click', () => {
 });
 
 function updateTutorialPage(showAnimation = true) {
+	window.scrollTo(0, 1);
+
 	const domUpdate = () => {
 		tutorialDiv.children[0].children[0].innerText = `${TUTORIAL_PAGES[currentTutorialPage].title} (${currentTutorialPage + 1}/${TUTORIAL_PAGES.length})`;
 		tutorialDiv.children[0].children[1].src = TUTORIAL_PAGES[currentTutorialPage].image;
