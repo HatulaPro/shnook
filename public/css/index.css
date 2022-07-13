@@ -1107,6 +1107,8 @@ input:focus {
 	font-size: 1.4rem;
 	width: 80vw;
 	margin: 2rem auto;
+
+	height: 80%;
 }
 
 .tutorial-div .challenge-div-buttons {
