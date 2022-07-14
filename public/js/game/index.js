@@ -151,6 +151,68 @@ const TUTORIAL_PAGES = [
 	},
 ];
 
+const SPECIALS = {
+	doubling: {
+		challengeDivClassName: 'challenge-doubling',
+		themeDivClassName: 'main-theme-doubles',
+		content: 'Doubles',
+		setChallengeDiv: (isGuessing) => {
+			if (isGuessing) {
+				acceptableChallengeDiv.style.display = 'flex';
+				acceptableChallengeDiv.children[0].innerText = 'Double the risk, double the reward!';
+			}
+		},
+		func: (username) => {
+			const playerElement = document.querySelector(`[data-username='${username}']`);
+			playerElement.classList.add('player-doubling');
+		},
+	},
+	earthquake: {
+		challengeDivClassName: 'challenge-earthquake',
+		themeDivClassName: 'main-theme-earthquake',
+		content: 'Earthquakes',
+		setChallengeDiv: (isGuessing) => {
+			if (!isGuessing) {
+				acceptableChallengeDiv.style.display = 'flex';
+				acceptableChallengeDiv.children[0].innerText = 'TAKE OUT THEIR VOTES!';
+			}
+		},
+		func: (username) => {
+			cards.forEach((card) => {
+				card.animate(
+					[
+						{
+							transform: 'none',
+						},
+						{
+							transform: `translateY(${Math.floor(Math.random() * 16)}px) rotate(4deg)`,
+						},
+						{
+							transform: `translateY(-${Math.floor(Math.random() * 16)}px)`,
+						},
+						{
+							transform: `translateY(${Math.floor(Math.random() * 16)}px) rotate(-4deg)`,
+						},
+						{
+							transform: `translateY(-${Math.floor(Math.random() * 16)}px)`,
+						},
+					],
+					{
+						duration: 150,
+						iterations: 4,
+					}
+				);
+				card.classList.add('card-earthquake');
+			});
+			setTimeout(() => {
+				cards.forEach((card) => {
+					card.classList.remove('card-earthquake');
+				});
+			}, 700);
+		},
+	},
+};
+
 let player = null;
 let isAdmin = false;
 let isGuessing = false;
@@ -651,6 +713,7 @@ function update(isStart = false) {
 	}
 
 	if (roomData.hasStarted) {
+		// Only getting the special that is "on"
 		const specialsList = Object.entries(roomData.specials).filter((special) => special[1]);
 		if (specialsList.length) {
 			currentSpecial = specialsList[0][0];
@@ -715,28 +778,22 @@ function update(isStart = false) {
 			}
 		});
 
-		acceptableChallengeDiv.classList.remove('challenge-doubling');
-		acceptableChallengeDiv.classList.remove('challenge-earthquake');
-		if (currentSpecial) {
+		Object.values(SPECIALS).forEach((special) => {
+			acceptableChallengeDiv.classList.remove(special.challengeDivClassName);
+			themeDiv.classList.remove(special.themeDivClassName);
+		});
+
+		if (currentSpecial && SPECIALS[currentSpecial]) {
 			themeDiv.classList.remove('main-theme-hidden');
 			themeDiv.classList.add('main-theme-visib');
-			if (currentSpecial === 'doubling') {
-				themeDiv.classList.add('main-theme-doubles');
-				themeDiv.children[0].innerHTML = 'Doubles';
 
-				acceptableChallengeDiv.classList.add('challenge-doubling');
-			} else if (currentSpecial === 'earthquake') {
-				themeDiv.classList.add('main-theme-earthquake');
-				themeDiv.children[0].innerHTML = 'Earthquakes';
+			themeDiv.classList.add(SPECIALS[currentSpecial].themeDivClassName);
+			themeDiv.children[0].innerHTML = SPECIALS[currentSpecial].content;
 
-				acceptableChallengeDiv.classList.add('challenge-earthquake');
-			}
+			acceptableChallengeDiv.classList.add(SPECIALS[currentSpecial].challengeDivClassName);
 		} else {
 			themeDiv.classList.remove('main-theme-visib');
 			themeDiv.classList.add('main-theme-hidden');
-
-			themeDiv.classList.remove('main-theme-earthquake');
-			themeDiv.classList.remove('main-theme-doubles');
 		}
 	}
 
@@ -768,43 +825,8 @@ socket.on('update', (stream) => {
 socket.on('accepted_special', ({ username, specialName, room }) => {
 	roomData = room;
 	update();
-	const playerElement = document.querySelector(`[data-username='${username}']`);
 
-	if (specialName === 'doubling') {
-		playerElement.classList.add('player-doubling');
-	} else if (specialName === 'earthquake') {
-		cards.forEach((card) => {
-			card.animate(
-				[
-					{
-						transform: 'none',
-					},
-					{
-						transform: `translateY(${Math.floor(Math.random() * 16)}px) rotate(4deg)`,
-					},
-					{
-						transform: `translateY(-${Math.floor(Math.random() * 16)}px)`,
-					},
-					{
-						transform: `translateY(${Math.floor(Math.random() * 16)}px) rotate(-4deg)`,
-					},
-					{
-						transform: `translateY(-${Math.floor(Math.random() * 16)}px)`,
-					},
-				],
-				{
-					duration: 150,
-					iterations: 4,
-				}
-			);
-			card.classList.add('card-earthquake');
-		});
-		setTimeout(() => {
-			cards.forEach((card) => {
-				card.classList.remove('card-earthquake');
-			});
-		}, 700);
-	}
+	SPECIALS[specialName].func(username);
 });
 socket.on('start', (stream) => {
 	roomData = stream.room;
@@ -880,14 +902,9 @@ socket.on('start', (stream) => {
 
 	challengeDiv.style.display = 'none';
 
-	if (isGuessing && roomData.specials.doubling) {
-		acceptableChallengeDiv.style.display = 'flex';
-		acceptableChallengeDiv.children[0].innerText = 'Double the risk, double the reward!';
-	} else if (!isGuessing && roomData.specials.earthquake) {
-		acceptableChallengeDiv.style.display = 'flex';
-		acceptableChallengeDiv.children[0].innerText = 'TAKE OUT THEIR VOTES!';
-	} else {
-		acceptableChallengeDiv.style.display = 'none';
+	acceptableChallengeDiv.style.display = 'none';
+	if (currentSpecial && SPECIALS[currentSpecial]) {
+		SPECIALS[currentSpecial].setChallengeDiv(isGuessing);
 	}
 
 	challengeDiv.classList.remove('challenge-div-complete');
