@@ -983,7 +983,7 @@ joinOrCreateSwapStateButton.addEventListener('click', () => {
 });
 
 function updateTutorialPage(showAnimation = true) {
-	window.scrollTo(0, 1);
+	tutorialDiv.children[1].scrollIntoView({ behavior: 'smooth', block: 'end' });
 
 	const domUpdate = () => {
 		tutorialDiv.children[0].children[0].innerText = `${TUTORIAL_PAGES[currentTutorialPage].title} (${currentTutorialPage + 1}/${TUTORIAL_PAGES.length})`;
@@ -995,28 +995,41 @@ function updateTutorialPage(showAnimation = true) {
 	};
 
 	if (showAnimation) {
-		tutorialDiv.animate(
-			[
+		new Array(...tutorialDiv.children[0].children).forEach((child) => {
+			child.style.display = 'none';
+			child.style.display = 'block';
+
+			child.animate(
+				[
+					{
+						opacity: 1,
+						transform: 'translatey(0)',
+					},
+					{
+						opacity: 0.3,
+						transform: 'translatey(0)',
+					},
+					{
+						opacity: 0,
+						transform: 'translatey(200vh)',
+					},
+					{
+						opacity: 0.5,
+						transform: 'translatey(0)',
+					},
+					{
+						opacity: 1,
+						transform: 'translatey(0)',
+					},
+				],
 				{
-					transform: 'translateX(-6px)',
-				},
-				{
-					transform: 'translateX(0px)',
-				},
-				{
-					transform: 'translateX(6px)',
-				},
-			],
-			{
-				duration: 30,
-				iterations: 3,
-				direction: 'alternate-reverse',
-			}
-		);
-		setTimeout(domUpdate, 50);
-	} else {
-		domUpdate();
+					duration: 500,
+				}
+			);
+		});
 	}
+
+	setTimeout(domUpdate, 300);
 }
 
 // Back tutorial button
