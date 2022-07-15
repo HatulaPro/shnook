@@ -156,6 +156,7 @@ const SPECIALS = {
 		challengeDivClassName: 'challenge-doubling',
 		themeDivClassName: 'main-theme-doubles',
 		content: 'Doubles',
+		help: 'Doubling is a game mechanic that allows guessers to double the points gained, as well as the points lost every round. ',
 		setChallengeDiv: (isGuessing) => {
 			if (isGuessing) {
 				acceptableChallengeDiv.style.display = 'flex';
@@ -171,6 +172,7 @@ const SPECIALS = {
 		challengeDivClassName: 'challenge-earthquake',
 		themeDivClassName: 'main-theme-earthquake',
 		content: 'Earthquakes',
+		help: "Earthquakes can be used by liers to remove other player's guesses. This special is disabled a few moments before the end of the round.",
 		setChallengeDiv: (isGuessing) => {
 			if (!isGuessing) {
 				acceptableChallengeDiv.style.display = 'flex';
@@ -789,6 +791,7 @@ function update(isStart = false) {
 
 			themeDiv.classList.add(SPECIALS[currentSpecial].themeDivClassName);
 			themeDiv.children[0].innerHTML = SPECIALS[currentSpecial].content;
+			themeDiv.children[1].innerHTML = SPECIALS[currentSpecial].help;
 
 			acceptableChallengeDiv.classList.add(SPECIALS[currentSpecial].challengeDivClassName);
 		} else {

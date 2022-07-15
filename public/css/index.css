@@ -266,8 +266,31 @@ body {
 	margin: auto;
 	margin-bottom: 1rem;
 	padding: 0.7rem;
+	padding-top: 1.6rem;
 	border-radius: 8px;
 	color: white;
+}
+
+.main-theme .main-theme-explain {
+	visibility: hidden;
+	opacity: 0;
+	background-color: white;
+	width: 100%;
+	position: absolute;
+	color: black;
+	z-index: 99999999999999999999999;
+	font-size: 0.8rem;
+	border-radius: 8px;
+	top: 100%;
+	background-image: url(/public/images/help.png);
+	background-position: top left;
+	background-repeat: no-repeat;
+	background-size: 7%;
+	padding: 1.6rem;
+	padding-top: 7%;
+	padding-bottom: 0.3rem;
+	transform: translateX(-2.3rem);
+	transition: visibility 0.2s, opacity 0.2s;
 }
 
 .main-theme-hidden,
@@ -707,6 +730,11 @@ body {
 		cursor: pointer;
 		background-color: #a293c3;
 	}
+
+	.main-theme:active .main-theme-explain {
+		visibility: visible;
+		opacity: 1;
+	}
 }
 @media (hover: hover) {
 	.card:hover::after {
@@ -747,6 +775,11 @@ body {
 	.btn:hover:enabled {
 		cursor: pointer;
 		background-color: #a293c3;
+	}
+
+	.main-theme:hover .main-theme-explain {
+		visibility: visible;
+		opacity: 1;
 	}
 }
 
@@ -1194,6 +1227,9 @@ input:focus {
 	.card {
 		flex-basis: 30% !important;
 		flex-grow: 1;
+	}
+	.main-theme {
+		font-size: 1.4rem;
 	}
 	.player-li {
 		font-size: 1rem;
