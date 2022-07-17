@@ -213,6 +213,22 @@ const SPECIALS = {
 			}, 700);
 		},
 	},
+	fifty: {
+		challengeDivClassName: 'challenge-fifty',
+		themeDivClassName: 'main-theme-fifty',
+		content: "50/50's",
+		help: 'By using the 50/50 special, your vote will change automatically to another random card. You have a 50% chance of getting the right one.',
+		setChallengeDiv: (isGuessing) => {
+			if (isGuessing) {
+				acceptableChallengeDiv.style.display = 'flex';
+				acceptableChallengeDiv.children[0].innerText = '50% chance to get the right card!';
+			}
+		},
+		func: (username) => {
+			const playerElement = document.querySelector(`[data-username='${username}']`);
+			playerElement.classList.add('player-fiftying');
+		},
+	},
 };
 
 let player = null;
@@ -670,6 +686,7 @@ function update(isStart = false) {
 			}
 			if (isStart) {
 				playerElement.classList.remove('player-doubling');
+				playerElement.classList.remove('player-fiftying');
 				playerElement.childNodes[0].textContent = playerElement.getAttribute('data-username');
 			}
 			playerElement.children[playerElement.children.length - 2].innerText = `score: ${p.score || '#'}`;
@@ -1136,6 +1153,7 @@ function setState(s) {
 			playerLi.style.color = null;
 			playerLi.children[0].innerText = '';
 			playerLi.classList.remove('player-doubling');
+			playerLi.classList.remove('player-fiftying');
 		});
 
 		history.pushState({}, '', `/game/${roomData.id}`);

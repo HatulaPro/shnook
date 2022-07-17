@@ -29,6 +29,13 @@ module.exports = class Room {
 				p.guess = -1;
 			});
 		}),
+		fifty: new Special(false, 'fifty', (player, isLier, room) => {
+			if (isLier) return;
+
+			// 3 options are the treasure, the other three aren't
+			const options = [0, 1, 2, 3, room.treasure, room.treasure];
+			player.guess = options[Math.floor(Math.random() * options.length)];
+		}),
 	};
 
 	// players: a map of socket to info

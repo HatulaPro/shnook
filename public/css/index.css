@@ -352,6 +352,11 @@ body {
 	background-size: contain;
 }
 
+.main-theme-fifty span {
+	color: #fcff34;
+	text-shadow: 2px 2px 2px #fd8c28;
+}
+
 .main-players {
 	background-color: white;
 	height: 600px;
@@ -1091,6 +1096,40 @@ input:focus {
 	background-size: contain;
 }
 
+@keyframes coinflipAnimation {
+	0% {
+		transform: translateY(-2rem);
+	}
+	25% {
+		transform: translateY(-2rem);
+	}
+	50% {
+		transform: translateY(-5rem) rotateX(360deg);
+	}
+	75% {
+		transform: translateY(-2rem);
+	}
+	100% {
+		transform: translateY(-2rem);
+	}
+}
+
+.challenge-fifty::before {
+	content: '50¢';
+	background-color: #fcff34;
+	border: 2px solid #fd8c28;
+	border-radius: 999px;
+	position: absolute;
+	transform: translateY(-2rem);
+	left: 0.5rem;
+	width: 1.4rem;
+	height: 1.4rem;
+	font-size: 12px;
+	line-height: 1.4rem;
+	text-align: center;
+	animation: coinflipAnimation 1.2s ease-in-out 0.6s infinite;
+}
+
 @keyframes comeFromTheLeft {
 	0% {
 		transform: translateX(-10rem);
@@ -1117,6 +1156,20 @@ input:focus {
 	top: 0;
 	font-size: 1.6rem;
 	color: red;
+	animation: comeFromTheLeft 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.player-fiftying::before {
+	content: '50%';
+	color: #f4ff00;
+	text-shadow: 2px 2px #fd8c28;
+	text-decoration: underline;
+	text-decoration-color: transparent;
+	position: absolute;
+	transform: translateY(-50%) skew(-26deg);
+	left: 0.5rem;
+	font-size: 1.2rem;
+	top: 50%;
 	animation: comeFromTheLeft 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
