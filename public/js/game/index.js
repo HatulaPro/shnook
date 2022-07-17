@@ -227,6 +227,10 @@ const SPECIALS = {
 		func: (username) => {
 			const playerElement = document.querySelector(`[data-username='${username}']`);
 			playerElement.classList.add('player-fiftying');
+
+			// Getting the vote of username
+			const vote = roomData.players.find((x) => x.username === username).guess;
+			cards[vote].animate([{ boxShadow: '0px 0px 100px lightgreen' }, { boxShadow: '0px 0px 0px lightgreen' }], { duration: 300 });
 		},
 	},
 };
