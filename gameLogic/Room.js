@@ -171,6 +171,7 @@ module.exports = class Room {
 
 	applySpecial(specialName, player, isLier) {
 		if (this.specials[specialName]) {
+			player.acceptedSpecial = true;
 			Room.SPECIALS[specialName].applySpecial(player, isLier, this);
 		}
 	}

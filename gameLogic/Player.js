@@ -6,6 +6,7 @@ module.exports = class Player {
 		this.guess = -1;
 		this.score = 0;
 		this.scoringFactor = 1;
+		this.acceptedSpecial = false;
 	}
 
 	gameReset() {
@@ -16,5 +17,6 @@ module.exports = class Player {
 	roundReset() {
 		this.guess = -1;
 		this.scoringFactor = 1;
+		this.acceptedSpecial = false;
 	}
 };

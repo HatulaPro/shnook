@@ -194,6 +194,7 @@ module.exports = (io) => {
 			if (room.roundsPlayed === room.maxRounds) return;
 			if (typeof specialName !== 'string') return;
 			if (!room.specials[specialName]) return;
+			if (player.acceptedSpecial) return;
 
 			room.applySpecial(specialName, player, socket.id === room.getLierSocketId());
 
