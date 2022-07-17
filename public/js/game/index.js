@@ -1145,7 +1145,7 @@ function setState(s) {
 			ownerStartButton.innerText = 'restart';
 			ownerStartButton.style.transform = '';
 		}
-		let playerElement = document.querySelector(`[data-username='${winner.username}']`);
+		const playerElement = document.querySelector(`[data-username='${winner.username}']`);
 		playerElement.innerHTML = '👑 ' + playerElement.innerHTML;
 		chatContent.innerHTML = '';
 
