@@ -16,26 +16,41 @@ module.exports = class Room {
 	static CHANCE_OF_SPECIAL = 1;
 
 	static SPECIALS = {
-		doubling: new Special(false, 'doubling', (player, isLier, room) => {
-			if (isLier) return;
-			player.scoringFactor = 2;
-		}),
-		earthquake: new Special(false, 'earthquake', (player, isLier, room) => {
-			if (!isLier) return;
-			room.specials.earthquake = false;
-			// If round has less than 3 seconds before it ends, earthquake can no longer be used
-			if (getTimestamp() > room.startedAt + Room.TIME_BETWEEN_ROUNDS + Room.TIME_PER_ROUND - 3) return;
-			room.playersList().forEach((p) => {
-				p.guess = -1;
-			});
-		}),
-		fifty: new Special(false, 'fifty', (player, isLier, room) => {
-			if (isLier) return;
+		doubling: new Special(
+			false,
+			'doubling',
+			(player, isLier, room) => {
+				if (isLier) return;
+				player.scoringFactor = 2;
+			},
+			Special.WHO_SEES.players
+		),
+		earthquake: new Special(
+			false,
+			'earthquake',
+			(player, isLier, room) => {
+				if (!isLier) return;
+				room.specials.earthquake = false;
+				// If round has less than 3 seconds before it ends, earthquake can no longer be used
+				if (getTimestamp() > room.startedAt + Room.TIME_BETWEEN_ROUNDS + Room.TIME_PER_ROUND - 3) return;
+				room.playersList().forEach((p) => {
+					p.guess = -1;
+				});
+			},
+			Special.WHO_SEES.lier
+		),
+		fifty: new Special(
+			false,
+			'fifty',
+			(player, isLier, room) => {
+				if (isLier) return;
 
-			// 3 options are the treasure, the other three aren't
-			const options = [0, 1, 2, 3, room.treasure, room.treasure];
-			player.guess = options[Math.floor(Math.random() * options.length)];
-		}),
+				// 3 options are the treasure, the other three aren't
+				const options = [0, 1, 2, 3, room.treasure, room.treasure];
+				player.guess = options[Math.floor(Math.random() * options.length)];
+			},
+			Special.WHO_SEES.players
+		),
 	};
 
 	// players: a map of socket to info
@@ -178,7 +193,7 @@ module.exports = class Room {
 
 	applySpecial(specialName, player, isLier) {
 		if (this.specials[specialName]) {
-			player.acceptedSpecial = true;
+			if ((this.specials[specialName].whoSees === Special.WHO_SEES.lier && isLier) || (this.specials[specialName].whoSees === Special.WHO_SEES.players && !isLier)) player.acceptedSpecial = true;
 			Room.SPECIALS[specialName].applySpecial(player, isLier, this);
 		}
 	}
