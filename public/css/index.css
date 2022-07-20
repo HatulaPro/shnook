@@ -812,7 +812,7 @@ body {
 
 .secret-card::before {
 	content: '';
-	height: 4rem;
+	height: 2rem;
 	width: 100%;
 	margin: -1rem;
 	background-image: url(/public/images/secret.png);
