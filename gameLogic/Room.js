@@ -159,7 +159,7 @@ module.exports = class Room {
 		this.lastEffect = null;
 
 		this.defaultSpecials();
-		if (!this.challenge && Math.random() < Room.CHANCE_OF_SPECIAL) {
+		if (Math.random() < Room.CHANCE_OF_SPECIAL) {
 			const entries = Object.entries(this.specials);
 			entries[Math.floor(Math.random() * entries.length)][1] = true;
 			this.specials = Object.fromEntries(entries);
