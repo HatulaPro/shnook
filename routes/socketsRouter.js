@@ -194,11 +194,10 @@ module.exports = (io) => {
 			if (room.roundsPlayed === room.maxRounds) return;
 			if (typeof specialName !== 'string') return;
 			if (!room.specials[specialName]) return;
-			if (player.acceptedSpecial) return;
 
-			room.applySpecial(specialName, player, socket.id === room.getLierSocketId());
-
-			io.to(room.id).emit('accepted_special', { username: player.username, specialName, room: room.getStatus() });
+			room.applySpecial(specialName, player, socket.id === room.getLierSocketId(), () => {
+				io.to(room.id).emit('accepted_special', { username: player.username, specialName, room: room.getStatus() });
+			});
 		});
 
 		socket.on('disconnecting', () => {
