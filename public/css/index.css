@@ -266,7 +266,6 @@ body {
 	margin: auto;
 	margin-bottom: 1rem;
 	padding: 0.7rem;
-	padding-top: 1.6rem;
 	border-radius: 8px;
 	color: white;
 }
@@ -330,12 +329,19 @@ body {
 	content: '';
 	background: white;
 	width: 22px;
-	height: 1em;
+	height: 80%;
+	bottom: 10%;
 	display: inline-block;
 	position: absolute;
 	transform: skewX(39deg);
 	animation: glassyAnimation 3s cubic-bezier(0.645, 0.045, 0.355, 1);
 	animation-iteration-count: infinite;
+}
+
+.main-theme-use {
+	border-radius: 16px !important;
+	padding: 0.6rem;
+	font-size: smaller;
 }
 
 .main-theme-doubles span {

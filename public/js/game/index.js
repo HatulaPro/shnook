@@ -157,11 +157,11 @@ const SPECIALS = {
 		themeDivClassName: 'main-theme-doubles',
 		content: 'Doubles',
 		help: 'Doubling is a game mechanic that allows guessers to double the points gained, as well as the points lost every round. ',
+		isEnabled: (isGuessing) => {
+			return isGuessing;
+		},
 		setChallengeDiv: (isGuessing) => {
-			if (isGuessing) {
-				acceptableChallengeDiv.style.display = 'flex';
-				acceptableChallengeDiv.children[0].innerText = 'Double the risk, double the reward!';
-			}
+			// TODO: Remove this
 		},
 		func: (username) => {
 			const playerElement = document.querySelector(`[data-username='${username}']`);
@@ -173,11 +173,11 @@ const SPECIALS = {
 		themeDivClassName: 'main-theme-earthquake',
 		content: 'Earthquakes',
 		help: "Earthquakes can be used by liers to remove other player's guesses. This special is disabled a few moments before the end of the round.",
+		isEnabled: (isGuessing) => {
+			return !isGuessing;
+		},
 		setChallengeDiv: (isGuessing) => {
-			if (!isGuessing) {
-				acceptableChallengeDiv.style.display = 'flex';
-				acceptableChallengeDiv.children[0].innerText = 'TAKE OUT THEIR VOTES!';
-			}
+			// TODO: Remove this
 		},
 		func: (username) => {
 			cards.forEach((card) => {
@@ -218,11 +218,11 @@ const SPECIALS = {
 		themeDivClassName: 'main-theme-fifty',
 		content: "50/50's",
 		help: 'By using the 50/50 special, your vote will change automatically to another random card. You have a 50% chance of getting the right one.',
+		isEnabled: (isGuessing) => {
+			return isGuessing;
+		},
 		setChallengeDiv: (isGuessing) => {
-			if (isGuessing) {
-				acceptableChallengeDiv.style.display = 'flex';
-				acceptableChallengeDiv.children[0].innerText = '50% chance to get the right card!';
-			}
+			// TODO: Remove this
 		},
 		func: (username) => {
 			const playerElement = document.querySelector(`[data-username='${username}']`);
@@ -288,9 +288,7 @@ const timerSpan = document.querySelector('#room-timer');
 const gameModeSpan = document.querySelector('#game-mode-span');
 
 const challengeDiv = document.querySelector('.challenge-div');
-const acceptableChallengeDiv = document.querySelector('.challenge-acceptable');
-const acceptableChallengeDivAccept = document.querySelector('.challenge-acceptable .btn-accept');
-const acceptableChallengeDivReject = document.querySelector('.challenge-acceptable .btn-reject');
+const acceptSpecialButton = document.querySelector('.main-theme-use');
 
 const cards = document.querySelectorAll('.card');
 const mainCards = document.querySelector('.main-cards');
@@ -365,14 +363,14 @@ goToChatButton.addEventListener('click', () => {
 	chatButton.scrollIntoView({ behavior: 'smooth', block: 'center' });
 });
 
-acceptableChallengeDivAccept.addEventListener('click', () => {
+function disableAcceptSpecialButton() {
+	acceptSpecialButton.disabled = true;
+}
+
+acceptSpecialButton.addEventListener('click', () => {
 	// Emit the name of the only special that is currently enabled
 	socket.emit('accepted_special', currentSpecial);
-	acceptableChallengeDiv.classList.add('challenge-div-complete');
-});
-
-acceptableChallengeDivReject.addEventListener('click', () => {
-	acceptableChallengeDiv.classList.add('challenge-div-complete');
+	disableAcceptSpecialButton();
 });
 
 function setNewMessagesCounter(count) {
@@ -802,7 +800,6 @@ function update(isStart = false) {
 		});
 
 		Object.values(SPECIALS).forEach((special) => {
-			acceptableChallengeDiv.classList.remove(special.challengeDivClassName);
 			themeDiv.classList.remove(special.themeDivClassName);
 		});
 
@@ -814,7 +811,9 @@ function update(isStart = false) {
 			themeDiv.children[0].innerHTML = SPECIALS[currentSpecial].content;
 			themeDiv.children[1].innerHTML = SPECIALS[currentSpecial].help;
 
-			acceptableChallengeDiv.classList.add(SPECIALS[currentSpecial].challengeDivClassName);
+			if (isStart) {
+				acceptSpecialButton.disabled = !SPECIALS[currentSpecial].isEnabled(isGuessing);
+			}
 		} else {
 			themeDiv.classList.remove('main-theme-visib');
 			themeDiv.classList.add('main-theme-hidden');
@@ -897,11 +896,11 @@ socket.on('start', (stream) => {
 
 			// If there are less than 3 seconds less to the round, remove the option to start an earthquake
 			if (seconds <= 3 && currentSpecial === 'earthquake') {
-				acceptableChallengeDivReject.click();
+				disableAcceptSpecialButton();
 				roomData.specials.earthquake = false;
 				update();
 			} else if (seconds <= 0.6 && currentSpecial) {
-				acceptableChallengeDivReject.click();
+				disableAcceptSpecialButton();
 				Object.keys(roomData.specials).forEach((special) => {
 					roomData.specials[special] = false;
 				});
@@ -926,13 +925,11 @@ socket.on('start', (stream) => {
 
 	challengeDiv.style.display = 'none';
 
-	acceptableChallengeDiv.style.display = 'none';
 	if (currentSpecial && SPECIALS[currentSpecial]) {
 		SPECIALS[currentSpecial].setChallengeDiv(isGuessing);
 	}
 
 	challengeDiv.classList.remove('challenge-div-complete');
-	acceptableChallengeDiv.classList.remove('challenge-div-complete');
 
 	if (stream.treasure !== undefined) {
 		document.querySelector(`.card:nth-of-type(${stream.treasure + 1})`).classList.add('secret-card');
@@ -1093,7 +1090,6 @@ function setState(s) {
 		roomInfoDiv.style.display = 'none';
 		timerSpan.style.display = 'none';
 		challengeDiv.style.display = 'none';
-		acceptableChallengeDiv.style.display = 'none';
 
 		roomIdTitle.innerText = '';
 		roomPlayers.innerText = '';
@@ -1142,7 +1138,6 @@ function setState(s) {
 		roomInfoDiv.style.display = 'flex';
 		gameModeSpan.style.display = 'none';
 		challengeDiv.style.display = 'none';
-		acceptableChallengeDiv.style.display = 'none';
 		themeDiv.classList.add('main-theme-hidden');
 		themeDiv.classList.remove('main-theme-visib');
 		if (isAdmin) {
