@@ -264,7 +264,8 @@ body {
 	width: fit-content;
 	position: relative;
 	margin: auto;
-	margin-bottom: 1rem;
+	margin-bottom: 1.6rem;
+	top: 1.2rem;
 	padding: 0.7rem;
 	border-radius: 8px;
 	color: white;
