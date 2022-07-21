@@ -153,15 +153,11 @@ const TUTORIAL_PAGES = [
 
 const SPECIALS = {
 	doubling: {
-		challengeDivClassName: 'challenge-doubling',
 		themeDivClassName: 'main-theme-doubles',
 		content: 'Doubles',
 		help: 'Doubling is a game mechanic that allows guessers to double the points gained, as well as the points lost every round. ',
 		isEnabled: (isGuessing) => {
 			return isGuessing;
-		},
-		setChallengeDiv: (isGuessing) => {
-			// TODO: Remove this
 		},
 		func: (username) => {
 			const playerElement = document.querySelector(`[data-username='${username}']`);
@@ -169,15 +165,11 @@ const SPECIALS = {
 		},
 	},
 	earthquake: {
-		challengeDivClassName: 'challenge-earthquake',
 		themeDivClassName: 'main-theme-earthquake',
 		content: 'Earthquakes',
 		help: "Earthquakes can be used by liers to remove other player's guesses. This special is disabled a few moments before the end of the round.",
 		isEnabled: (isGuessing) => {
 			return !isGuessing;
-		},
-		setChallengeDiv: (isGuessing) => {
-			// TODO: Remove this
 		},
 		func: (username) => {
 			cards.forEach((card) => {
@@ -214,15 +206,11 @@ const SPECIALS = {
 		},
 	},
 	fifty: {
-		challengeDivClassName: 'challenge-fifty',
 		themeDivClassName: 'main-theme-fifty',
 		content: "50/50's",
 		help: 'By using the 50/50 special, your vote will change automatically to another random card. You have a 50% chance of getting the right one.',
 		isEnabled: (isGuessing) => {
 			return isGuessing;
-		},
-		setChallengeDiv: (isGuessing) => {
-			// TODO: Remove this
 		},
 		func: (username) => {
 			const playerElement = document.querySelector(`[data-username='${username}']`);
@@ -924,11 +912,6 @@ socket.on('start', (stream) => {
 	});
 
 	challengeDiv.style.display = 'none';
-
-	if (currentSpecial && SPECIALS[currentSpecial]) {
-		SPECIALS[currentSpecial].setChallengeDiv(isGuessing);
-	}
-
 	challengeDiv.classList.remove('challenge-div-complete');
 
 	if (stream.treasure !== undefined) {

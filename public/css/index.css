@@ -369,6 +369,22 @@ body {
 	text-shadow: 2px 2px 2px #fd8c28;
 }
 
+.main-theme-fifty span::before {
+	content: '50¢';
+	background-color: #fcff34;
+	border: 2px solid #fd8c28;
+	border-radius: 999px;
+	position: absolute;
+	left: -1rem;
+	bottom: 1.7rem;
+	width: 1.4rem;
+	height: 1.4rem;
+	font-size: 12px;
+	line-height: 1.4rem;
+	text-align: center;
+	animation: coinflipAnimation 1.2s ease-in-out 0.6s infinite;
+}
+
 .main-players {
 	background-color: white;
 	height: 600px;
@@ -1076,20 +1092,7 @@ input:focus {
 	margin: 0.1rem;
 }
 
-.challenge-acceptable {
-	background-color: #fff484;
-}
-.challenge-acceptable span {
-	padding: 1rem;
-}
-
-.challenge-acceptable button {
-	margin: 0.1rem;
-	font-size: 1rem;
-}
-
-.player-li.player-doubling::before,
-.challenge-doubling::before {
+.player-li.player-doubling::before {
 	content: '2X';
 	color: white;
 	font-style: italic;
@@ -1101,49 +1104,22 @@ input:focus {
 	text-shadow: #1515ff 3px 2px;
 }
 
-.challenge-earthquake::before {
-	content: '';
-	background-image: url(/public/images/destruction.png);
-	position: absolute;
-	transform: translateY(-3em);
-	left: 1em;
-	width: 4em;
-	height: 4em;
-	background-size: contain;
-}
-
 @keyframes coinflipAnimation {
 	0% {
-		transform: translateY(-2rem);
+		transform: none;
 	}
 	25% {
-		transform: translateY(-2rem);
+		transform: none;
 	}
 	50% {
-		transform: translateY(-5rem) rotateX(360deg);
+		transform: translateY(-3rem) rotateX(360deg);
 	}
 	75% {
-		transform: translateY(-2rem);
+		transform: none;
 	}
 	100% {
-		transform: translateY(-2rem);
+		transform: none;
 	}
-}
-
-.challenge-fifty::before {
-	content: '50¢';
-	background-color: #fcff34;
-	border: 2px solid #fd8c28;
-	border-radius: 999px;
-	position: absolute;
-	transform: translateY(-2rem);
-	left: 0.5rem;
-	width: 1.4rem;
-	height: 1.4rem;
-	font-size: 12px;
-	line-height: 1.4rem;
-	text-align: center;
-	animation: coinflipAnimation 1.2s ease-in-out 0.6s infinite;
 }
 
 @keyframes comeFromTheLeft {
@@ -1311,9 +1287,6 @@ input:focus {
 		max-height: 50vh;
 		flex-basis: 40vw;
 	}
-	.challenge-earthquake::before {
-		transform: translateY(-4em);
-	}
 	.hide-all {
 		font-size: 4rem;
 	}
@@ -1386,9 +1359,5 @@ input:focus {
 		display: flex;
 		margin-left: 1rem;
 		margin-right: 1rem;
-	}
-	.challenge-acceptable {
-		padding-top: 1rem;
-		display: block;
 	}
 }
