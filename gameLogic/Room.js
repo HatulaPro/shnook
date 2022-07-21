@@ -194,7 +194,6 @@ module.exports = class Room {
 	applySpecial(specialName, player, isLier, callback) {
 		if (this.specials[specialName] && !player.acceptedSpecial) {
 			if ((this.specials[specialName].whoSees === Special.WHO_SEES.lier && isLier) || (this.specials[specialName].whoSees === Special.WHO_SEES.players && !isLier)) {
-				player.acceptedSpecial = true;
 				Room.SPECIALS[specialName].applySpecial(player, isLier, this);
 				player.acceptedSpecial = true;
 				callback();
