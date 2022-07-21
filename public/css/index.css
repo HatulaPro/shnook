@@ -270,6 +270,11 @@ body {
 	color: white;
 }
 
+.main-theme,
+.main-theme * {
+	user-select: none;
+}
+
 .main-theme .main-theme-explain {
 	visibility: hidden;
 	opacity: 0;
