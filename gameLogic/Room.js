@@ -32,7 +32,7 @@ module.exports = class Room {
 				if (!isLier) return;
 				room.specials.earthquake = false;
 				// If round has less than 3 seconds before it ends, earthquake can no longer be used
-				if (getTimestamp() > room.startedAt + Room.TIME_BETWEEN_ROUNDS + Room.TIME_PER_ROUND - 3) return;
+				if (getTimestamp() > room.startedAt + Room.TIME_BETWEEN_ROUNDS + room.timePerRound - 3) return;
 				room.playersList().forEach((p) => {
 					p.guess = -1;
 				});
@@ -193,7 +193,7 @@ module.exports = class Room {
 
 	applySpecial(specialName, player, isLier, callback) {
 		if (this.specials[specialName] && !player.acceptedSpecial) {
-			if ((this.specials[specialName].whoSees === Special.WHO_SEES.lier && isLier) || (this.specials[specialName].whoSees === Special.WHO_SEES.players && !isLier)) {
+			if ((Room.SPECIALS[specialName].whoSees === Special.WHO_SEES.lier && isLier) || (Room.SPECIALS[specialName].whoSees === Special.WHO_SEES.players && !isLier)) {
 				Room.SPECIALS[specialName].applySpecial(player, isLier, this);
 				player.acceptedSpecial = true;
 				callback();
