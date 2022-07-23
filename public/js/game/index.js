@@ -380,16 +380,16 @@ function showMessage(p, c, system = false) {
 	viewMessage.appendChild(messageUser);
 	viewMessage.appendChild(messageContent);
 
-	messageUser.innerText = `[${p}]: `;
+	messageUser.innerText = `[${p}]:`;
 
 	if (p === player.username) {
-		messageUser.innerText = `[${p} (you)]: `;
+		messageUser.innerText = `[${p} (you)]:`;
 		if (roomData.roundsPlayed < roomData.maxRounds && roomData.hasStarted && p === roomData.players[roomData.lier].username) {
-			messageUser.innerText = `[${p} (you, lier)]: `;
+			messageUser.innerText = `[${p} (you, lier)]:`;
 			messageUser.style.color = 'purple';
 		}
 	} else if (roomData.roundsPlayed < roomData.maxRounds && roomData.hasStarted && p === roomData.players[roomData.lier].username) {
-		messageUser.innerText = `[${p} (lier)]: `;
+		messageUser.innerText = `[${p} (lier)]:`;
 		messageUser.style.color = 'purple';
 	}
 
@@ -397,7 +397,7 @@ function showMessage(p, c, system = false) {
 		messageUser.style.color = '#f58700';
 		messageUser.style.textDecoration = 'underline';
 	}
-	messageContent.innerText = c;
+	messageContent.innerText = ` ${c}`;
 	chatContent.appendChild(viewMessage);
 	chatContent.scrollTop = chatContent.scrollHeight;
 }
@@ -801,7 +801,6 @@ function update(isStart = false) {
 			themeDiv.children[1].innerHTML = SPECIALS[currentSpecial].help;
 
 			if (isStart) {
-				// TODO: this
 				acceptSpecialButton.classList.toggle('main-theme-use-hidden', !SPECIALS[currentSpecial].isEnabled(isGuessing));
 				acceptSpecialButton.disabled = false;
 			}
