@@ -1,4 +1,7 @@
 module.exports = class Player {
+	static MIN_USERNAME_LENGTH = 2;
+	static MAX_USERNAME_LENGTH = 14;
+
 	constructor(username, shape, color) {
 		this.username = username;
 		this.shape = shape;

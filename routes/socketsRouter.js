@@ -3,8 +3,8 @@ const Player = require('../gameLogic/Player');
 const Room = require('../gameLogic/Room');
 
 function validateUsername(username) {
-	if (username.length < 2 || username.length > 14) {
-		return 'Username must be 2-14 characters long';
+	if (username.length < Player.MIN_USERNAME_LENGTH || username.length > Player.MAX_USERNAME_LENGTH) {
+		return `Username must be ${Player.MIN_USERNAME_LENGTH}-${Player.MAX_USERNAME_LENGTH} characters long`;
 	}
 	if (!username.match(/^[a-zA-Z0-9 ]*$/)) {
 		return 'Username can only contain letters, numbers and spaces';
