@@ -26,11 +26,11 @@ module.exports = (io) => {
 		socket.on('create', (stream) => {
 			let { username, shape, color, timePerRound, maxRounds, maxPlayers } = stream || {};
 			if (typeof username !== 'string') return;
-			if (!Number.isInteger(timePerRound) || timePerRound < 5 || timePerRound > 60) return;
-			if (!Number.isInteger(maxRounds) || maxRounds < 3 || maxRounds > 20) return;
-			if (!Number.isInteger(maxPlayers) || maxPlayers < 2 || maxPlayers > 12) return;
-			if (!Number.isInteger(shape) || shape < 0 || shape > 2) return;
-			if (!Number.isInteger(color) || color < 0 || color > 8) return;
+			if (!Number.isInteger(timePerRound) || timePerRound < Room.MIN_TIME_PER_ROUND || timePerRound > Room.MAX_TIME_PER_ROUND) return;
+			if (!Number.isInteger(maxRounds) || maxRounds < Room.MIN_ROUNDS || maxRounds > Room.MAX_ROUNDS) return;
+			if (!Number.isInteger(maxPlayers) || maxPlayers < Room.MIN_PLAYERS || maxPlayers > Room.MAX_PLAYERS) return;
+			if (!Number.isInteger(shape) || shape < 0 || shape >= Room.NUMBER_OF_SHAPES) return;
+			if (!Number.isInteger(color) || color < 0 || color >= Room.NUMBER_OF_COLORS) return;
 
 			username = username.trim();
 			const errorMsg = validateUsername(username);
@@ -52,8 +52,8 @@ module.exports = (io) => {
 			let { roomId, username, shape, color } = stream || {};
 			if (typeof roomId !== 'string') return;
 			if (typeof username !== 'string') return;
-			if (!Number.isInteger(shape) || shape < 0 || shape > 2) return;
-			if (!Number.isInteger(color) || color < 0 || color > 8) return;
+			if (!Number.isInteger(shape) || shape < 0 || shape > Room.NUMBER_OF_SHAPES) return;
+			if (!Number.isInteger(color) || color < 0 || color > Room.NUMBER_OF_COLORS) return;
 			if (roomId.length > 0 && roomId[0] === '#') {
 				roomId = roomId.trim().substring(1);
 			}
@@ -88,7 +88,7 @@ module.exports = (io) => {
 		socket.on('start', () => {
 			if (!loggedIn()) return;
 			if (!room.isAdmin(player)) return;
-			if (room.players.size < 2) return;
+			if (room.players.size < Room.MIN_PLAYERS) return;
 
 			if (room.hasStarted && room.roundsPlayed < room.maxRounds) return;
 			if (room.roundsPlayed === room.maxRounds) {
@@ -131,7 +131,7 @@ module.exports = (io) => {
 			if (!room.hasStarted) return;
 			if (!Number.isInteger(cardIndex)) return;
 			if (socket.id === room.getLierSocketId()) return;
-			if (cardIndex < 0 || cardIndex > 3) return;
+			if (cardIndex < 0 || cardIndex >= 4) return;
 
 			player.guess = cardIndex;
 			room.players.set(socket.id, player);
@@ -150,7 +150,7 @@ module.exports = (io) => {
 			if (!room.hasStarted) return;
 			if (!Number.isInteger(effectType)) return;
 			if (!Number.isInteger(cardIndex)) return;
-			if (cardIndex < 0 || cardIndex > 3) return;
+			if (cardIndex < 0 || cardIndex >= 4) return;
 			if (socket.id !== room.getLierSocketId()) return;
 			if (effectType < 0 || effectType > Room.NUMBER_OF_CHALLENGES) return;
 
