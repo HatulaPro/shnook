@@ -1168,3 +1168,32 @@ window.onpopstate = (data) => {
 };
 
 matchStateToLocation();
+
+// Adjusting constants according to the server's state
+fetch('/constants')
+	.then((res) => res.json())
+	.then((data) => {
+		console.log(data);
+		maxPlayersInput.max = data.MAX_PLAYERS;
+		maxPlayersInput.min = data.MIN_PLAYERS;
+		maxPlayersInput.value = Math.max(Math.min(maxPlayersInput.value, data.MAX_PLAYERS), data.MIN_PLAYERS);
+		maxPlayersInput.nextElementSibling.innerText = maxPlayersInput.value;
+
+		numberOfRoundsInput.max = data.MAX_ROUNDS;
+		numberOfRoundsInput.min = data.MIN_ROUNDS;
+		numberOfRoundsInput.value = Math.max(Math.min(numberOfRoundsInput.value, data.MAX_ROUNDS), data.MIN_ROUNDS);
+		numberOfRoundsInput.nextElementSibling.innerText = numberOfRoundsInput.value;
+
+		timePerRoundInput.max = data.MAX_TIME_PER_ROUND;
+		timePerRoundInput.min = data.MIN_TIME_PER_ROUND;
+		timePerRoundInput.value = Math.max(Math.min(timePerRoundInput.value, data.MAX_TIME_PER_ROUND), data.MIN_TIME_PER_ROUND);
+		timePerRoundInput.nextElementSibling.innerText = timePerRoundInput.value;
+
+		if (data.NUMBER_OF_COLORS > AVATAR_COLORS.length) {
+			AVATAR_COLORS.splice(data.NUMBER_OF_COLORS);
+		}
+
+		if (data.NUMBER_OF_SHAPES > SHAPES.length) {
+			SHAPES.splice(data.NUMBER_OF_SHAPES);
+		}
+	});
