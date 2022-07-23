@@ -18,5 +18,5 @@ app.use(mainRouter);
 require('./routes/socketsRouter')(io);
 
 server.listen(PORT, () => {
-	console.log(`Example app listening on port ${PORT}`);
+	console.log(`Shnook is listening on port ${PORT}`);
 });
