@@ -164,10 +164,12 @@ module.exports = (io) => {
 				if (room.lastEffect.effectType === room.challenge.effect && room.treasure === room.lastEffect.cardIndex) {
 					challengeTimer = setTimeout(() => {
 						try {
-							if (room.lastEffect && room.challenge && new Date().getTime() - room.lastEffect.added * 1000 >= room.challenge.time) {
-								io.to(room.getLierSocketId()).emit('success', { challenge: room.challenge });
-								room.playersList()[room.lier].score += room.challenge.bonus;
-								room.challenge = null;
+							if (room.lastEffect.effectType === room.challenge.effect && room.treasure === room.lastEffect.cardIndex) {
+								if (room.lastEffect && room.challenge && new Date().getTime() - room.lastEffect.added * 1000 >= room.challenge.time) {
+									io.to(room.getLierSocketId()).emit('success', { challenge: room.challenge });
+									room.playersList()[room.lier].score += room.challenge.bonus;
+									room.challenge = null;
+								}
 							}
 						} catch (e) {
 							// In case room.lastEffect has changed during execution
