@@ -161,22 +161,20 @@ module.exports = (io) => {
 				challengeTimer = null;
 			}
 			if (room.challenge && room.lastEffect) {
-				if (room.lastEffect.effectType === room.challenge.effect && room.treasure === room.lastEffect.cardIndex) {
-					challengeTimer = setTimeout(() => {
-						try {
-							if (room.lastEffect && room.challenge && room.lastEffect.effectType === room.challenge.effect && room.treasure === room.lastEffect.cardIndex) {
-								if (new Date().getTime() - room.lastEffect.added * 1000 >= room.challenge.time) {
-									io.to(room.getLierSocketId()).emit('success', { challenge: room.challenge });
-									room.playersList()[room.lier].score += room.challenge.bonus;
-									room.challenge = null;
-								}
+				challengeTimer = setTimeout(() => {
+					try {
+						if (room.lastEffect && room.challenge && room.lastEffect.effectType === room.challenge.effect && room.treasure === room.lastEffect.cardIndex) {
+							if (new Date().getTime() - room.lastEffect.added * 1000 >= room.challenge.time) {
+								io.to(room.getLierSocketId()).emit('success', { challenge: room.challenge });
+								room.playersList()[room.lier].score += room.challenge.bonus;
+								room.challenge = null;
 							}
-						} catch (e) {
-							// In case room.lastEffect has changed during execution
-							console.log(e);
 						}
-					}, room.challenge.time);
-				}
+					} catch (e) {
+						// In case room.lastEffect has changed during execution
+						console.log(e);
+					}
+				}, room.challenge.time);
 			}
 
 			io.to(room.id).emit('effect', { effectType, cardIndex });
@@ -198,7 +196,10 @@ module.exports = (io) => {
 			if (!room.specials[specialName]) return;
 
 			room.applySpecial(specialName, player, socket.id === room.getLierSocketId(), () => {
-				io.to(room.id).emit('accepted_special', { username: player.username, specialName, room: room.getStatus() });
+				const lier = room.getLierSocketId();
+
+				io.to(room.id).except(lier).emit('accepted_special', { username: player.username, specialName, room: room.getStatus() });
+				io.to(lier).emit('accepted_special', { username: player.username, specialName, room: room.getStatus(), treasure: room.treasure });
 			});
 		});
 

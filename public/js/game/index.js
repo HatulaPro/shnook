@@ -221,6 +221,32 @@ const SPECIALS = {
 			cards[vote].animate([{ boxShadow: '0px 0px 100px lightgreen' }, { boxShadow: '0px 0px 0px lightgreen' }], { duration: 300 });
 		},
 	},
+	switcheroo: {
+		themeDivClassName: 'main-theme-switch',
+		content: 'Switcheroos',
+		help: 'Using a Switcheroo, a guesser can randomly replace the secret card, as well as all card effects. It will, of course, remain as a secret. ',
+		isEnabled: (isGuessing) => {
+			return isGuessing;
+		},
+		func: (username) => {
+			const switchMessageElement = document.createElement('div');
+			const messageContent = document.createElement('span');
+			const usernameSpan = document.createElement('span');
+			messageContent.innerText = 'by ';
+			usernameSpan.innerText = username;
+
+			switchMessageElement.appendChild(messageContent);
+			switchMessageElement.appendChild(usernameSpan);
+
+			switchMessageElement.classList.add('switcheroo-message');
+			document.body.appendChild(switchMessageElement);
+			showCardEffect(0);
+
+			setTimeout(() => {
+				switchMessageElement.remove();
+			}, 1800);
+		},
+	},
 };
 
 let player = null;
@@ -835,8 +861,17 @@ socket.on('update', (stream) => {
 	update();
 });
 
-socket.on('accepted_special', ({ username, specialName, room }) => {
+socket.on('accepted_special', ({ username, specialName, room, treasure }) => {
 	roomData = room;
+
+	if (treasure !== undefined) {
+		roomData.treasure = treasure;
+		cards.forEach((element) => {
+			element.classList.remove('secret-card');
+		});
+		cards[treasure].classList.add('secret-card');
+	}
+
 	update();
 
 	SPECIALS[specialName].func(username);
@@ -885,9 +920,9 @@ socket.on('start', (stream) => {
 			}
 
 			// If there are less than 3 seconds less to the round, remove the option to start an earthquake
-			if (seconds <= 3 && currentSpecial === 'earthquake') {
+			if (seconds <= 3 && (currentSpecial === 'earthquake' || currentSpecial === 'switcheroo')) {
 				disableAcceptSpecialButton();
-				roomData.specials.earthquake = false;
+				roomData.specials[currentSpecial] = false;
 				update();
 			} else if (seconds <= 0.6 && currentSpecial) {
 				disableAcceptSpecialButton();
@@ -906,10 +941,10 @@ socket.on('start', (stream) => {
 
 	update(true);
 
-	document.querySelectorAll('.card').forEach((element) => {
+	player.guess = -1;
+	cards.forEach((element) => {
 		element.classList.remove('secret-card');
 		element.classList.remove('card-locked');
-		player.guess = -1;
 		element.children[2].children[0].style.backgroundSize = 'auto 0%';
 	});
 
@@ -917,7 +952,7 @@ socket.on('start', (stream) => {
 	challengeDiv.classList.remove('challenge-div-complete');
 
 	if (stream.treasure !== undefined) {
-		document.querySelector(`.card:nth-of-type(${stream.treasure + 1})`).classList.add('secret-card');
+		cards[stream.treasure].classList.add('secret-card');
 		if (stream.challenge) {
 			challengeDiv.style.display = 'flex';
 			challengeDiv.children[0].innerText = `+${stream.challenge.bonus}`;
