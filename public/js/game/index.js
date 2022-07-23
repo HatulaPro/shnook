@@ -353,6 +353,7 @@ goToChatButton.addEventListener('click', () => {
 
 function disableAcceptSpecialButton() {
 	acceptSpecialButton.disabled = true;
+	acceptSpecialButton.classList.toggle('main-theme-use-hidden', false);
 }
 
 acceptSpecialButton.addEventListener('click', () => {
@@ -800,7 +801,9 @@ function update(isStart = false) {
 			themeDiv.children[1].innerHTML = SPECIALS[currentSpecial].help;
 
 			if (isStart) {
-				acceptSpecialButton.disabled = !SPECIALS[currentSpecial].isEnabled(isGuessing);
+				// TODO: this
+				acceptSpecialButton.classList.toggle('main-theme-use-hidden', !SPECIALS[currentSpecial].isEnabled(isGuessing));
+				acceptSpecialButton.disabled = false;
 			}
 		} else {
 			themeDiv.classList.remove('main-theme-visib');

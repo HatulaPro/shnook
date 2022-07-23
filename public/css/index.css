@@ -348,6 +348,15 @@ body {
 	border-radius: 16px !important;
 	padding: 0.6rem;
 	font-size: smaller;
+	transition: 0.2s all;
+	opacity: 1;
+	visibility: visible;
+}
+
+.main-theme-use-hidden {
+	visibility: collapse;
+	opacity: 0;
+	max-width: 0;
 }
 
 .main-theme-doubles span {
