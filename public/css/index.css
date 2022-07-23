@@ -380,6 +380,7 @@ body {
 
 .main-theme-fifty span::before {
 	content: '50¢';
+	color: black;
 	background-color: #fcff34;
 	border: 2px solid #fd8c28;
 	border-radius: 999px;
