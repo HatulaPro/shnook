@@ -20,7 +20,7 @@ module.exports = class Room {
 
 	static NUMBER_OF_CHALLENGES = 3;
 	static CHANCE_OF_CHALLENGE = 0.6;
-	static CHANCE_OF_SPECIAL = 1; // 0.6;
+	static CHANCE_OF_SPECIAL = 0.6;
 	static SPECIALS = {
 		doubling: new Special(
 			false,

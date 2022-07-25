@@ -163,6 +163,7 @@ const SPECIALS = {
 			const playerElement = document.querySelector(`[data-username='${username}']`);
 			playerElement.classList.add('player-doubling');
 		},
+		isTimeDependent: false,
 	},
 	earthquake: {
 		themeDivClassName: 'main-theme-earthquake',
@@ -204,6 +205,7 @@ const SPECIALS = {
 				});
 			}, 700);
 		},
+		isTimeDependent: true,
 	},
 	fifty: {
 		themeDivClassName: 'main-theme-fifty',
@@ -220,6 +222,7 @@ const SPECIALS = {
 			const vote = roomData.players.find((x) => x.username === username).guess;
 			cards[vote].animate([{ boxShadow: '0px 0px 100px lightgreen' }, { boxShadow: '0px 0px 0px lightgreen' }], { duration: 300 });
 		},
+		isTimeDependent: false,
 	},
 	switcheroo: {
 		themeDivClassName: 'main-theme-switch',
@@ -246,6 +249,7 @@ const SPECIALS = {
 				switchMessageElement.remove();
 			}, 1800);
 		},
+		isTimeDependent: true,
 	},
 };
 
@@ -920,7 +924,7 @@ socket.on('start', (stream) => {
 			}
 
 			// If there are less than 3 seconds less to the round, remove the option to start an earthquake
-			if (seconds <= 3 && (currentSpecial === 'earthquake' || currentSpecial === 'switcheroo')) {
+			if (seconds <= 3 && SPECIALS[currentSpecial].isTimeDependent) {
 				disableAcceptSpecialButton();
 				roomData.specials[currentSpecial] = false;
 				update();
