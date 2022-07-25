@@ -492,8 +492,16 @@ joinRoomInput.addEventListener('keypress', (e) => {
 	}
 });
 usernameInput.addEventListener('input', (e) => {
-	if (constants && (usernameInput.value.length > constants.MAX_USERNAME_LENGTH || usernameInput.value.length < constants.MIN_USERNAME_LENGTH)) {
+	if (usernameInput.value.length === 0) {
+		joinFailSpan.innerText = '';
+		joinButton.disabled = true;
+		createButton.disabled = true;
+	} else if (constants && (usernameInput.value.length > constants.MAX_USERNAME_LENGTH || usernameInput.value.length < constants.MIN_USERNAME_LENGTH)) {
 		joinFailSpan.innerText = `Username must be ${constants.MIN_USERNAME_LENGTH}-${constants.MAX_USERNAME_LENGTH} characters long`;
+		joinButton.disabled = true;
+		createButton.disabled = true;
+	} else if (!usernameInput.value.match(/^[a-zA-Z0-9 ]*$/)) {
+		joinFailSpan.innerText = 'Username can only contain letters, numbers and spaces';
 		joinButton.disabled = true;
 		createButton.disabled = true;
 	} else {
