@@ -1,9 +1,6 @@
 const Player = require('./Player');
 const Special = require('./Special');
-
-function getTimestamp() {
-	return Math.floor(new Date().getTime() / 1000);
-}
+const Generals = require('./Generals');
 
 module.exports = class Room {
 	static rooms = new Map();
@@ -23,59 +20,51 @@ module.exports = class Room {
 
 	static NUMBER_OF_CHALLENGES = 3;
 	static CHANCE_OF_CHALLENGE = 0.6;
-	static CHANCE_OF_SPECIAL = 1; //0.6;
-
+	static CHANCE_OF_SPECIAL = 1; // 0.6;
 	static SPECIALS = {
 		doubling: new Special(
 			false,
 			'doubling',
 			(player, isLier, room) => {
-				if (isLier) return;
 				player.scoringFactor = 2;
 			},
-			Special.WHO_SEES.players
+			Special.WHO_SEES.players,
+			false
 		),
 		earthquake: new Special(
 			false,
 			'earthquake',
 			(player, isLier, room) => {
-				if (!isLier) return;
 				room.specials.earthquake = false;
-				// If round has less than 3 seconds before it ends, earthquake can no longer be used
-				if (getTimestamp() > room.startedAt + Room.TIME_BETWEEN_ROUNDS + room.timePerRound - 3) return;
 				room.playersList().forEach((p) => {
 					p.guess = -1;
 				});
 			},
-			Special.WHO_SEES.lier
+			Special.WHO_SEES.lier,
+			true
 		),
 		fifty: new Special(
 			false,
 			'fifty',
 			(player, isLier, room) => {
-				if (isLier) return;
-
 				// 3 options are the treasure, the other three aren't
 				const options = [0, 1, 2, 3, room.treasure, room.treasure];
 				player.guess = options[Math.floor(Math.random() * options.length)];
 			},
-			Special.WHO_SEES.players
+			Special.WHO_SEES.players,
+			false
 		),
 		switcheroo: new Special(
 			false,
 			'switcheroo',
 			(player, isLier, room) => {
-				if (isLier) return;
-				const timestamp = getTimestamp();
-				if (timestamp > room.startedAt + Room.TIME_BETWEEN_ROUNDS + room.timePerRound - 3) return;
-
 				const options = [0, 1, 2, 3];
 				options.splice(room.treasure, 1);
 				room.treasure = options[Math.floor(Math.random() * 3)];
-
 				room.lastEffect = null;
 			},
-			Special.WHO_SEES.players
+			Special.WHO_SEES.players,
+			true
 		),
 	};
 
@@ -140,7 +129,7 @@ module.exports = class Room {
 			this.lastEffect = null;
 			return;
 		}
-		this.lastEffect = { effectType, cardIndex, added: getTimestamp() };
+		this.lastEffect = { effectType, cardIndex, added: Generals.getTimestamp() };
 	}
 
 	getLierSocketId() {
@@ -178,7 +167,7 @@ module.exports = class Room {
 		this.players.forEach((player) => {
 			player.roundReset();
 		});
-		this.startedAt = getTimestamp();
+		this.startedAt = Generals.getTimestamp();
 		this.lastTreasure = this.treasure;
 		this.treasure = Math.floor(Math.random() * 4);
 		this.challenge = this.generateChallenge();
