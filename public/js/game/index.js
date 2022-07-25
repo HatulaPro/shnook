@@ -265,6 +265,7 @@ let currentJoinOrCreateColorIndex = 0;
 let doubledPlayerUsernames = new Set();
 let currentSpecial = null;
 let currentTutorialPage = 0;
+let constants = {};
 
 const mainDiv = document.querySelector('.main');
 const roomInfoDiv = document.querySelector('.room-info');
@@ -490,8 +491,20 @@ joinRoomInput.addEventListener('keypress', (e) => {
 		onJoin();
 	}
 });
+usernameInput.addEventListener('input', (e) => {
+	if (constants && (usernameInput.value.length > constants.MAX_USERNAME_LENGTH || usernameInput.value.length < constants.MIN_USERNAME_LENGTH)) {
+		joinFailSpan.innerText = `Username must be ${constants.MIN_USERNAME_LENGTH}-${constants.MAX_USERNAME_LENGTH} characters long`;
+		joinButton.disabled = true;
+		createButton.disabled = true;
+	} else {
+		joinFailSpan.innerText = ``;
+		joinButton.disabled = false;
+		createButton.disabled = false;
+	}
+});
+
 usernameInput.addEventListener('keypress', (e) => {
-	if (e.key === 'Enter') {
+	if (e.key === 'Enter' && !joinButton.disabled) {
 		if (state === STATES.JOIN) {
 			onJoin();
 		} else if (state === STATES.CREATE) {
@@ -1212,7 +1225,7 @@ matchStateToLocation();
 fetch('/constants')
 	.then((res) => res.json())
 	.then((data) => {
-		console.log(data);
+		constants = data;
 		maxPlayersInput.max = data.MAX_PLAYERS;
 		maxPlayersInput.min = data.MIN_PLAYERS;
 		maxPlayersInput.value = Math.max(Math.min(maxPlayersInput.value, data.MAX_PLAYERS), data.MIN_PLAYERS);
