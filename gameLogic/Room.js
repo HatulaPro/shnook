@@ -26,41 +26,41 @@ module.exports = class Room {
 	static CHANCE_OF_SPECIAL = 1; //0.6;
 
 	static SPECIALS = {
-		// doubling: new Special(
-		// 	false,
-		// 	'doubling',
-		// 	(player, isLier, room) => {
-		// 		if (isLier) return;
-		// 		player.scoringFactor = 2;
-		// 	},
-		// 	Special.WHO_SEES.players
-		// ),
-		// earthquake: new Special(
-		// 	false,
-		// 	'earthquake',
-		// 	(player, isLier, room) => {
-		// 		if (!isLier) return;
-		// 		room.specials.earthquake = false;
-		// 		// If round has less than 3 seconds before it ends, earthquake can no longer be used
-		// 		if (getTimestamp() > room.startedAt + Room.TIME_BETWEEN_ROUNDS + room.timePerRound - 3) return;
-		// 		room.playersList().forEach((p) => {
-		// 			p.guess = -1;
-		// 		});
-		// 	},
-		// 	Special.WHO_SEES.lier
-		// ),
-		// fifty: new Special(
-		// 	false,
-		// 	'fifty',
-		// 	(player, isLier, room) => {
-		// 		if (isLier) return;
+		doubling: new Special(
+			false,
+			'doubling',
+			(player, isLier, room) => {
+				if (isLier) return;
+				player.scoringFactor = 2;
+			},
+			Special.WHO_SEES.players
+		),
+		earthquake: new Special(
+			false,
+			'earthquake',
+			(player, isLier, room) => {
+				if (!isLier) return;
+				room.specials.earthquake = false;
+				// If round has less than 3 seconds before it ends, earthquake can no longer be used
+				if (getTimestamp() > room.startedAt + Room.TIME_BETWEEN_ROUNDS + room.timePerRound - 3) return;
+				room.playersList().forEach((p) => {
+					p.guess = -1;
+				});
+			},
+			Special.WHO_SEES.lier
+		),
+		fifty: new Special(
+			false,
+			'fifty',
+			(player, isLier, room) => {
+				if (isLier) return;
 
-		// 		// 3 options are the treasure, the other three aren't
-		// 		const options = [0, 1, 2, 3, room.treasure, room.treasure];
-		// 		player.guess = options[Math.floor(Math.random() * options.length)];
-		// 	},
-		// 	Special.WHO_SEES.players
-		// ),
+				// 3 options are the treasure, the other three aren't
+				const options = [0, 1, 2, 3, room.treasure, room.treasure];
+				player.guess = options[Math.floor(Math.random() * options.length)];
+			},
+			Special.WHO_SEES.players
+		),
 		switcheroo: new Special(
 			false,
 			'switcheroo',
